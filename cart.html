@@ -25,14 +25,15 @@
             color: #333;
         }
 
-        /* Top Green Navigation Bar - Matching Front Page Style & Padding */
+        /* Top Bar - Changed to White Background matching Main Page */
         .top-bar {
-            background-color: #1b5e20;
-            color: #ffffff;
+            background-color: #ffffff;
+            color: #1b5e20;
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 15px 40px;
+            border-bottom: 1px solid #e0e0e0;
         }
 
         .top-bar .support-text {
@@ -46,19 +47,22 @@
             gap: 15px;
         }
 
+        /* Main Page Button Style: White Box, Green Border & Green Text */
         .nav-links a {
-            color: #ffffff;
+            color: #1b5e20;
             text-decoration: none;
             font-weight: 700;
             font-size: 15px;
-            background-color: rgba(255, 255, 255, 0.15);
+            background-color: #ffffff;
+            border: 2px solid #1b5e20;
             padding: 6px 16px;
             border-radius: 6px;
-            transition: background-color 0.2s ease;
+            transition: all 0.2s ease;
         }
 
         .nav-links a:hover {
-            background-color: rgba(255, 255, 255, 0.25);
+            background-color: #1b5e20;
+            color: #ffffff;
         }
 
         /* Logo Bar matching Home Page */
@@ -311,7 +315,7 @@
 </head>
 <body>
 
-    <!-- Top Green Bar Navigation with White Box Links -->
+    <!-- Top Bar Navigation with White Background matching Main Page -->
     <header class="top-bar">
         <div class="support-text">🛒 Kerala's Fast Online Grocery Shopping</div>
         <nav class="nav-links">
