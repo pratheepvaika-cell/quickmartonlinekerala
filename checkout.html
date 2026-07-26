@@ -1,0 +1,74 @@
+function placeOrderAndSendWhatsApp(event) {
+    if (event) {
+        event.preventDefault();
+    }
+    
+    console.log("1. ഓർഡർ പ്രോസസ്സ് ചെയ്തുതുടങ്ങി...");
+
+    // കസ്റ്റമറുടെ വിവരങ്ങൾ എടുക്കുന്നു
+    let nameInput = document.getElementById('customerName') || document.getElementById('name') || document.querySelector('input[name="name"]');
+    let phoneInput = document.getElementById('customerPhone') || document.getElementById('phone') || document.querySelector('input[name="phone"]');
+    
+    let customerName = nameInput ? nameInput.value : '';
+    let customerPhone = phoneInput ? phoneInput.value : '';
+
+    console.log("പേര്:", customerName, "ഫോൺ:", customerPhone);
+
+    // കാർട്ടിലെ ഡാറ്റ പരിശോധിക്കുന്നു
+    let cartItems = JSON.parse(localStorage.getItem('cart')) || JSON.parse(localStorage.getItem('shoppingCart')) || []; 
+    console.log("കാർട്ടിലുള്ള സാധനങ്ങൾ:", cartItems);
+
+    if (cartItems.length === 0) {
+        alert('നിങ്ങളുടെ കാർട്ട് കാലിയാണ്!');
+        return;
+    }
+
+    if (!customerName || !customerPhone) {
+        alert('ദയവായി നിങ്ങളുടെ പേരും ഫോൺ നമ്പറും നൽകുക!');
+        return;
+    }
+
+    // വിലയും സാധനങ്ങളും കണക്കാക്കുന്നു
+    let itemsString = cartItems.map(item => `${item.name} (Qty: ${item.quantity || 1})`).join(', ');
+    let totalPrice = cartItems.reduce((total, item) => total + (parseFloat(item.price) * (item.quantity || 1)), 0);
+
+    // ഓർഡർ ഒബ്ജക്റ്റ് ഉണ്ടാക്കുന്നു
+    let newOrder = {
+        id: Math.floor(1000 + Math.random() * 9000),
+        date: new Date().toLocaleString(),
+        customer: customerName,
+        phone: customerPhone,
+        items: itemsString,
+        price: totalPrice,
+        status: 'Pending'
+    };
+
+    // അഡ്മിൻ പാനലിലേക്ക് സേവ് ചെയ്യുന്നു
+    let existingOrders = JSON.parse(localStorage.getItem('quickMartOrders')) || [];
+    existingOrders.push(newOrder);
+    localStorage.setItem('quickMartOrders', JSON.stringify(existingOrders));
+    console.log("2. ഓർഡർ ലോക്കൽ സ്റ്റോറേജിലേക്ക് (quickMartOrders) വിജയകരമായി സേവ് ചെയ്തു!");
+
+    // കാർട്ട് എംറ്റി ചെയ്യുന്നു
+    localStorage.removeItem('cart');
+    localStorage.removeItem('shoppingCart');
+
+    // വാട്സാപ്പ് ലിങ്ക് തയ്യാറാക്കുന്നു
+    let adminWhatsAppNumber = "97338437080"; 
+    let message = `*പുതിയ ഓർഡർ വന്നിരിക്കുന്നു!*%0A%0A` +
+                  `*ഓർഡർ ID:* #${newOrder.id}%0A` +
+                  `*പേര്:* ${customerName}%0A` +
+                  `*ഫോൺ:* ${customerPhone}%0A` +
+                  `*സാധനങ്ങൾ:* ${itemsString}%0A` +
+                  `*ആകെ തുക:* ₹${totalPrice}`;
+    
+    let whatsappURL = `https://wa.me/${adminWhatsAppNumber}?text=${message}`;
+    
+    // വാട്സാപ്പ് തുറക്കുന്നു
+    window.open(whatsappURL, '_blank');
+
+    alert('ഓർഡർ വിജയകരമായി പ്ലേസ് ചെയ്തു!');
+    
+    // പേജ് റീഫ്രഷ് ചെയ്യുന്നു
+    window.location.reload();
+}

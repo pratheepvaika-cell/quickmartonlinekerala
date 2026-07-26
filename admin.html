@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quick Mart Online - Admin Login</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .login-container {
+            background: #ffffff;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .login-header h2 {
+            color: #333;
+            font-size: 26px;
+            margin-bottom: 5px;
+        }
+
+        .login-header span {
+            color: #27ae60;
+            font-weight: bold;
+        }
+
+        .login-header p {
+            color: #777;
+            font-size: 14px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            color: #444;
+            margin-bottom: 8px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+
+        .input-group input:focus {
+            border-color: #27ae60;
+            outline: none;
+            box-shadow: 0 0 5px rgba(39, 174, 96, 0.3);
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 12px;
+            background: #27ae60;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .login-btn:hover {
+            background: #219653;
+        }
+
+        .login-footer {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .login-footer a {
+            color: #777;
+            font-size: 13px;
+            text-decoration: none;
+        }
+
+        .login-footer a:hover {
+            color: #333;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="login-container">
+        <div class="login-header">
+            <h2>Quick Mart <span>Admin</span></h2>
+            <p>Please enter your credentials to login</p>
+        </div>
+        
+        <form onsubmit="handleLogin(event)">
+            <div class="input-group">
+                <label for="username">Username / Email</label>
+                <input type="text" id="username" placeholder="Enter admin username" required>
+            </div>
+            
+            <div class="input-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" placeholder="Enter password" required>
+            </div>
+            
+            <button type="submit" class="login-btn">Login</button>
+        </form>
+
+        <div class="login-footer">
+            <a href="#">Forgot Password?</a>
+        </div>
+    </div>
+
+    <script>
+        function handleLogin(event) {
+            event.preventDefault();
+            const user = document.getElementById('username').value;
+            const pass = document.getElementById('password').value;
+
+            // തൽക്കാലത്തേക്ക് പരിശോധനയ്ക്കായി നൽകിയിരിക്കുന്ന കോഡ്
+            if(user === "admin" && pass === "1234") {
+                alert("Login Successful! Welcome to Quick Mart Admin.");
+                
+                // ലോഗിൻ വിജയമായാൽ നേരെ അഡ്മിൻ പേജിലേക്ക് പോകും
+                window.location.href = "admindashboard.html";
+            } else {
+                alert("Invalid Username or Password!");
+            }
+        }
+    </script>
+
+</body>
+</html>

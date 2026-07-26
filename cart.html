@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart - QuickMart Online</title>
+
+    <style>
+        html, body {
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f4f7f6;
+            color: #333;
+        }
+
+        /* Top Green Navigation Bar - Matching Front Page Style & Padding */
+        .top-bar {
+            background-color: #1b5e20;
+            color: #ffffff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 40px;
+        }
+
+        .top-bar .support-text {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .nav-links a {
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 15px;
+            background-color: rgba(255, 255, 255, 0.15);
+            padding: 6px 16px;
+            border-radius: 6px;
+            transition: background-color 0.2s ease;
+        }
+
+        .nav-links a:hover {
+            background-color: rgba(255, 255, 255, 0.25);
+        }
+
+        /* Logo Bar matching Home Page */
+        .logo-bar {
+            padding: 15px 40px;
+            background: #ffffff;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .logo-container {
+            display: inline-flex;
+            align-items: center;
+            gap: 14px;
+            text-decoration: none;
+        }
+
+        .logo-cart-icon {
+            background-color: #1b5e20;
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(27, 94, 32, 0.25);
+        }
+
+        .logo-cart-icon svg {
+            width: 28px;
+            height: 28px;
+            fill: #ffffff;
+        }
+
+        .logo-text-wrapper {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logo-text {
+            font-size: 28px;
+            font-weight: 800;
+            line-height: 1;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo-quick { color: #1b5e20; }
+        .logo-mart { color: #e65100; }
+        .logo-online { color: #1b5e20; margin-left: 6px; }
+
+        .logo-tagline {
+            font-size: 12px;
+            color: #d97706;
+            font-weight: 700;
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
+            margin-top: 4px;
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .section-title {
+            font-size: 26px;
+            color: #1b5e20;
+            margin-bottom: 25px;
+            font-weight: 800;
+        }
+
+        /* Cart Layout */
+        .cart-container {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+            border: 1px solid #e0e0e0;
+        }
+
+        .cart-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .cart-item-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .cart-item-img {
+            font-size: 40px;
+            background: #f4f7f6;
+            padding: 10px;
+            border-radius: 8px;
+        }
+
+        .cart-item-name {
+            font-size: 16px;
+            font-weight: 700;
+            color: #333;
+        }
+
+        .cart-item-price {
+            font-size: 15px;
+            color: #e65100;
+            font-weight: 700;
+            margin-top: 4px;
+        }
+
+        .cart-actions {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .quantity-btn {
+            background: #e0e0e0;
+            border: none;
+            padding: 6px 12px;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        .quantity-btn:hover {
+            background: #d0d0d0;
+        }
+
+        .remove-btn {
+            background: #ffebee;
+            color: #c62828;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .remove-btn:hover {
+            background: #ffcdd2;
+        }
+
+        /* Checkout Form Fields inside Cart */
+        .checkout-form-section {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 30px;
+            margin-top: 25px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+            border: 1px solid #e0e0e0;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 15px;
+        }
+
+        /* Cart Total Summary */
+        .cart-summary {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid #f0f0f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .total-amount {
+            font-size: 20px;
+            font-weight: 800;
+            color: #1b5e20;
+        }
+
+        .checkout-btn {
+            background-color: #2e7d32;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .checkout-btn:hover {
+            background-color: #1b5e20;
+        }
+
+        .empty-cart {
+            text-align: center;
+            padding: 40px;
+            font-size: 18px;
+            color: #666;
+            display: none;
+        }
+
+        /* Order History Styles */
+        .history-card {
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        .history-card h4 {
+            color: #1b5e20;
+            margin-bottom: 5px;
+        }
+
+        .history-card p {
+            font-size: 14px;
+            color: #555;
+            margin-bottom: 3px;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 20px;
+            background: #212121;
+            color: #aaa;
+            font-size: 14px;
+            margin-top: 50px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Top Green Bar Navigation -->
+    <header class="top-bar">
+        <div class="support-text">🛒 Kerala's Fast Online Grocery Shopping</div>
+        <nav class="nav-links">
+            <a href="index.html">Home</a>
+        </nav>
+    </header>
+
+    <!-- Logo Section -->
+    <div class="logo-bar">
+        <a href="index.html" class="logo-container">
+            <div class="logo-cart-icon">
+                <svg viewBox="0 0 24 24">
+                    <path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/>
+                </svg>
+            </div>
+            <div class="logo-text-wrapper">
+                <div class="logo-text">
+                    <span class="logo-quick">Quick</span><span class="logo-mart">M</span><span class="logo-mart">art</span>
+                    <span class="logo-online">Online</span>
+                </div>
+                <div class="logo-tagline">✨ All That Glitters</div>
+            </div>
+        </a>
+    </div>
+
+    <!-- Main Container -->
+    <main class="container">
+        <h2 class="section-title">Your Shopping Cart</h2>
+
+        <div class="cart-container" id="cartContainer">
+            <!-- Dynamic items will load here -->
+        </div>
+
+        <div class="empty-cart" id="emptyCartMsg">Your cart is empty! 🛒</div>
+
+        <!-- Customer Details Form for WhatsApp Order -->
+        <div class="checkout-form-section" id="checkoutFormSection">
+            <h3 style="margin-bottom: 15px; color: #1b5e20;">Delivery Details</h3>
+            <div class="form-group">
+                <label>Full Name:</label>
+                <input type="text" id="customer-name" placeholder="Enter your name">
+            </div>
+            <div class="form-group">
+                <label>Phone Number:</label>
+                <input type="text" id="customer-phone" placeholder="Enter your phone number">
+            </div>
+            <div class="form-group">
+                <label>Delivery Address:</label>
+                <textarea id="customer-address" rows="3" placeholder="Enter your delivery address"></textarea>
+            </div>
+        </div>
+
+        <!-- Cart Summary & Total -->
+        <div class="cart-summary" id="cartSummarySection">
+            <div class="total-amount" id="totalAmount">Total: ₹0</div>
+            <button class="checkout-btn" onclick="sendOrderToWhatsApp()">Place Order via WhatsApp</button>
+        </div>
+
+        <!-- Order History Section -->
+        <div class="checkout-form-section" style="margin-top: 40px;">
+            <h3 style="margin-bottom: 15px; color: #1b5e20;">📦 My Order History</h3>
+            <div id="orderHistoryContainer">
+                <p style="color: #666; font-size: 14px;">No past orders found.</p>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 QuickMart Online. All rights reserved.</p>
+    </footer>
+
+    <!-- JavaScript for Cart & Order History -->
+    <script>
+        function loadCart() {
+            let cart = JSON.parse(localStorage.getItem('quickMartCart')) || [];
+            const cartContainer = document.getElementById('cartContainer');
+            const emptyCartMsg = document.getElementById('emptyCartMsg');
+            const cartSummarySection = document.getElementById('cartSummarySection');
+            const checkoutFormSection = document.getElementById('checkoutFormSection');
+            const totalAmountEl = document.getElementById('totalAmount');
+
+            cartContainer.innerHTML = '';
+
+            if (cart.length === 0) {
+                cartContainer.style.display = 'none';
+                cartSummarySection.style.display = 'none';
+                checkoutFormSection.style.display = 'none';
+                emptyCartMsg.style.display = 'block';
+            } else {
+                cartContainer.style.display = 'block';
+                cartSummarySection.style.display = 'flex';
+                checkoutFormSection.style.display = 'block';
+                emptyCartMsg.style.display = 'none';
+
+                let total = 0;
+                cart.forEach((item, index) => {
+                    total += item.price * item.qty;
+
+                    const itemDiv = document.createElement('div');
+                    itemDiv.className = 'cart-item';
+                    itemDiv.innerHTML = `
+                        <div class="cart-item-info">
+                            <div class="cart-item-img">${item.img}</div>
+                            <div>
+                                <div class="cart-item-name">${item.name}</div>
+                                <div class="cart-item-price">₹${item.price} x ${item.qty}</div>
+                            </div>
+                        </div>
+                        <div class="cart-actions">
+                            <button class="quantity-btn" onclick="changeQty(${index}, -1)">-</button>
+                            <span>${item.qty}</span>
+                            <button class="quantity-btn" onclick="changeQty(${index}, 1)">+</button>
+                            <button class="remove-btn" onclick="removeItem(${index})">Remove</button>
+                        </div>
+                    `;
+                    cartContainer.appendChild(itemDiv);
+                });
+
+                totalAmountEl.textContent = 'Total: ₹' + total;
+            }
+
+            loadOrderHistory();
+        }
+
+        function changeQty(index, change) {
+            let cart = JSON.parse(localStorage.getItem('quickMartCart')) || [];
+            cart[index].qty += change;
+            if (cart[index].qty <= 0) {
+                cart.splice(index, 1);
+            }
+            localStorage.setItem('quickMartCart', JSON.stringify(cart));
+            loadCart();
+        }
+
+        function removeItem(index) {
+            let cart = JSON.parse(localStorage.getItem('quickMartCart')) || [];
+            cart.splice(index, 1);
+            localStorage.setItem('quickMartCart', JSON.stringify(cart));
+            loadCart();
+        }
+
+        function sendOrderToWhatsApp() {
+            const name = document.getElementById('customer-name').value.trim();
+            const phone = document.getElementById('customer-phone').value.trim();
+            const address = document.getElementById('customer-address').value.trim();
+
+            if (!name || !phone || !address) {
+                alert("ദയവായി നിങ്ങളുടെ പേരും ഫോൺ നമ്പറും അഡ്രസ്സും പൂരിപ്പിക്കുക!");
+                return;
+            }
+
+            let cart = JSON.parse(localStorage.getItem('quickMartCart')) || [];
+            if (cart.length === 0) {
+                alert("നിങ്ങളുടെ കാർട്ട് കാലിയാണ്!");
+                return;
+            }
+
+            let message = `🛒 *New Order - QuickMart Online*\n\n`;
+            message += `👤 *Name:* ${name}\n`;
+            message += `📞 *Phone:* ${phone}\n`;
+            message += `🏠 *Address:* ${address}\n\n`;
+            message += `📦 *Items Ordered:*\n`;
+
+            let total = 0;
+            cart.forEach(item => {
+                let itemTotal = item.price * item.qty;
+                total += itemTotal;
+                message += `- ${item.name} (Qty: ${item.qty}) - ₹${itemTotal}\n`;
+            });
+
+            message += `\n💰 *Total Amount: ₹${total}*`;
+
+            let orderHistory = JSON.parse(localStorage.getItem('quickMartOrders')) || [];
+            let newOrder = {
+                date: new Date().toLocaleString(),
+                name: name,
+                phone: phone,
+                address: address,
+                items: cart,
+                total: total
+            };
+            orderHistory.unshift(newOrder);
+            localStorage.setItem('quickMartOrders', JSON.stringify(orderHistory));
+
+            const ownerWhatsAppNumber = "97338437080"; 
+            const encodedMessage = encodeURIComponent(message);
+            const whatsappURL = `https://wa.me/${ownerWhatsAppNumber}?text=${encodedMessage}`;
+            
+            window.open(whatsappURL, '_blank');
+
+            localStorage.removeItem('quickMartCart'); 
+            loadCart(); 
+        }
+
+        function loadOrderHistory() {
+            const historyContainer = document.getElementById('orderHistoryContainer');
+            let orderHistory = JSON.parse(localStorage.getItem('quickMartOrders')) || [];
+
+            if (orderHistory.length === 0) {
+                historyContainer.innerHTML = `<p style="color: #666; font-size: 14px;">No past orders found.</p>`;
+                return;
+            }
+
+            historyContainer.innerHTML = '';
+            orderHistory.forEach(order => {
+                let itemsList = order.items.map(i => `${i.name} (x${i.qty})`).join(', ');
+                let card = document.createElement('div');
+                card.className = 'history-card';
+                card.innerHTML = `
+                    <h4>Order Total: ₹${order.total}</h4>
+                    <p><strong>Date:</strong> ${order.date}</p>
+                    <p><strong>Items:</strong> ${itemsList}</p>
+                    <p><strong>Address:</strong> ${order.address}</p>
+                `;
+                historyContainer.appendChild(card);
+            });
+        }
+
+        loadCart();
+    </script>
+</body>
+</html>
