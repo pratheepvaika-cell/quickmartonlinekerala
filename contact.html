@@ -13,7 +13,6 @@
             overflow-x: hidden;
         }
 
-        /* General Reset & Page Setup */
         * {
             margin: 0;
             padding: 0;
@@ -27,15 +26,14 @@
             line-height: 1.6;
         }
 
-        /* Top Bar Navigation - White Background matching Main Page */
+        /* Top Bar Navigation - Matching Index Page (Dark Green) */
         .top-bar {
-            background-color: #ffffff;
-            color: #1b5e20;
+            background-color: #1b5e20;
+            color: #ffffff;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 15px 40px;
-            border-bottom: 1px solid #e0e0e0;
+            padding: 12px 40px;
         }
 
         .top-bar .support-text {
@@ -46,28 +44,36 @@
         .nav-links {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 12px;
         }
 
-        /* Main Page Button Style: White Box, Green Border & Green Text */
         .nav-links a {
             color: #1b5e20;
             text-decoration: none;
             font-weight: 700;
-            font-size: 15px;
+            font-size: 14px;
             background-color: #ffffff;
-            border: 2px solid #1b5e20;
-            padding: 6px 16px;
+            border: 2px solid #ffffff;
+            padding: 5px 14px;
             border-radius: 6px;
             transition: all 0.2s ease;
         }
 
         .nav-links a:hover {
-            background-color: #1b5e20;
+            background-color: #e8f5e9;
+        }
+
+        .nav-links .admin-btn {
+            background-color: #e65100;
+            border-color: #e65100;
             color: #ffffff;
         }
 
-        /* Logo Section - Perfect Alignment Fix */
+        .nav-links .admin-btn:hover {
+            background-color: #bf360c;
+        }
+
+        /* Logo Section */
         .logo-bar {
             padding: 15px 40px;
             background: #ffffff;
@@ -149,7 +155,6 @@
             text-align: center;
         }
 
-        /* Contact Main Card Container */
         .contact-box {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
@@ -161,12 +166,7 @@
             border: 1px solid #e2e8f0;
         }
 
-        /* Left Side: Contact Information */
-        .contact-info {
-            padding-right: 15px;
-        }
-
-        .contact-info h3 {
+        .contact-info h3, .contact-form h3 {
             color: #1b5e20;
             margin-bottom: 20px;
             font-size: 22px;
@@ -196,19 +196,6 @@
             flex-shrink: 0;
         }
 
-        .info-item strong {
-            color: #2d3748;
-        }
-
-        /* Right Side: Contact Form Styling */
-        .contact-form h3 {
-            color: #1b5e20;
-            margin-bottom: 20px;
-            font-size: 22px;
-            border-bottom: 2px solid #e8f5e9;
-            padding-bottom: 8px;
-        }
-
         .form-group {
             margin-bottom: 18px;
         }
@@ -229,7 +216,6 @@
             border-radius: 8px;
             font-size: 14px;
             outline: none;
-            transition: all 0.3s ease;
             background-color: #f8fafc;
         }
 
@@ -240,7 +226,6 @@
             box-shadow: 0 0 0 3px rgba(27, 94, 32, 0.15);
         }
 
-        /* Submit Button Style */
         .submit-btn {
             background-color: #2e7d32;
             color: #ffffff;
@@ -251,17 +236,13 @@
             cursor: pointer;
             width: 100%;
             font-size: 16px;
-            box-shadow: 0 4px 12px rgba(46, 125, 50, 0.2);
             transition: all 0.3s ease;
         }
 
         .submit-btn:hover {
             background-color: #1b5e20;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(27, 94, 32, 0.3);
         }
 
-        /* Footer Style */
         footer {
             text-align: center;
             padding: 25px;
@@ -271,29 +252,15 @@
             margin-top: 50px;
         }
 
-        /* Mobile Responsiveness Improvements */
         @media (max-width: 768px) {
             .top-bar {
                 flex-direction: column;
-                gap: 12px;
-                padding: 15px 20px;
+                gap: 10px;
+                padding: 12px 20px;
                 text-align: center;
             }
-
             .logo-bar {
                 padding: 15px 20px;
-            }
-
-            .container {
-                padding: 0 15px;
-            }
-
-            .contact-box {
-                padding: 20px;
-            }
-
-            .page-title {
-                font-size: 26px;
             }
         }
     </style>
@@ -305,8 +272,10 @@
         <div class="support-text">🛒 Kerala's Fast Online Grocery Shopping</div>
         <nav class="nav-links">
             <a href="index.html">Home</a>
-            <a href="cart.html">Cart</a>
-            <a href="index.html#contact">Contact</a>
+            <a href="about.html">About Us</a>
+            <a href="contact.html">Contact Us</a>
+            <a href="cart.html">🛒 Cart (0)</a>
+            <a href="admin.html" class="admin-btn">🔒 Admin Login</a>
         </nav>
     </header>
 
@@ -334,7 +303,6 @@
         <p class="page-subtitle">We'd love to hear from you! Reach out to us for any queries or support.</p>
 
         <div class="contact-box">
-            <!-- Left Side: Contact Info -->
             <div class="contact-info">
                 <h3>Get in Touch</h3>
                 
@@ -371,7 +339,6 @@
                 </div>
             </div>
 
-            <!-- Right Side: Message Form -->
             <div class="contact-form">
                 <h3>Send Us a Message</h3>
                 <form onsubmit="event.preventDefault(); alert('Thank you for contacting QuickMart! We will get back to you soon.');">

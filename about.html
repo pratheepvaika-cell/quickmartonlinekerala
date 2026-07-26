@@ -13,7 +13,6 @@
             overflow-x: hidden;
         }
 
-        /* General Reset & Page Setup */
         * {
             margin: 0;
             padding: 0;
@@ -27,15 +26,14 @@
             line-height: 1.6;
         }
 
-        /* Top Bar Navigation - White Background matching Main Page */
+        /* Top Bar Navigation - Matching Index Page (Dark Green) */
         .top-bar {
-            background-color: #ffffff;
-            color: #1b5e20;
+            background-color: #1b5e20;
+            color: #ffffff;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 15px 40px;
-            border-bottom: 1px solid #e0e0e0;
+            padding: 12px 40px;
         }
 
         .top-bar .support-text {
@@ -46,28 +44,36 @@
         .nav-links {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 12px;
         }
 
-        /* Main Page Button Style: White Box, Green Border & Green Text */
         .nav-links a {
             color: #1b5e20;
             text-decoration: none;
             font-weight: 700;
-            font-size: 15px;
+            font-size: 14px;
             background-color: #ffffff;
-            border: 2px solid #1b5e20;
-            padding: 6px 16px;
+            border: 2px solid #ffffff;
+            padding: 5px 14px;
             border-radius: 6px;
             transition: all 0.2s ease;
         }
 
         .nav-links a:hover {
-            background-color: #1b5e20;
+            background-color: #e8f5e9;
+        }
+
+        .nav-links .admin-btn {
+            background-color: #e65100;
+            border-color: #e65100;
             color: #ffffff;
         }
 
-        /* Logo Section - Perfect Alignment */
+        .nav-links .admin-btn:hover {
+            background-color: #bf360c;
+        }
+
+        /* Logo Section */
         .logo-bar {
             padding: 15px 40px;
             background: #ffffff;
@@ -156,7 +162,6 @@
             line-height: 1.8;
         }
 
-        /* Feature Cards */
         .features-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -170,12 +175,6 @@
             border-radius: 12px;
             text-align: center;
             border: 1px solid #e2e8f0;
-            transition: transform 0.3s ease;
-        }
-
-        .feature-item:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
         }
 
         .feature-item span {
@@ -196,7 +195,6 @@
             margin-bottom: 0;
         }
 
-        /* Footer Style */
         footer {
             text-align: center;
             padding: 25px;
@@ -206,29 +204,15 @@
             margin-top: 50px;
         }
 
-        /* Mobile Responsiveness Improvements */
         @media (max-width: 768px) {
             .top-bar {
                 flex-direction: column;
-                gap: 12px;
-                padding: 15px 20px;
+                gap: 10px;
+                padding: 12px 20px;
                 text-align: center;
             }
-
             .logo-bar {
                 padding: 15px 20px;
-            }
-
-            .container {
-                padding: 0 15px;
-            }
-
-            .about-card {
-                padding: 20px;
-            }
-
-            .about-card h1 {
-                font-size: 24px;
             }
         }
     </style>
@@ -240,8 +224,10 @@
         <div class="support-text">🛒 Kerala's Fast Online Grocery Shopping</div>
         <nav class="nav-links">
             <a href="index.html">Home</a>
-            <a href="cart.html">Cart</a>
-            <a href="index.html#contact">Contact</a>
+            <a href="about.html">About Us</a>
+            <a href="contact.html">Contact Us</a>
+            <a href="cart.html">🛒 Cart (0)</a>
+            <a href="admin.html" class="admin-btn">🔒 Admin Login</a>
         </nav>
     </header>
 
@@ -263,7 +249,7 @@
         </a>
     </div>
 
-    <!-- About Content Section -->
+    <!-- About Main Container -->
     <main class="container">
         <div class="about-card">
             <h1>Welcome to QuickMart Online</h1>

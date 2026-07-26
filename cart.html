@@ -23,17 +23,17 @@
         body {
             background-color: #f4f7f6;
             color: #333;
+            line-height: 1.6;
         }
 
-        /* Top Bar - Changed to White Background matching Main Page */
+        /* Top Bar Navigation - Dark Green matching Index Page */
         .top-bar {
-            background-color: #ffffff;
-            color: #1b5e20;
+            background-color: #1b5e20;
+            color: #ffffff;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 15px 40px;
-            border-bottom: 1px solid #e0e0e0;
+            padding: 12px 40px;
         }
 
         .top-bar .support-text {
@@ -44,34 +44,42 @@
         .nav-links {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 12px;
         }
 
-        /* Main Page Button Style: White Box, Green Border & Green Text */
         .nav-links a {
             color: #1b5e20;
             text-decoration: none;
             font-weight: 700;
-            font-size: 15px;
+            font-size: 14px;
             background-color: #ffffff;
-            border: 2px solid #1b5e20;
-            padding: 6px 16px;
+            border: 2px solid #ffffff;
+            padding: 5px 14px;
             border-radius: 6px;
             transition: all 0.2s ease;
         }
 
         .nav-links a:hover {
-            background-color: #1b5e20;
+            background-color: #e8f5e9;
+        }
+
+        .nav-links .admin-btn {
+            background-color: #e65100;
+            border-color: #e65100;
             color: #ffffff;
         }
 
-        /* Logo Bar matching Home Page */
+        .nav-links .admin-btn:hover {
+            background-color: #bf360c;
+        }
+
+        /* Logo Section */
         .logo-bar {
             padding: 15px 40px;
             background: #ffffff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
             display: flex;
             align-items: center;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
         }
 
         .logo-container {
@@ -311,17 +319,31 @@
             font-size: 14px;
             margin-top: 50px;
         }
+
+        @media (max-width: 768px) {
+            .top-bar {
+                flex-direction: column;
+                gap: 10px;
+                padding: 12px 20px;
+                text-align: center;
+            }
+            .logo-bar {
+                padding: 15px 20px;
+            }
+        }
     </style>
 </head>
 <body>
 
-    <!-- Top Bar Navigation with White Background matching Main Page -->
+    <!-- Top Bar Navigation -->
     <header class="top-bar">
         <div class="support-text">🛒 Kerala's Fast Online Grocery Shopping</div>
         <nav class="nav-links">
             <a href="index.html">Home</a>
-            <a href="cart.html">Cart</a>
-            <a href="index.html#contact">Contact</a>
+            <a href="about.html">About Us</a>
+            <a href="contact.html">Contact Us</a>
+            <a href="cart.html">🛒 Cart (0)</a>
+            <a href="admin.html" class="admin-btn">🔒 Admin Login</a>
         </nav>
     </header>
 
