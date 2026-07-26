@@ -3,638 +3,163 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QuickMart Online - Kerala's Online Supermarket</title>
-    <link rel="manifest" href="manifest.json">
-
+    <title>QuickMart Online - Kerala's Fast Grocery Delivery</title>
     <style>
-        /* General Reset & Mobile Fix */
-        html, body {
-            width: 100%;
-            margin: 0;
-            padding: 0;
-            overflow-x: hidden;
-        }
+        html, body { width: 100%; margin: 0; padding: 0; overflow-x: hidden; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: #f4f7f6; color: #333; line-height: 1.6; }
+        
+        /* Top Bar */
+        .top-bar { background-color: #1b5e20; color: #ffffff; display: flex; justify-content: space-between; align-items: center; padding: 12px 40px; flex-wrap: wrap; gap: 10px; }
+        .top-bar .support-text { font-size: 14px; font-weight: 600; }
+        .nav-links { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+        .nav-links a { color: #1b5e20; text-decoration: none; font-weight: 700; font-size: 13px; background-color: #ffffff; border: 2px solid #ffffff; padding: 6px 12px; border-radius: 6px; transition: all 0.2s ease; white-space: nowrap; }
+        .nav-links a:hover { background-color: #e8f5e9; }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
+        /* Logo Bar */
+        .logo-bar { padding: 15px 40px; background: #ffffff; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
+        .logo-container { display: inline-flex; align-items: center; gap: 14px; text-decoration: none; }
+        .logo-cart-icon { background-color: #1b5e20; width: 50px; height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(27, 94, 32, 0.25); }
+        .logo-cart-icon svg { width: 28px; height: 28px; fill: #ffffff; }
+        .logo-text-wrapper { display: flex; flex-direction: column; }
+        .logo-text { font-size: 28px; font-weight: 800; line-height: 1; display: flex; align-items: center; }
+        .logo-quick { color: #1b5e20; } .logo-mart { color: #e65100; } .logo-online { color: #1b5e20; margin-left: 6px; }
+        .logo-tagline { font-size: 12px; color: #d97706; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; margin-top: 4px; }
+        
+        .cart-btn-top { background: #e8f5e9; border: 2px solid #1b5e20; color: #1b5e20; padding: 8px 18px; border-radius: 8px; font-weight: 700; text-decoration: none; display: flex; align-items: center; gap: 8px; }
+        .cart-btn-top:hover { background: #1b5e20; color: #fff; }
 
-        body {
-            background-color: #f4f7f6;
-            color: #333;
-        }
+        /* Detailed Malayalam Guide Section */
+        .guide-section { background: linear-gradient(135deg, #1b5e20, #2e7d32); color: white; padding: 45px 20px; text-align: center; margin-bottom: 30px; }
+        .guide-title { font-size: 26px; font-weight: 800; margin-bottom: 8px; }
+        .guide-subtitle { font-size: 15px; margin-bottom: 30px; opacity: 0.95; }
+        .steps-container { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; max-width: 1100px; margin: 0 auto; }
+        .step-card { background: white; color: #333; padding: 22px; border-radius: 10px; flex: 1; min-width: 240px; max-width: 260px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); text-align: left; position: relative; }
+        .step-num { position: absolute; top: -15px; left: 20px; background: #e65100; color: white; width: 35px; height: 35px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 16px; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+        .step-card h4 { color: #1b5e20; margin-top: 10px; margin-bottom: 8px; font-size: 17px; }
+        .step-card p { font-size: 13px; color: #555; line-height: 1.6; }
 
-        /* Top Green Navigation Bar */
-        .top-bar {
-            background-color: #1b5e20;
-            color: #ffffff;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px 30px;
-        }
+        /* Main Content */
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px 40px 20px; }
+        .section-title { font-size: 24px; color: #1b5e20; margin-bottom: 20px; font-weight: 800; border-bottom: 2px solid #c8e6c9; padding-bottom: 8px; }
+        
+        .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; }
+        .product-card { background: #ffffff; border-radius: 10px; padding: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; display: flex; flex-direction: column; justify-content: space-between; }
+        .product-img { width: 100%; height: 180px; object-fit: cover; border-radius: 8px; background: #eee; margin-bottom: 12px; }
+        .product-name { font-size: 18px; font-weight: 700; color: #333; margin-bottom: 6px; }
+        .product-price { font-size: 16px; color: #e65100; font-weight: 800; margin-bottom: 12px; }
+        .add-to-cart-btn { background-color: #1b5e20; color: white; border: none; padding: 10px; border-radius: 6px; font-weight: 700; cursor: pointer; width: 100%; text-align: center; }
+        .add-to-cart-btn:hover { background-color: #2e7d32; }
 
-        .top-bar .support-text {
-            font-size: 13px;
-            font-weight: 600;
-            white-space: nowrap;
-        }
-
-        .nav-links {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        /* ✨ Solid White Buttons for high clarity against green background */
-        .nav-links a {
-            color: #1b5e20;
-            text-decoration: none;
-            font-weight: 700;
-            font-size: 13px;
-            background-color: #ffffff;
-            padding: 6px 14px;
-            border-radius: 6px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
-            transition: all 0.2s ease;
-            white-space: nowrap;
-        }
-
-        .nav-links a:hover {
-            background-color: #e8f5e9;
-        }
-
-        /* Admin Login Button Styling (Distinct Orange) */
-        .admin-link {
-            background-color: #e65100 !important;
-            color: #ffffff !important;
-        }
-
-        .admin-link:hover {
-            background-color: #d84315 !important;
-        }
-
-        /* Mobile Responsive: Horizontal Scrolling Button Bar */
-        @media (max-width: 768px) {
-            .top-bar {
-                flex-direction: column;
-                align-items: flex-start;
-                padding: 10px 15px;
-                gap: 8px;
-            }
-
-            .top-bar .support-text {
-                font-size: 12px;
-                opacity: 0.95;
-            }
-
-            .nav-links {
-                width: 100%;
-                overflow-x: auto;
-                white-space: nowrap;
-                gap: 10px;
-                padding-bottom: 6px;
-                scrollbar-width: none; /* Firefox */
-            }
-
-            .nav-links::-webkit-scrollbar {
-                display: none; /* Chrome, Safari, Opera */
-            }
-
-            .nav-links a {
-                font-size: 12px;
-                padding: 5px 12px;
-            }
-        }
-
-        /* 🎨 Custom Cart Logo Section */
-        .logo-bar {
-            padding: 15px 40px;
-            background: #ffffff;
-            display: flex;
-            align-items: center;
-        }
-
-        @media (max-width: 768px) {
-            .logo-bar {
-                padding: 12px 20px;
-            }
-        }
-
-        .logo-container {
-            display: inline-flex;
-            align-items: center;
-            gap: 14px;
-            text-decoration: none;
-        }
-
-        /* Vector Cart Icon Box */
-        .logo-cart-icon {
-            background-color: #1b5e20;
-            width: 50px;
-            height: 50px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 4px 10px rgba(27, 94, 32, 0.25);
-        }
-
-        .logo-cart-icon svg {
-            width: 28px;
-            height: 28px;
-            fill: #ffffff;
-        }
-
-        .logo-text-wrapper {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .logo-text {
-            font-size: 28px;
-            font-weight: 800;
-            line-height: 1;
-            display: flex;
-            align-items: center;
-        }
-
-        @media (max-width: 768px) {
-            .logo-text {
-                font-size: 22px;
-            }
-        }
-
-        .logo-quick { color: #1b5e20; }
-        .logo-mart { color: #e65100; }
-        .logo-online { color: #1b5e20; margin-left: 6px; }
-
-        /* ✨ Tagline */
-        .logo-tagline {
-            font-size: 12px;
-            color: #d97706;
-            font-weight: 700;
-            letter-spacing: 1.2px;
-            text-transform: uppercase;
-            margin-top: 4px;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-
-        /* 🛒 Category Navigation Bar */
-        .category-nav-bar {
-            background-color: #2e7d32;
-            padding: 0 40px;
-            display: flex;
-            align-items: center;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            overflow-x: auto;
-            scrollbar-width: none;
-        }
-
-        .category-nav-bar::-webkit-scrollbar {
-            display: none;
-        }
-
-        @media (max-width: 768px) {
-            .category-nav-bar {
-                padding: 0 10px;
-            }
-        }
-
-        /* All Categories Dropdown Menu */
-        .dropdown {
-            position: relative;
-            display: inline-block;
-        }
-
-        .dropbtn {
-            background-color: #e65100;
-            color: white;
-            padding: 14px 24px;
-            font-size: 15px;
-            font-weight: 700;
-            border: none;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            white-space: nowrap;
-        }
-
-        @media (max-width: 768px) {
-            .dropbtn {
-                padding: 10px 14px;
-                font-size: 13px;
-            }
-        }
-
-        .dropdown-content {
-            display: none;
-            position: absolute;
-            background-color: #ffffff;
-            min-width: 220px;
-            box-shadow: 0px 8px 16px rgba(0,0,0,0.15);
-            z-index: 100;
-            border-radius: 0 0 8px 8px;
-        }
-
-        .dropdown-content a {
-            color: #333333;
-            padding: 12px 18px;
-            text-decoration: none;
-            display: block;
-            font-weight: 600;
-            font-size: 14px;
-            border-bottom: 1px solid #f0f0f0;
-            transition: background 0.2s;
-        }
-
-        .dropdown-content a:hover {
-            background-color: #e8f5e9;
-            color: #1b5e20;
-        }
-
-        .dropdown:hover .dropdown-content {
-            display: block;
-        }
-
-        .category-menu-links {
-            display: flex;
-            gap: 20px;
-            margin-left: 20px;
-            white-space: nowrap;
-        }
-
-        .category-menu-links a {
-            color: white;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 14px;
-            padding: 14px 10px;
-        }
-
-        .category-menu-links a:hover {
-            background-color: #1b5e20;
-        }
-
-        /* Main Container */
-        .container {
-            max-width: 1200px;
-            margin: 30px auto;
-            padding: 0 20px 50px 20px;
-        }
-
-        @media (max-width: 768px) {
-            .container {
-                margin: 15px auto;
-                padding: 0 10px 30px 10px;
-            }
-        }
-
-        /* Hero Banner */
-        .hero-banner {
-            background-color: #1b5e20;
-            color: white;
-            text-align: center;
-            padding: 50px 20px;
-            border-radius: 18px;
-            margin-bottom: 35px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-        }
-
-        @media (max-width: 768px) {
-            .hero-banner {
-                padding: 30px 15px;
-                border-radius: 12px;
-                margin-bottom: 20px;
-            }
-            .hero-banner h1 {
-                font-size: 24px;
-            }
-            .hero-banner p {
-                font-size: 14px;
-            }
-        }
-
-        .hero-banner h1 {
-            font-size: 34px;
-            margin-bottom: 12px;
-            font-weight: 800;
-        }
-
-        .hero-banner p {
-            font-size: 16px;
-            opacity: 0.9;
-        }
-
-        /* Products Grid Section */
-        .section-title {
-            font-size: 24px;
-            color: #1b5e20;
-            margin-bottom: 20px;
-            font-weight: 800;
-        }
-
-        @media (max-width: 768px) {
-            .section-title {
-                font-size: 20px;
-                margin-bottom: 15px;
-            }
-        }
-
-        .product-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 25px;
-        }
-
-        @media (max-width: 768px) {
-            .product-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 12px;
-            }
-        }
-
-        .product-card {
-            background: #ffffff;
-            border-radius: 12px;
-            padding: 20px;
-            text-align: center;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
-            border: 1px solid #e0e0e0;
-        }
-
-        @media (max-width: 768px) {
-            .product-card {
-                padding: 12px;
-            }
-        }
-
-        .product-img {
-            font-size: 55px;
-            margin-bottom: 12px;
-        }
-
-        @media (max-width: 768px) {
-            .product-img {
-                font-size: 40px;
-                margin-bottom: 8px;
-            }
-        }
-
-        .product-name {
-            font-size: 17px;
-            font-weight: 700;
-            color: #333;
-            margin-bottom: 8px;
-        }
-
-        @media (max-width: 768px) {
-            .product-name {
-                font-size: 14px;
-            }
-        }
-
-        .product-price {
-            font-size: 20px;
-            font-weight: 800;
-            color: #e65100;
-            margin-bottom: 15px;
-        }
-
-        @media (max-width: 768px) {
-            .product-price {
-                font-size: 16px;
-                margin-bottom: 10px;
-            }
-        }
-
-        .add-btn {
-            background-color: #2e7d32;
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            border-radius: 6px;
-            font-weight: 700;
-            cursor: pointer;
-            width: 100%;
-            font-size: 14px;
-            transition: background 0.2s;
-        }
-
-        @media (max-width: 768px) {
-            .add-btn {
-                padding: 8px 10px;
-                font-size: 12px;
-            }
-        }
-
-        .add-btn:hover {
-            background-color: #1b5e20;
-        }
-
-        /* Footer */
-        footer {
-            text-align: center;
-            padding: 20px;
-            background: #ffffff;
-            border-top: 1px solid #e0e0e0;
-            margin-top: 40px;
-        }
+        footer { text-align: center; padding: 25px; background: #212121; color: #aaa; font-size: 14px; margin-top: 50px; }
+        @media (max-width: 768px) { .top-bar, .logo-bar { padding: 12px 20px; flex-direction: column; text-align: center; } .nav-links { justify-content: center; } }
     </style>
 </head>
 <body>
 
-    <!-- Top Green Bar Navigation -->
     <header class="top-bar">
-        <div class="support-text">🛒 Kerala's Fast Online Grocery Shopping</div>
+        <div class="support-text">🛒 കേരളത്തിന്റെ സ്വന്തം ഓൺലൈൻ പലവ്യഞ്ജന കട</div>
         <nav class="nav-links">
-            <a href="index.html">Home</a>
-            <a href="about.html">About Us</a>
-            <a href="contact.html">Contact Us</a>
-            <a href="cart.html">🛒 Cart (<span id="cartCount">0</span>)</a>
-            <a href="admin.html" class="admin-link">🔒 Admin Login</a>
+            <a href="index.html">ഹോം (Home)</a>
+            <a href="about.html">ഞങ്ങളെക്കുറിച്ച്</a>
+            <a href="contact.html">ബന്ധപ്പെടാൻ</a>
+            <a href="cart.html">🛒 കാർട്ട്</a>
         </nav>
     </header>
 
-    <!-- Logo Section with Cart Vector & Glitters Tagline -->
     <div class="logo-bar">
         <a href="index.html" class="logo-container">
             <div class="logo-cart-icon">
-                <svg viewBox="0 0 24 24">
-                    <path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/>
-                </svg>
+                <svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
             </div>
             <div class="logo-text-wrapper">
-                <div class="logo-text">
-                    <span class="logo-quick">Quick</span><span class="logo-mart">M</span><span class="logo-mart">art</span>
-                    <span class="logo-online">Online</span>
-                </div>
+                <div class="logo-text"><span class="logo-quick">Quick</span><span class="logo-mart">M</span><span class="logo-mart">art</span><span class="logo-online">Online</span></div>
                 <div class="logo-tagline">✨ All That Glitters</div>
             </div>
         </a>
+        <a href="cart.html" class="cart-btn-top">🛒 കാർട്ട് പരിശോധിക്കുക</a>
     </div>
 
-    <!-- Category Menu Bar -->
-    <nav class="category-nav-bar">
-        <div class="dropdown">
-            <button class="dropbtn">☰ All Categories ▾</button>
-            <div class="dropdown-content">
-                <a href="#">🥦 Vegetables & Fruits</a>
-                <a href="#">🌾 Groceries & Staples</a>
-                <a href="#">🥛 Dairy & Bakery</a>
-                <a href="#">🍗 Meat & Fish</a>
-                <a href="#">🥤 Beverages & Juices</a>
-                <a href="#">🍫 Snacks & Packaged Foods</a>
+    <!-- Very Clear Step-by-Step Malayalam Guide for Ordinary Customers -->
+    <section class="guide-section">
+        <h2 class="guide-title">📱 വളരെ എളുപ്പത്തിൽ എങ്ങനെ ഓർഡർ ചെയ്യാം?</h2>
+        <p class="guide-subtitle">ആർക്കും മനസ്സിലാകുന്ന ലളിതമായ 4 വഴികൾ</p>
+        
+        <div class="steps-container">
+            <div class="step-card">
+                <div class="step-num">1</div>
+                <h4>സാധനങ്ങൾ തിരഞ്ഞെടുക്കുക</h4>
+                <p>താഴെയുള്ള ലിസ്റ്റിൽ നിന്ന് നിങ്ങൾക്ക് ആവശ്യമുള്ള സാധനങ്ങൾ കണ്ടെത്തി <strong>'കാർട്ടിലേക്ക് ചേർക്കുക' (Add to Cart)</strong> എന്ന പച്ച ബട്ടൺ ക്ലിക്ക് ചെയ്യുക.</p>
+            </div>
+            <div class="step-card">
+                <div class="step-num">2</div>
+                <h4>കാർട്ട് തുറന്നു നോക്കുക</h4>
+                <p>മുകളിൽ കാണുന്ന <strong>'കാർട്ട്'</strong> ബട്ടൺ അമർത്തിയാൽ നിങ്ങൾ എടുത്ത സാധനങ്ങളും മൊത്തം വിലയും കൃത്യമായി കാണാൻ സാധിക്കും.</p>
+            </div>
+            <div class="step-card">
+                <div class="step-num">3</div>
+                <h4>വിവരങ്ങൾ നൽകുക</h4>
+                <p>തുടർന്ന് വരുന്ന പേജിൽ നിങ്ങളുടെ <strong>പേര്, ഫോൺ നമ്പർ, സാധനങ്ങൾ എത്തിക്കേണ്ട കൃത്യമായ വിലാസം</strong> എന്നിവ ടൈപ്പ് ചെയ്ത് നൽകുക.</p>
+            </div>
+            <div class="step-card">
+                <div class="step-num">4</div>
+                <h4>വാട്സാപ്പിലേക്ക് അയക്കുക</h4>
+                <p>അവസാനം <strong>'Send Order via WhatsApp'</strong> ബട്ടൺ ഞെക്കുക. അതോടെ ഓർഡർ ഡീറ്റെയിൽസ് നേരിട്ട് ഞങ്ങളുടെ വാട്സാപ്പിൽ എത്തും!</p>
             </div>
         </div>
+    </section>
 
-        <div class="category-menu-links">
-            <a href="#">Vegetables</a>
-            <a href="#">Fruits</a>
-            <a href="#">Groceries</a>
-            <a href="#">Meat & Fish</a>
-            <a href="#">Daily Deals</a>
-        </div>
-    </nav>
-
-    <!-- Main Content -->
     <main class="container">
-        <section class="hero-banner">
-            <h1>Fresh Groceries Delivered in 30 Minutes!</h1>
-            <p>Get farm-fresh vegetables, organic fruits, and daily essentials at your doorstep.</p>
-        </section>
-
-        <h2 class="section-title">Popular Items</h2>
-
-        <div class="product-grid" id="productGrid">
-            <!-- ഡിഫോൾട്ട് പ്രൊഡക്റ്റുകൾ -->
-            <div class="product-card" data-id="1" data-name="Fresh Broccoli (500g)" data-price="80">
-                <div class="product-img">🥦</div>
-                <div class="product-name">Fresh Broccoli (500g)</div>
-                <div class="product-price">₹80</div>
-                <button class="add-btn">Add to Cart</button>
-            </div>
-
-            <div class="product-card" data-id="2" data-name="Fresh Apple (1kg)" data-price="180">
-                <div class="product-img">🍎</div>
-                <div class="product-name">Fresh Apple (1kg)</div>
-                <div class="product-price">₹180</div>
-                <button class="add-btn">Add to Cart</button>
-            </div>
-
-            <div class="product-card" data-id="3" data-name="Farm Fresh Milk (1L)" data-price="52">
-                <div class="product-img">🥛</div>
-                <div class="product-name">Farm Fresh Milk (1L)</div>
-                <div class="product-price">₹52</div>
-                <button class="add-btn">Add to Cart</button>
-            </div>
-
-            <div class="product-card" data-id="4" data-name="Banana (1kg)" data-price="60">
-                <div class="product-img">🍌</div>
-                <div class="product-name">Banana (1kg)</div>
-                <div class="product-price">₹60</div>
-                <button class="add-btn">Add to Cart</button>
-            </div>
+        <h2 class="section-title">പുതിയ പലവ്യഞ്ജനങ്ങളും സാധനങ്ങളും</h2>
+        <div class="products-grid" id="productGrid">
+            <!-- Products will be dynamically loaded here -->
         </div>
     </main>
 
     <footer>
-        <p>&copy; 2026 QuickMart Online. All rights reserved.</p>
+        <p>&copy; 2026 QuickMart Online. All rights reserved. | കേരളത്തിന്റെ സ്വന്തം ഓൺലൈൻ ഷോപ്പ്</p>
     </footer>
 
-    <!-- JavaScript to Handle Dynamic Products & Cart Additions -->
     <script>
-        function loadAdminProducts() {
-            const productGrid = document.getElementById('productGrid');
-            let adminProducts = [];
-            
-            try {
-                adminProducts = JSON.parse(localStorage.getItem('adminProducts')) || [];
-            } catch(e) {
-                console.error("Error loading products", e);
-            }
+        function loadProducts() {
+            let grid = document.getElementById('productGrid');
+            let products = JSON.parse(localStorage.getItem('quickMartProducts')) || [
+                { name: 'Fresh Apple (1kg)', price: 180, image: 'https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?w=400' },
+                { name: 'Fresh Broccoli (500g)', price: 80, image: 'https://images.unsplash.com/photo-1459411621453-7b03977f4bfc?w=400' },
+                { name: 'Organic Milk (1L)', price: 54, image: 'https://images.unsplash.com/photo-1550583724-b2692b85b150?w=400' },
+                { name: 'Fresh Tomatoes (1kg)', price: 40, image: 'https://images.unsplash.com/photo-1592924357228-91a4daadcfea?w=400' }
+            ];
 
-            adminProducts.forEach((product, index) => {
-                const card = document.createElement('div');
-                card.className = 'product-card';
-                card.dataset.id = 'admin_' + index;
-                card.dataset.name = product.name;
-                card.dataset.price = product.price;
-
-                card.innerHTML = `
-                    <div class="product-img">${product.img || '🛒'}</div>
-                    <div class="product-name">${product.name}</div>
-                    <div class="product-price">₹${product.price}</div>
-                    <button class="add-btn">Add to Cart</button>
+            let html = '';
+            products.forEach((p, index) => {
+                let img = p.image || 'https://via.placeholder.com/300';
+                html += `
+                    <div class="product-card">
+                        <img src="${img}" class="product-img" alt="${p.name}">
+                        <div>
+                            <div class="product-name">${p.name}</div>
+                            <div class="product-price">₹${p.price}</div>
+                        </div>
+                        <button class="add-to-cart-btn" onclick="addToCart('${p.name}', ${p.price})">🛒 കാർട്ടിലേക്ക് ചേർക്കുക</button>
+                    </div>
                 `;
-
-                productGrid.appendChild(card);
             });
+            grid.innerHTML = html;
         }
 
-        document.addEventListener('click', function(e) {
-            if (e.target.classList.contains('add-btn')) {
-                const card = e.target.closest('.product-card');
-                const imageContent = card.querySelector('.product-img').innerHTML;
-
-                const product = {
-                    id: card.dataset.id,
-                    name: card.dataset.name,
-                    price: parseInt(card.dataset.price),
-                    img: imageContent,
-                    qty: 1
-                };
-
-                try {
-                    let cart = JSON.parse(localStorage.getItem('quickMartCart')) || [];
-                    let existing = cart.find(item => item.id === product.id);
-
-                    if (existing) {
-                        existing.qty += 1;
-                    } else {
-                        cart.push(product);
-                    }
-
-                    localStorage.setItem('quickMartCart', JSON.stringify(cart));
-                    updateCartCount();
-                    alert(product.name + ' added to cart successfully!');
-                    
-                } catch (error) {
-                    console.error("Cart Save Error:", error);
-                    alert("⚠️ Cart Error! അപ്‌ലോഡ് ചെയ്ത ഫോട്ടോയുടെ സൈസ് വളരെ കൂടുതലായതിനാൽ കാർട്ടിലേക്ക് മാറ്റാൻ കഴിയുന്നില്ല. ദയവായി കുറഞ്ഞ സൈസുള്ള (KB) ഫോട്ടോകൾ ഉപയോഗിക്കുക.");
-                }
+        function addToCart(name, price) {
+            let cart = JSON.parse(localStorage.getItem('quickMartCart')) || JSON.parse(localStorage.getItem('cart')) || [];
+            let existing = cart.find(item => item.name === name);
+            if(existing) {
+                existing.qty = (existing.qty || 1) + 1;
+            } else {
+                cart.push({ name: name, price: price, qty: 1 });
             }
-        });
-
-        function updateCartCount() {
-            let cart = [];
-            try {
-                cart = JSON.parse(localStorage.getItem('quickMartCart')) || [];
-            } catch(e) {}
-            
-            let totalCount = cart.reduce((sum, item) => sum + item.qty, 0);
-            const cartCountEl = document.getElementById('cartCount');
-            if (cartCountEl) {
-                cartCountEl.textContent = totalCount;
-            }
+            localStorage.setItem('quickMartCart', JSON.stringify(cart));
+            alert(name + ' കാർട്ടിലേക്ക് ചേർത്തിരിക്കുന്നു! 👍');
         }
 
-        window.onload = function() {
-            loadAdminProducts();
-            updateCartCount();
-        };
-    </script>
-    
-    <script>
-      if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('sw.js');
-      }
+        loadProducts();
     </script>
 </body>
 </html>
