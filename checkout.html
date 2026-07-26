@@ -30,15 +30,17 @@
         .form-group { margin-bottom: 18px; }
         .form-group label { display: block; font-weight: 600; margin-bottom: 6px; color: #333; font-size: 14px; }
         .form-group input, .form-group textarea { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 6px; font-size: 15px; }
-        .checkout-btn { background-color: #2e7d32; color: white; border: none; padding: 14px; border-radius: 8px; font-weight: 700; font-size: 16px; cursor: pointer; width: 100%; text-align: center; }
+        .checkout-btn { background-color: #2e7d32; color: white; border: none; padding: 14px; border-radius: 8px; font-weight: 700; font-size: 16px; cursor: pointer; width: 100%; text-align: center; display: block; text-decoration: none; }
         .checkout-btn:hover { background-color: #1b5e20; }
         
-        /* Success Message Box Styles */
-        .success-box { text-align: center; padding: 40px 20px; display: none; }
-        .success-icon { font-size: 60px; margin-bottom: 15px; }
-        .success-title { font-size: 24px; color: #1b5e20; font-weight: 800; margin-bottom: 10px; }
-        .success-desc { font-size: 15px; color: #555; margin-bottom: 20px; line-height: 1.8; }
-        .whatsapp-open-btn { background-color: #25D366; color: white; text-decoration: none; padding: 12px 25px; border-radius: 8px; font-weight: bold; display: inline-block; margin-top: 10px; }
+        /* Success Screen Layout */
+        .success-box { text-align: center; padding: 20px 10px; display: none; }
+        .success-icon { font-size: 55px; margin-bottom: 12px; }
+        .success-title { font-size: 22px; color: #1b5e20; font-weight: 800; margin-bottom: 10px; }
+        .success-desc { font-size: 15px; color: #555; margin-bottom: 20px; line-height: 1.6; }
+        
+        .whatsapp-container { background: #e8f5e9; border: 1px solid #c8e6c9; padding: 15px; border-radius: 8px; margin-bottom: 20px; }
+        .whatsapp-open-btn { background-color: #25D366; color: white; text-decoration: none; padding: 12px 20px; border-radius: 8px; font-weight: bold; display: inline-block; margin-top: 8px; font-size: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
         .whatsapp-open-btn:hover { background-color: #1ebe5d; }
 
         footer { text-align: center; padding: 20px; background: #212121; color: #aaa; font-size: 14px; margin-top: 50px; }
@@ -73,7 +75,7 @@
         <h2 class="section-title">Final Checkout</h2>
         
         <div class="checkout-card">
-            <!-- Order Form Section -->
+            <!-- Form Section -->
             <div id="formSection">
                 <div class="summary-box" id="orderSummaryBox"></div>
 
@@ -93,17 +95,20 @@
                 <button class="checkout-btn" onclick="placeOrderAndSendWhatsApp(event)">Place Order via WhatsApp 🚀</button>
             </div>
 
-            <!-- Success Screen Section (Visible after order) -->
+            <!-- Success Section -->
             <div id="successSection" class="success-box">
                 <div class="success-icon">🎉</div>
                 <h3 class="success-title">ഓർഡർ വിജയകരമായി പ്ലേസ് ചെയ്തിരിക്കുന്നു!</h3>
                 <p class="success-desc">
                     🙏 <strong>നന്ദി! വീണ്ടും സന്ദർശിക്കുക.</strong><br>
-                    QuickMart Online-ൽ വിശ്വസ്തതയോടെ ഷോപ്പ് ചെയ്തതിന് നന്ദി! നിങ്ങളുടെ ഓർഡർ ഉടൻതന്നെ പരിശോധിക്കുന്നതാണ്. ✨
+                    QuickMart Online-ൽ വിശ്വസ്തതയോടെ ഷോപ്പ് ചെയ്തതിന് നന്ദി! നിങ്ങളുടെ ഓർഡർ ലഭിച്ചിട്ടുണ്ട്. ✨
                 </p>
-                <div id="whatsappButtonWrapper"></div>
-                <br><br>
-                <a href="index.html" class="checkout-btn" style="max-width: 250px; margin: 0 auto; display: inline-block; text-decoration: none;">🏠 Home-ലേക്ക് പോവുക</a>
+                
+                <div class="whatsapp-container" id="whatsappButtonWrapper">
+                    <!-- WhatsApp Button will appear safely here -->
+                </div>
+
+                <a href="index.html" class="checkout-btn" style="max-width: 280px; margin: 0 auto;">🏠 Home-ലേക്ക് തിരികെ പോവുക</a>
             </div>
         </div>
     </main>
@@ -178,29 +183,29 @@
             localStorage.removeItem('shoppingCart');
 
             let adminWhatsAppNumber = "97338437080"; 
-            let message = `*🛒 പുതിയ ഓർഡർ വന്നിരിക്കുന്നു!*%0A%0A` +
-                          `*ഓർഡർ ID:* #${newOrder.id}%0A` +
-                          `*പേര്:* ${customerName}%0A` +
-                          `*ഫോൺ:* ${customerPhone}%0A` +
-                          `*വിലാസം:* ${customerAddress}%0A` +
-                          `*സാധനങ്ങൾ:* ${itemsString}%0A` +
-                          `*ആകെ തുക:* ₹${totalPrice}%0A%0A` +
-                          `*✨ ഓർഡർ വിജയകരമായി പ്ലേസ് ചെയ്തിരിക്കുന്നു! ✨*%0A` +
-                          `🙏 നന്ദി! വീണ്ടും സന്ദർശിക്കുക. QuickMart Online-ൽ വിശ്വസ്തതയോടെ ഷോപ്പ് ചെയ്തതിന് നന്ദി! ✨`;
             
-            let whatsappUrl = `https://wa.me/${adminWhatsAppNumber}?text=${message}`;
+            let rawMessage = "🛒 പുതിയ ഓർഡർ വന്നിരിക്കുന്നു!\n\n" +
+                             "ഓർഡർ ID: #" + newOrder.id + "\n" +
+                             "പേര്: " + customerName + "\n" +
+                             "ഫോൺ: " + customerPhone + "\n" +
+                             "വിലാസം: " + customerAddress + "\n" +
+                             "സാധനങ്ങൾ: " + itemsString + "\n" +
+                             "ആകെ തുക: ₹" + totalPrice + "\n\n" +
+                             "✨ ഓർഡർ വിജയകരമായി പ്ലേസ് ചെയ്തിരിക്കുന്നു! ✨\n" +
+                             "🙏 നന്ദി! വീണ്ടും സന്ദർശിക്കുക. QuickMart Online-ൽ ഷോപ്പ് ചെയ്തതിന് നന്ദി! ✨";
+            
+            let whatsappUrl = `https://wa.me/${adminWhatsAppNumber}?text=` + encodeURIComponent(rawMessage);
 
-            // Hide form and show success box inside the page
+            // Hide form and show success screen cleanly
             document.getElementById('formSection').style.display = 'none';
             document.getElementById('successSection').style.display = 'block';
 
-            // Add a clickable WhatsApp button incase popup blocker blocks auto-open
+            // Insert WhatsApp button neatly inside its designated container box
             document.getElementById('whatsappButtonWrapper').innerHTML = `
-                <p style="font-size: 14px; color: #333; margin-bottom: 8px;">വാട്സാപ്പിലേക്ക് ഓർഡർ സെൻഡ് ചെയ്യാൻ താഴെയുള്ള ബട്ടൺ ക്ലിക്ക് ചെയ്യുക:</p>
+                <p style="font-size: 14px; color: #1b5e20; font-weight: 700; margin-bottom: 5px;">ഓർഡർ വാട്സാപ്പിലേക്ക് അയക്കാൻ താഴെയുള്ള ബട്ടൺ ക്ലിക്ക് ചെയ്യുക:</p>
                 <a href="${whatsappUrl}" target="_blank" class="whatsapp-open-btn">💬 Send Order via WhatsApp</a>
             `;
 
-            // Try opening WhatsApp automatically
             window.open(whatsappUrl, '_blank');
         }
 
