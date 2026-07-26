@@ -39,8 +39,8 @@
         .success-title { font-size: 22px; color: #1b5e20; font-weight: 800; margin-bottom: 10px; }
         .success-desc { font-size: 15px; color: #555; margin-bottom: 20px; line-height: 1.6; }
         
-        .whatsapp-container { background: #e8f5e9; border: 1px solid #c8e6c9; padding: 15px; border-radius: 8px; margin-bottom: 20px; }
-        .whatsapp-open-btn { background-color: #25D366; color: white; text-decoration: none; padding: 12px 20px; border-radius: 8px; font-weight: bold; display: inline-block; margin-top: 8px; font-size: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .whatsapp-container { background: #e8f5e9; border: 1px solid #c8e6c9; padding: 20px; border-radius: 8px; margin-bottom: 20px; }
+        .whatsapp-open-btn { background-color: #25D366; color: white; text-decoration: none; padding: 14px 25px; border-radius: 8px; font-weight: bold; display: inline-block; margin-top: 10px; font-size: 16px; box-shadow: 0 4px 10px rgba(37, 211, 102, 0.3); }
         .whatsapp-open-btn:hover { background-color: #1ebe5d; }
 
         footer { text-align: center; padding: 20px; background: #212121; color: #aaa; font-size: 14px; margin-top: 50px; }
@@ -101,7 +101,7 @@
                 <h3 class="success-title">ഓർഡർ വിജയകരമായി പ്ലേസ് ചെയ്തിരിക്കുന്നു!</h3>
                 <p class="success-desc">
                     🙏 <strong>നന്ദി! വീണ്ടും സന്ദർശിക്കുക.</strong><br>
-                    QuickMart Online-ൽ വിശ്വസ്തതയോടെ ഷോപ്പ് ചെയ്തതിന് നന്ദി! നിങ്ങളുടെ ഓർഡർ ലഭിച്ചിട്ടുണ്ട്. ✨
+                    QuickMart Online-ൽ വിശ്വസ്തതയോടെ ഷോപ്പ് ചെയ്തതിന് നന്ദി! നിങ്ങളുടെ ഓർഡർ സ്വീകരിച്ചിട്ടുണ്ട്. ✨
                 </p>
                 
                 <div class="whatsapp-container" id="whatsappButtonWrapper">
@@ -200,13 +200,11 @@
             document.getElementById('formSection').style.display = 'none';
             document.getElementById('successSection').style.display = 'block';
 
-            // Insert WhatsApp button neatly inside its designated container box
+            // Insert WhatsApp button neatly. NO automatic window.open() here, so user clicks manually!
             document.getElementById('whatsappButtonWrapper').innerHTML = `
-                <p style="font-size: 14px; color: #1b5e20; font-weight: 700; margin-bottom: 5px;">ഓർഡർ വാട്സാപ്പിലേക്ക് അയക്കാൻ താഴെയുള്ള ബട്ടൺ ക്ലിക്ക് ചെയ്യുക:</p>
+                <p style="font-size: 14px; color: #1b5e20; font-weight: 700; margin-bottom: 8px;">സെല്ലർക്ക് വാട്സാപ്പിൽ ഓർഡർ ഡീറ്റെയിൽസ് അയക്കാൻ താഴെയുള്ള ബട്ടൺ ക്ലിക്ക് ചെയ്യുക:</p>
                 <a href="${whatsappUrl}" target="_blank" class="whatsapp-open-btn">💬 Send Order via WhatsApp</a>
             `;
-
-            window.open(whatsappUrl, '_blank');
         }
 
         loadCheckoutSummary();
