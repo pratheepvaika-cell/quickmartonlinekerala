@@ -32,6 +32,15 @@
         .form-group input, .form-group textarea { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 6px; font-size: 15px; }
         .checkout-btn { background-color: #2e7d32; color: white; border: none; padding: 14px; border-radius: 8px; font-weight: 700; font-size: 16px; cursor: pointer; width: 100%; text-align: center; }
         .checkout-btn:hover { background-color: #1b5e20; }
+        
+        /* Success Message Box Styles */
+        .success-box { text-align: center; padding: 40px 20px; display: none; }
+        .success-icon { font-size: 60px; margin-bottom: 15px; }
+        .success-title { font-size: 24px; color: #1b5e20; font-weight: 800; margin-bottom: 10px; }
+        .success-desc { font-size: 15px; color: #555; margin-bottom: 20px; line-height: 1.8; }
+        .whatsapp-open-btn { background-color: #25D366; color: white; text-decoration: none; padding: 12px 25px; border-radius: 8px; font-weight: bold; display: inline-block; margin-top: 10px; }
+        .whatsapp-open-btn:hover { background-color: #1ebe5d; }
+
         footer { text-align: center; padding: 20px; background: #212121; color: #aaa; font-size: 14px; margin-top: 50px; }
         @media (max-width: 768px) { .top-bar { flex-direction: column; text-align: center; padding: 12px 20px; } }
     </style>
@@ -64,22 +73,38 @@
         <h2 class="section-title">Final Checkout</h2>
         
         <div class="checkout-card">
-            <div class="summary-box" id="orderSummaryBox"></div>
+            <!-- Order Form Section -->
+            <div id="formSection">
+                <div class="summary-box" id="orderSummaryBox"></div>
 
-            <div class="form-group">
-                <label>Full Name:</label>
-                <input type="text" id="customerName" placeholder="Enter your full name">
-            </div>
-            <div class="form-group">
-                <label>Phone Number:</label>
-                <input type="text" id="customerPhone" placeholder="Enter your phone number">
-            </div>
-            <div class="form-group">
-                <label>Delivery Address:</label>
-                <textarea id="customerAddress" rows="3" placeholder="Enter your complete address"></textarea>
+                <div class="form-group">
+                    <label>Full Name:</label>
+                    <input type="text" id="customerName" placeholder="Enter your full name">
+                </div>
+                <div class="form-group">
+                    <label>Phone Number:</label>
+                    <input type="text" id="customerPhone" placeholder="Enter your phone number">
+                </div>
+                <div class="form-group">
+                    <label>Delivery Address:</label>
+                    <textarea id="customerAddress" rows="3" placeholder="Enter your complete address"></textarea>
+                </div>
+
+                <button class="checkout-btn" onclick="placeOrderAndSendWhatsApp(event)">Place Order via WhatsApp 🚀</button>
             </div>
 
-            <button class="checkout-btn" onclick="placeOrderAndSendWhatsApp(event)">Place Order via WhatsApp 🚀</button>
+            <!-- Success Screen Section (Visible after order) -->
+            <div id="successSection" class="success-box">
+                <div class="success-icon">🎉</div>
+                <h3 class="success-title">ഓർഡർ വിജയകരമായി പ്ലേസ് ചെയ്തിരിക്കുന്നു!</h3>
+                <p class="success-desc">
+                    🙏 <strong>നന്ദി! വീണ്ടും സന്ദർശിക്കുക.</strong><br>
+                    QuickMart Online-ൽ വിശ്വസ്തതയോടെ ഷോപ്പ് ചെയ്തതിന് നന്ദി! നിങ്ങളുടെ ഓർഡർ ഉടൻതന്നെ പരിശോധിക്കുന്നതാണ്. ✨
+                </p>
+                <div id="whatsappButtonWrapper"></div>
+                <br><br>
+                <a href="index.html" class="checkout-btn" style="max-width: 250px; margin: 0 auto; display: inline-block; text-decoration: none;">🏠 Home-ലേക്ക് പോവുക</a>
+            </div>
         </div>
     </main>
 
@@ -153,19 +178,30 @@
             localStorage.removeItem('shoppingCart');
 
             let adminWhatsAppNumber = "97338437080"; 
-            let message = `*✨ പുതിയ ഓർഡർ വിജയകരമായി പ്ലേസ് ചെയ്തിരിക്കുന്നു! ✨*%0A%0A` +
+            let message = `*🛒 പുതിയ ഓർഡർ വന്നിരിക്കുന്നു!*%0A%0A` +
                           `*ഓർഡർ ID:* #${newOrder.id}%0A` +
                           `*പേര്:* ${customerName}%0A` +
                           `*ഫോൺ:* ${customerPhone}%0A` +
                           `*വിലാസം:* ${customerAddress}%0A` +
                           `*സാധനങ്ങൾ:* ${itemsString}%0A` +
                           `*ആകെ തുക:* ₹${totalPrice}%0A%0A` +
+                          `*✨ ഓർഡർ വിജയകരമായി പ്ലേസ് ചെയ്തിരിക്കുന്നു! ✨*%0A` +
                           `🙏 നന്ദി! വീണ്ടും സന്ദർശിക്കുക. QuickMart Online-ൽ വിശ്വസ്തതയോടെ ഷോപ്പ് ചെയ്തതിന് നന്ദി! ✨`;
             
-            window.open(`https://wa.me/${adminWhatsAppNumber}?text=${message}`, '_blank');
-            
-            alert('🎉 നിങ്ങളുടെ ഓർഡർ വിജയകരമായി പ്ലേസ് ചെയ്തിരിക്കുന്നു!\n\n🙏 നന്ദി! വീണ്ടും സന്ദർശിക്കുക. QuickMart Online-ന്റെ സേവനം ഉപയോഗിച്ചതിന് നന്ദി!');
-            window.location.href = 'index.html';
+            let whatsappUrl = `https://wa.me/${adminWhatsAppNumber}?text=${message}`;
+
+            // Hide form and show success box inside the page
+            document.getElementById('formSection').style.display = 'none';
+            document.getElementById('successSection').style.display = 'block';
+
+            // Add a clickable WhatsApp button incase popup blocker blocks auto-open
+            document.getElementById('whatsappButtonWrapper').innerHTML = `
+                <p style="font-size: 14px; color: #333; margin-bottom: 8px;">വാട്സാപ്പിലേക്ക് ഓർഡർ സെൻഡ് ചെയ്യാൻ താഴെയുള്ള ബട്ടൺ ക്ലിക്ക് ചെയ്യുക:</p>
+                <a href="${whatsappUrl}" target="_blank" class="whatsapp-open-btn">💬 Send Order via WhatsApp</a>
+            `;
+
+            // Try opening WhatsApp automatically
+            window.open(whatsappUrl, '_blank');
         }
 
         loadCheckoutSummary();
