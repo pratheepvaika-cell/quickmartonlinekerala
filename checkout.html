@@ -1,74 +1,379 @@
-function placeOrderAndSendWhatsApp(event) {
-    if (event) {
-        event.preventDefault();
-    }
-    
-    console.log("1. ഓർഡർ പ്രോസസ്സ് ചെയ്തുതുടങ്ങി...");
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - QuickMart Online</title>
+    <style>
+        html, body {
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
 
-    // കസ്റ്റമറുടെ വിവരങ്ങൾ എടുക്കുന്നു
-    let nameInput = document.getElementById('customerName') || document.getElementById('name') || document.querySelector('input[name="name"]');
-    let phoneInput = document.getElementById('customerPhone') || document.getElementById('phone') || document.querySelector('input[name="phone"]');
-    
-    let customerName = nameInput ? nameInput.value : '';
-    let customerPhone = phoneInput ? phoneInput.value : '';
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
 
-    console.log("പേര്:", customerName, "ഫോൺ:", customerPhone);
+        body {
+            background-color: #f4f7f6;
+            color: #333;
+            line-height: 1.6;
+        }
 
-    // കാർട്ടിലെ ഡാറ്റ പരിശോധിക്കുന്നു
-    let cartItems = JSON.parse(localStorage.getItem('cart')) || JSON.parse(localStorage.getItem('shoppingCart')) || []; 
-    console.log("കാർട്ടിലുള്ള സാധനങ്ങൾ:", cartItems);
+        /* Top Bar Navigation */
+        .top-bar {
+            background-color: #1b5e20;
+            color: #ffffff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 40px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
 
-    if (cartItems.length === 0) {
-        alert('നിങ്ങളുടെ കാർട്ട് കാലിയാണ്!');
-        return;
-    }
+        .top-bar .support-text {
+            font-size: 14px;
+            font-weight: 600;
+        }
 
-    if (!customerName || !customerPhone) {
-        alert('ദയവായി നിങ്ങളുടെ പേരും ഫോൺ നമ്പറും നൽകുക!');
-        return;
-    }
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
 
-    // വിലയും സാധനങ്ങളും കണക്കാക്കുന്നു
-    let itemsString = cartItems.map(item => `${item.name} (Qty: ${item.quantity || 1})`).join(', ');
-    let totalPrice = cartItems.reduce((total, item) => total + (parseFloat(item.price) * (item.quantity || 1)), 0);
+        .nav-links a {
+            color: #1b5e20;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 13px;
+            background-color: #ffffff;
+            border: 2px solid #ffffff;
+            padding: 6px 12px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
 
-    // ഓർഡർ ഒബ്ജക്റ്റ് ഉണ്ടാക്കുന്നു
-    let newOrder = {
-        id: Math.floor(1000 + Math.random() * 9000),
-        date: new Date().toLocaleString(),
-        customer: customerName,
-        phone: customerPhone,
-        items: itemsString,
-        price: totalPrice,
-        status: 'Pending'
-    };
+        .nav-links a:hover {
+            background-color: #e8f5e9;
+        }
 
-    // അഡ്മിൻ പാനലിലേക്ക് സേവ് ചെയ്യുന്നു
-    let existingOrders = JSON.parse(localStorage.getItem('quickMartOrders')) || [];
-    existingOrders.push(newOrder);
-    localStorage.setItem('quickMartOrders', JSON.stringify(existingOrders));
-    console.log("2. ഓർഡർ ലോക്കൽ സ്റ്റോറേജിലേക്ക് (quickMartOrders) വിജയകരമായി സേവ് ചെയ്തു!");
+        /* Logo Section */
+        .logo-bar {
+            padding: 15px 40px;
+            background: #ffffff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            display: flex;
+            align-items: center;
+        }
 
-    // കാർട്ട് എംറ്റി ചെയ്യുന്നു
-    localStorage.removeItem('cart');
-    localStorage.removeItem('shoppingCart');
+        .logo-container {
+            display: inline-flex;
+            align-items: center;
+            gap: 14px;
+            text-decoration: none;
+        }
 
-    // വാട്സാപ്പ് ലിങ്ക് തയ്യാറാക്കുന്നു
-    let adminWhatsAppNumber = "97338437080"; 
-    let message = `*പുതിയ ഓർഡർ വന്നിരിക്കുന്നു!*%0A%0A` +
-                  `*ഓർഡർ ID:* #${newOrder.id}%0A` +
-                  `*പേര്:* ${customerName}%0A` +
-                  `*ഫോൺ:* ${customerPhone}%0A` +
-                  `*സാധനങ്ങൾ:* ${itemsString}%0A` +
-                  `*ആകെ തുക:* ₹${totalPrice}`;
-    
-    let whatsappURL = `https://wa.me/${adminWhatsAppNumber}?text=${message}`;
-    
-    // വാട്സാപ്പ് തുറക്കുന്നു
-    window.open(whatsappURL, '_blank');
+        .logo-cart-icon {
+            background-color: #1b5e20;
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(27, 94, 32, 0.25);
+        }
 
-    alert('ഓർഡർ വിജയകരമായി പ്ലേസ് ചെയ്തു!');
-    
-    // പേജ് റീഫ്രഷ് ചെയ്യുന്നു
-    window.location.reload();
-}
+        .logo-cart-icon svg {
+            width: 28px;
+            height: 28px;
+            fill: #ffffff;
+        }
+
+        .logo-text-wrapper {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logo-text {
+            font-size: 28px;
+            font-weight: 800;
+            line-height: 1;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo-quick { color: #1b5e20; }
+        .logo-mart { color: #e65100; }
+        .logo-online { color: #1b5e20; margin-left: 6px; }
+
+        .logo-tagline {
+            font-size: 12px;
+            color: #d97706;
+            font-weight: 700;
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
+            margin-top: 4px;
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .section-title {
+            font-size: 26px;
+            color: #1b5e20;
+            margin-bottom: 20px;
+            font-weight: 800;
+        }
+
+        .checkout-card {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+            border: 2px solid #c8e6c9;
+        }
+
+        .summary-box {
+            background: #f9fbf9;
+            border: 1px solid #e2e8f0;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .summary-total {
+            display: flex;
+            justify-content: space-between;
+            font-size: 18px;
+            font-weight: 800;
+            color: #1b5e20;
+            border-top: 1px solid #ddd;
+            padding-top: 10px;
+            margin-top: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: #333;
+            font-size: 14px;
+        }
+
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 15px;
+        }
+
+        .checkout-btn {
+            background-color: #2e7d32;
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+            text-align: center;
+        }
+
+        .checkout-btn:hover {
+            background-color: #1b5e20;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            background: #212121;
+            color: #aaa;
+            font-size: 14px;
+            margin-top: 50px;
+        }
+
+        @media (max-width: 768px) {
+            .top-bar {
+                flex-direction: column;
+                text-align: center;
+                padding: 12px 20px;
+            }
+            .logo-bar {
+                padding: 15px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Top Bar Navigation -->
+    <header class="top-bar">
+        <div class="support-text">🛒 Kerala's Fast Online Grocery Shopping</div>
+        <nav class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="about.html">About Us</a>
+            <a href="contact.html">Contact Us</a>
+            <a href="cart.html">🛒 Cart</a>
+        </nav>
+    </header>
+
+    <!-- Logo Section -->
+    <div class="logo-bar">
+        <a href="index.html" class="logo-container">
+            <div class="logo-cart-icon">
+                <svg viewBox="0 0 24 24">
+                    <path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/>
+                </svg>
+            </div>
+            <div class="logo-text-wrapper">
+                <div class="logo-text">
+                    <span class="logo-quick">Quick</span><span class="logo-mart">M</span><span class="logo-mart">art</span>
+                    <span class="logo-online">Online</span>
+                </div>
+                <div class="logo-tagline">✨ All That Glitters</div>
+            </div>
+        </a>
+    </div>
+
+    <!-- Main Container -->
+    <main class="container">
+        <h2 class="section-title">Final Checkout</h2>
+        
+        <div class="checkout-card">
+            <!-- Order Summary Box -->
+            <div class="summary-box" id="orderSummaryBox"></div>
+
+            <div class="form-group">
+                <label>Full Name:</label>
+                <input type="text" id="customerName" placeholder="Enter your full name">
+            </div>
+            <div class="form-group">
+                <label>Phone Number:</label>
+                <input type="text" id="customerPhone" placeholder="Enter your phone number">
+            </div>
+            <div class="form-group">
+                <label>Delivery Address:</label>
+                <textarea id="customerAddress" rows="3" placeholder="Enter your complete address"></textarea>
+            </div>
+
+            <button class="checkout-btn" onclick="placeOrderAndSendWhatsApp(event)">Place Order via WhatsApp 🚀</button>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 QuickMart Online. All rights reserved.</p>
+    </footer>
+
+    <script>
+        function loadCheckoutSummary() {
+            let cart = JSON.parse(localStorage.getItem('quickMartCart')) || JSON.parse(localStorage.getItem('cart')) || JSON.parse(localStorage.getItem('shoppingCart')) || [];
+            const summaryBox = document.getElementById('orderSummaryBox');
+
+            if (cart.length === 0) {
+                summaryBox.innerHTML = `<p style="color: #c62828; font-weight: bold; text-align: center;">Your cart is empty! <a href="cart.html" style="color: #1b5e20; text-decoration: underline;">Go back to cart</a></p>`;
+                return;
+            }
+
+            let total = 0;
+            let itemsHtml = '<h4 style="color: #1b5e20; margin-bottom: 10px; font-size: 16px;">Order Summary</h4>';
+            cart.forEach(item => {
+                let qty = item.qty || item.quantity || 1;
+                let itemTotal = item.price * qty;
+                total += itemTotal;
+                itemsHtml += `<div class="summary-row"><span>${item.name} (x${qty})</span> <span>₹${itemTotal}</span></div>`;
+            });
+
+            itemsHtml += `<div class="summary-total"><span>Total Amount:</span> <span>₹${total}</span></div>`;
+            summaryBox.innerHTML = itemsHtml;
+        }
+
+        function placeOrderAndSendWhatsApp(event) {
+            if (event) event.preventDefault();
+
+            let customerName = document.getElementById('customerName').value.trim();
+            let customerPhone = document.getElementById('customerPhone').value.trim();
+            let customerAddress = document.getElementById('customerAddress').value.trim();
+
+            let cartItems = JSON.parse(localStorage.getItem('quickMartCart')) || JSON.parse(localStorage.getItem('cart')) || JSON.parse(localStorage.getItem('shoppingCart')) || []; 
+
+            if (cartItems.length === 0) {
+                alert('നിങ്ങളുടെ കാർട്ട് കാലിയാണ്!');
+                window.location.href = 'cart.html';
+                return;
+            }
+
+            if (!customerName || !customerPhone || !customerAddress) {
+                alert('ദയവായി പേര്, ഫോൺ നമ്പർ, അഡ്രസ്സ് എന്നിവ പൂർണ്ണമായി നൽകുക!');
+                return;
+            }
+
+            let itemsString = cartItems.map(item => `${item.name} (Qty: ${item.qty || item.quantity || 1})`).join(', ');
+            let totalPrice = cartItems.reduce((total, item) => total + (parseFloat(item.price) * (item.qty || item.quantity || 1)), 0);
+
+            let newOrder = {
+                id: Math.floor(1000 + Math.random() * 9000),
+                date: new Date().toLocaleString(),
+                customer: customerName,
+                phone: customerPhone,
+                address: customerAddress,
+                items: itemsString,
+                price: totalPrice,
+                status: 'Pending'
+            };
+
+            let existingOrders = JSON.parse(localStorage.getItem('quickMartOrders')) || [];
+            existingOrders.push(newOrder);
+            localStorage.setItem('quickMartOrders', JSON.stringify(existingOrders));
+
+            localStorage.removeItem('quickMartCart');
+            localStorage.removeItem('cart');
+            localStorage.removeItem('shoppingCart');
+
+            let adminWhatsAppNumber = "97338437080"; 
+            let message = `*✨ പുതിയ ഓർഡർ വിജയകരമായി പ്ലേസ് ചെയ്തിരിക്കുന്നു! ✨*%0A%0A` +
+                          `*ഓർഡർ ID:* #${newOrder.id}%0A` +
+                          `*പേര്:* ${customerName}%0A` +
+                          `*ഫോൺ:* ${customerPhone}%0A` +
+                          `*വിലാസം:* ${customerAddress}%0A` +
+                          `*സാധനങ്ങൾ:* ${itemsString}%0A` +
+                          `*ആകെ തുക:* ₹${totalPrice}%0A%0A` +
+                          `🙏 നന്ദി! വീണ്ടും സന്ദർശിക്കുക. QuickMart Online-ൽ വിശ്വസ്തതയോടെ ഷോപ്പ് ചെയ്തതിന് നന്ദി! ✨`;
+            
+            window.open(`https://wa.me/${adminWhatsAppNumber}?text=${message}`, '_blank');
+            
+            alert('🎉 നിങ്ങളുടെ ഓർഡർ വിജയകരമായി പ്ലേസ് ചെയ്തിരിക്കുന്നു!\n\n🙏 നന്ദി! വീണ്ടും സന്ദർശിക്കുക. QuickMart Online-ന്റെ സേവനം ഉപയോഗിച്ചതിന് നന്ദി!');
+            window.location.href = 'index.html';
+        }
+
+        loadCheckoutSummary();
+    </script>
+</body>
+</html>
