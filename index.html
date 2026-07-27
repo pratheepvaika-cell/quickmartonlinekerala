@@ -22,15 +22,12 @@
         .nav-right-group { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
         .nav-links { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
         
-        /* Normal Menu Buttons Look */
         .nav-links a { color: #1b5e20; text-decoration: none; font-weight: 700; font-size: 12px; background-color: #ffffff; border: 1px solid #ffffff; padding: 6px 12px; border-radius: 6px; transition: all 0.2s ease; white-space: nowrap; display: inline-flex; align-items: center; gap: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
         .nav-links a:hover { background-color: #e8f5e9; }
 
-        /* Special Admin Button (Red Color) */
         .nav-links a.admin-btn-link { background-color: #c62828; color: #ffffff; border-color: #ff8a80; }
         .nav-links a.admin-btn-link:hover { background-color: #b71c1c; }
 
-        /* Special Cart Button (Orange Color) */
         .nav-links a.cart-link-box { background-color: #e65100; color: #ffffff; border-color: #ffb74d; }
         .nav-links a.cart-link-box:hover { background-color: #ef6c00; }
 
@@ -58,24 +55,38 @@
         .cat-chip { background: #f1f8e9; border: 1px solid #c8e6c9; padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 700; color: #1b5e20; cursor: pointer; white-space: nowrap; transition: 0.2s; }
         .cat-chip:hover, .cat-chip.active { background: #1b5e20; color: white; border-color: #1b5e20; }
 
-        /* Main Content */
+        /* Main Content & Products Grid */
         .container { max-width: 1200px; margin: 0 auto; padding: 25px 20px 40px 20px; }
         .section-title { font-size: 22px; color: #1b5e20; margin-bottom: 20px; font-weight: 800; border-bottom: 2px solid #c8e6c9; padding-bottom: 8px; }
         
         .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 20px; }
-        .product-card { background: #ffffff; border-radius: 10px; padding: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; display: flex; flex-direction: column; justify-content: space-between; }
-        .product-image {width: 100%;       /* കാർഡിന്റെ വീതി മുഴുവൻ എടുക്കാൻ */
-    height: 250px;     /* ഒരു നിശ്ചിത ഉയരം നൽകുക (ആവശ്യാനുസരണം മാറ്റാം) */
-    object-fit: contain; /* ഇത് വളരെ പ്രധാനമാണ്! ഫോട്ടോ സ്‌ട്രെച്ച് ചെയ്യാതെ, കട്ടാക്കാതെ മുഴുവനായി കാണിക്കാൻ ഇത് സഹായിക്കുന്നു */
-    background-color: #f9f9f9; /* ഫോട്ടോയ്ക്ക് ചുറ്റും ചെറിയ പശ്ചാത്തല നിറം നൽകാൻ */
-}
-        .product-name { font-size: 16px; font-weight: 700; color: #333; margin-bottom: 6px; }
+        .product-card { background: #ffffff; border-radius: 10px; padding: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; display: flex; flex-direction: column; justify-content: space-between; text-align: center; }
+        
+        /* Fixed Image Styles (Full Picture Support) */
+        .product-image {
+            width: 100%;
+            height: 250px;
+            object-fit: contain;
+            background-color: #f9f9f9;
+            border-radius: 6px;
+        }
+
+        .product-name-box { margin: 10px 0; }
+        .product-name-en { font-size: 16px; font-weight: 700; color: #333; margin-bottom: 2px; }
+        .product-name-ml { font-size: 13px; color: #666; font-weight: normal; }
+        
         .product-price { font-size: 16px; color: #e65100; font-weight: 800; margin-bottom: 12px; }
-        .add-to-cart-btn { background-color: #1b5e20; color: white; border: none; padding: 10px; border-radius: 6px; font-weight: 700; cursor: pointer; width: 100%; text-align: center; }
-        .add-to-cart-btn:hover { background-color: #2e7d32; }
+        
+        .add-to-cart-btn { background-color: #2e7d32; color: white; border: none; padding: 10px; border-radius: 6px; font-weight: 700; cursor: pointer; width: 100%; text-align: center; transition: 0.2s; }
+        .add-to-cart-btn:hover { background-color: #1b5e20; }
 
         footer { text-align: center; padding: 25px; background: #212121; color: #aaa; font-size: 13px; margin-top: 50px; }
-        @media (max-width: 768px) { .top-bar, .logo-bar { padding: 10px 15px; flex-direction: column; text-align: center; } .nav-right-group { justify-content: center; } .nav-links { justify-content: center; } }
+        
+        @media (max-width: 768px) { 
+            .top-bar, .logo-bar { padding: 10px 15px; flex-direction: column; text-align: center; } 
+            .nav-right-group { justify-content: center; } 
+            .nav-links { justify-content: center; } 
+        }
     </style>
 </head>
 <body>
@@ -256,10 +267,10 @@
             let grid = document.getElementById('productGrid');
             
             let products = cloudProductsList.length > 0 ? cloudProductsList : [
-                { name: 'Fresh Apple (1kg)', category: 'Fruits', price: 180, image: 'https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?w=400' },
-                { name: 'Fresh Broccoli (500g)', category: 'Vegetables', price: 80, image: 'https://images.unsplash.com/photo-1459411621453-7b03977f4bfc?w=400' },
-                { name: 'Organic Milk (1L)', category: 'Groceries', price: 54, image: 'https://images.unsplash.com/photo-1550583724-b2692b85b150?w=400' },
-                { name: 'Fresh Tomatoes (1kg)', category: 'Vegetables', price: 40, image: 'https://images.unsplash.com/photo-1592924357228-91a4daadcfea?w=400' }
+                { nameEn: 'Fresh Apple (1kg)', nameMl: 'ഫ്രഷ് ആപ്പിൾ (1കിലോ)', category: 'Fruits', price: 180, image: 'https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?w=400' },
+                { nameEn: 'Fresh Broccoli (500g)', nameMl: 'ബ്രൊക്കോളി (500ഗ്രാം)', category: 'Vegetables', price: 80, image: 'https://images.unsplash.com/photo-1459411621453-7b03977f4bfc?w=400' },
+                { nameEn: 'Organic Milk (1L)', nameMl: 'ഓർഗാനിക് പാൽ (1 ലിറ്റർ)', category: 'Groceries', price: 54, image: 'https://images.unsplash.com/photo-1550583724-b2692b85b150?w=400' },
+                { nameEn: 'Fresh Tomatoes (1kg)', nameMl: 'തക്കാളി (1കിലോ)', category: 'Vegetables', price: 40, image: 'https://images.unsplash.com/photo-1592924357228-91a4daadcfea?w=400' }
             ];
 
             let filtered = selectedCat === 'All' ? products : products.filter(p => (p.category || 'General') === selectedCat);
@@ -271,11 +282,8 @@
             }
 
             filtered.forEach((p) => {
-                let card = document.createElement('div');
-                card.className = 'product-card';
-
-                let img = document.createElement('img');
-                img.className = 'product-img';
+                let nameEn = p.nameEn || p.name || 'Product';
+                let nameMl = p.nameMl || '';
                 
                 let imgSrc = '';
                 if (p.image && typeof p.image === 'string' && !p.image.includes('<')) {
@@ -290,36 +298,24 @@
                 if (!imgSrc) {
                     imgSrc = 'https://images.unsplash.com/photo-1542838132-92c53300491e?w=400';
                 }
-                
-                img.src = imgSrc;
-                img.alt = p.name || 'Product';
-                img.onerror = function() {
-                    this.src = 'https://images.unsplash.com/photo-1542838132-92c53300491e?w=400';
-                };
 
-                let contentDiv = document.createElement('div');
-                
-                let nameDiv = document.createElement('div');
-                nameDiv.className = 'product-name';
-                nameDiv.textContent = p.name;
+                let card = document.createElement('div');
+                card.className = 'product-card';
 
-                let priceDiv = document.createElement('div');
-                priceDiv.className = 'product-price';
-                priceDiv.textContent = '₹' + p.price;
-
-                contentDiv.appendChild(nameDiv);
-                contentDiv.appendChild(priceDiv);
-
-                let btn = document.createElement('button');
-                btn.className = 'add-to-cart-btn';
-                btn.textContent = t.addToCart;
-                btn.onclick = function() {
-                    addToCart(p.name, p.price);
-                };
-
-                card.appendChild(img);
-                card.appendChild(contentDiv);
-                card.appendChild(btn);
+                card.innerHTML = `
+                    <img src="${imgSrc}" class="product-image" alt="${nameEn}" onerror="this.src='https://images.unsplash.com/photo-1542838132-92c53300491e?w=400'">
+                    
+                    <div class="product-name-box">
+                        <div class="product-name-en">${nameEn}</div>
+                        ${nameMl ? `<div class="product-name-ml">(${nameMl})</div>` : ''}
+                    </div>
+                    
+                    <div class="product-price">₹${p.price}</div>
+                    
+                    <button class="add-to-cart-btn" onclick="addToCart('${nameEn} ${nameMl ? '('+nameMl+')' : ''}', ${p.price})">
+                        ${t.addToCart}
+                    </button>
+                `;
 
                 grid.appendChild(card);
             });
