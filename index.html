@@ -18,7 +18,7 @@
             --bg-color: #f4f7f6;
             --card-bg: #ffffff;
             --border-color: #e2e8f0;
-            --text-color: #333;
+            --text-color: #333333;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
@@ -119,7 +119,7 @@
 
         /* Main Sub-Header / Brand Section */
         .sub-header {
-            background: white;
+            background: #ffffff;
             padding: 18px 30px;
             border-bottom: 1px solid var(--border-color);
             display: flex;
@@ -161,12 +161,11 @@
             overflow-x: auto;
             background: #ffffff;
             border-bottom: 1px solid var(--border-color);
-            box-shadow: inset 0 1px 3px rgba(0,0,0,0.02);
         }
         .cat-chip {
-            background: #f4f7f6;
+            background: #ffffff;
             color: var(--primary-green);
-            border: 1px solid #d0dcd1;
+            border: 1px solid #cbd5e1;
             padding: 9px 18px;
             border-radius: 25px;
             font-size: 13px;
@@ -174,6 +173,7 @@
             cursor: pointer;
             white-space: nowrap;
             transition: 0.2s;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
         }
         .cat-chip.active, .cat-chip:hover {
             background: var(--primary-green);
@@ -353,7 +353,7 @@
                 addToCart: "Add to Cart"
             },
             ml: {
-                tagline: "കേരളത്തിലെ ഏറ്റവും വേഗതയേറിയ ഓൺലൈൻ പലവ്യഞ്ജക ഷോപ്പിംഗ്",
+                tagline: "കേരളത്തിലെ ഏറ്റവും വേഗതയേറിയ ഓൺലൈൻ പലവ്യഞ്ജന ഷോപ്പിംഗ്",
                 home: "ഹോം",
                 howToOrder: "എങ്ങനെ ഓർഡർ ചെയ്യാം?",
                 aboutUs: "ഞങ്ങളെക്കുറിച്ച്",
@@ -417,7 +417,15 @@
             
             let filtered = products;
             if (currentCategory !== 'all') {
-                filtered = products.filter(p => p.category === currentCategory);
+                // Robust Category Mapping to match both English and Malayalam category entries from Database
+                const categoryMap = {
+                    'General': ['General', 'ജനറൽ'],
+                    'Groceries': ['Groceries', 'പലവ്യഞ്ജനങ്ങൾ', 'grocery', 'groceries'],
+                    'Vegetables': ['Vegetables', 'പച്ചക്കറികൾ', 'vegetable', 'vegetables'],
+                    'Fruits': ['Fruits', 'പഴങ്ങൾ', 'fruit', 'fruits']
+                };
+                const allowedValues = categoryMap[currentCategory] || [currentCategory];
+                filtered = products.filter(p => allowedValues.includes(p.category) || p.category === currentCategory);
             }
 
             if (filtered.length === 0) {
