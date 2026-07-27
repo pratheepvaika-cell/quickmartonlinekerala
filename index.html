@@ -29,18 +29,8 @@
         .cart-btn-top { background: #e8f5e9; border: 2px solid #1b5e20; color: #1b5e20; padding: 8px 18px; border-radius: 8px; font-weight: 700; text-decoration: none; display: flex; align-items: center; gap: 8px; }
         .cart-btn-top:hover { background: #1b5e20; color: #fff; }
 
-        /* Detailed Malayalam Guide Section */
-        .guide-section { background: linear-gradient(135deg, #1b5e20, #2e7d32); color: white; padding: 45px 20px; text-align: center; margin-bottom: 30px; }
-        .guide-title { font-size: 26px; font-weight: 800; margin-bottom: 8px; }
-        .guide-subtitle { font-size: 15px; margin-bottom: 30px; opacity: 0.95; }
-        .steps-container { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; max-width: 1100px; margin: 0 auto; }
-        .step-card { background: white; color: #333; padding: 22px; border-radius: 10px; flex: 1; min-width: 240px; max-width: 260px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); text-align: left; position: relative; }
-        .step-num { position: absolute; top: -15px; left: 20px; background: #e65100; color: white; width: 35px; height: 35px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 16px; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
-        .step-card h4 { color: #1b5e20; margin-top: 10px; margin-bottom: 8px; font-size: 17px; }
-        .step-card p { font-size: 13px; color: #555; line-height: 1.6; }
-
-        /* Main Content */
-        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px 40px 20px; }
+        /* Main Content - Products First */
+        .container { max-width: 1200px; margin: 0 auto; padding: 30px 20px 40px 20px; }
         .section-title { font-size: 24px; color: #1b5e20; margin-bottom: 20px; font-weight: 800; border-bottom: 2px solid #c8e6c9; padding-bottom: 8px; }
         
         .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; }
@@ -61,8 +51,10 @@
         <div class="support-text">🛒 കേരളത്തിന്റെ സ്വന്തം ഓൺലൈൻ പലവ്യഞ്ജന കട</div>
         <nav class="nav-links">
             <a href="index.html">ഹോം (Home)</a>
+            <a href="guide.html">📱 എങ്ങനെ ഓർഡർ ചെയ്യാം?</a>
             <a href="about.html">ഞങ്ങളെക്കുറിച്ച്</a>
             <a href="contact.html">ബന്ധപ്പെടാൻ</a>
+            <a href="admin.html">അഡ്മിൻ (Admin)</a>
             <a href="cart.html">🛒 കാർട്ട്</a>
         </nav>
     </header>
@@ -80,35 +72,7 @@
         <a href="cart.html" class="cart-btn-top">🛒 കാർട്ട് പരിശോധിക്കുക</a>
     </div>
 
-    <!-- Very Clear Step-by-Step Malayalam Guide for Ordinary Customers -->
-    <section class="guide-section">
-        <h2 class="guide-title">📱 വളരെ എളുപ്പത്തിൽ എങ്ങനെ ഓർഡർ ചെയ്യാം?</h2>
-        <p class="guide-subtitle">ആർക്കും മനസ്സിലാകുന്ന ലളിതമായ 4 വഴികൾ</p>
-        
-        <div class="steps-container">
-            <div class="step-card">
-                <div class="step-num">1</div>
-                <h4>സാധനങ്ങൾ തിരഞ്ഞെടുക്കുക</h4>
-                <p>താഴെയുള്ള ലിസ്റ്റിൽ നിന്ന് നിങ്ങൾക്ക് ആവശ്യമുള്ള സാധനങ്ങൾ കണ്ടെത്തി <strong>'കാർട്ടിലേക്ക് ചേർക്കുക' (Add to Cart)</strong> എന്ന പച്ച ബട്ടൺ ക്ലിക്ക് ചെയ്യുക.</p>
-            </div>
-            <div class="step-card">
-                <div class="step-num">2</div>
-                <h4>കാർട്ട് തുറന്നു നോക്കുക</h4>
-                <p>മുകളിൽ കാണുന്ന <strong>'കാർട്ട്'</strong> ബട്ടൺ അമർത്തിയാൽ നിങ്ങൾ എടുത്ത സാധനങ്ങളും മൊത്തം വിലയും കൃത്യമായി കാണാൻ സാധിക്കും.</p>
-            </div>
-            <div class="step-card">
-                <div class="step-num">3</div>
-                <h4>വിവരങ്ങൾ നൽകുക</h4>
-                <p>തുടർന്ന് വരുന്ന പേജിൽ നിങ്ങളുടെ <strong>പേര്, ഫോൺ നമ്പർ, സാധനങ്ങൾ എത്തിക്കേണ്ട കൃത്യമായ വിലാസം</strong> എന്നിവ ടൈപ്പ് ചെയ്ത് നൽകുക.</p>
-            </div>
-            <div class="step-card">
-                <div class="step-num">4</div>
-                <h4>വാട്സാപ്പിലേക്ക് അയക്കുക</h4>
-                <p>അവസാനം <strong>'Send Order via WhatsApp'</strong> ബട്ടൺ ഞെക്കുക. അതോടെ ഓർഡർ ഡീറ്റെയിൽസ് നേരിട്ട് ഞങ്ങളുടെ വാട്സാപ്പിൽ എത്തും!</p>
-            </div>
-        </div>
-    </section>
-
+    <!-- Main Content (Products shown immediately!) -->
     <main class="container">
         <h2 class="section-title">പുതിയ പലവ്യഞ്ജനങ്ങളും സാധനങ്ങളും</h2>
         <div class="products-grid" id="productGrid">

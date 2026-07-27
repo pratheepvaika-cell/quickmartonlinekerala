@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How to Order - QuickMart Online</title>
+    <style>
+        html, body { width: 100%; margin: 0; padding: 0; overflow-x: hidden; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: #f4f7f6; color: #333; line-height: 1.6; }
+        
+        .top-bar { background-color: #1b5e20; color: #ffffff; display: flex; justify-content: space-between; align-items: center; padding: 12px 40px; flex-wrap: wrap; gap: 10px; }
+        .top-bar .support-text { font-size: 14px; font-weight: 600; }
+        .nav-links { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+        .nav-links a { color: #1b5e20; text-decoration: none; font-weight: 700; font-size: 13px; background-color: #ffffff; border: 2px solid #ffffff; padding: 6px 12px; border-radius: 6px; transition: all 0.2s ease; white-space: nowrap; }
+        .nav-links a:hover { background-color: #e8f5e9; }
+
+        .logo-bar { padding: 15px 40px; background: #ffffff; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
+        .logo-container { display: inline-flex; align-items: center; gap: 14px; text-decoration: none; }
+        .logo-cart-icon { background-color: #1b5e20; width: 50px; height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(27, 94, 32, 0.25); }
+        .logo-cart-icon svg { width: 28px; height: 28px; fill: #ffffff; }
+        .logo-text-wrapper { display: flex; flex-direction: column; }
+        .logo-text { font-size: 28px; font-weight: 800; line-height: 1; display: flex; align-items: center; }
+        .logo-quick { color: #1b5e20; } .logo-mart { color: #e65100; } .logo-online { color: #1b5e20; margin-left: 6px; }
+        .logo-tagline { font-size: 12px; color: #d97706; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; margin-top: 4px; }
+        
+        .container { max-width: 900px; margin: 40px auto; padding: 0 20px; }
+        .guide-box { background: white; padding: 35px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: 2px solid #c8e6c9; }
+        .main-title { color: #1b5e20; font-size: 28px; font-weight: 800; margin-bottom: 10px; text-align: center; }
+        .sub-desc { text-align: center; color: #666; font-size: 15px; margin-bottom: 30px; }
+        
+        .step-item { display: flex; gap: 20px; background: #f9fbf9; border: 1px solid #e2e8f0; padding: 20px; border-radius: 10px; margin-bottom: 20px; align-items: flex-start; }
+        .step-badge { background: #e65100; color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 18px; flex-shrink: 0; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+        .step-content h3 { color: #1b5e20; font-size: 18px; margin-bottom: 6px; }
+        .step-content p { color: #555; font-size: 14px; line-height: 1.6; }
+
+        .back-home-btn { display: block; width: fit-content; margin: 30px auto 0 auto; background: #1b5e20; color: white; text-decoration: none; padding: 12px 25px; border-radius: 8px; font-weight: bold; text-align: center; }
+        .back-home-btn:hover { background: #2e7d32; }
+
+        footer { text-align: center; padding: 25px; background: #212121; color: #aaa; font-size: 14px; margin-top: 50px; }
+        @media (max-width: 768px) { .top-bar, .logo-bar { padding: 12px 20px; flex-direction: column; text-align: center; } .nav-links { justify-content: center; } .step-item { flex-direction: column; align-items: center; text-align: center; } }
+    </style>
+</head>
+<body>
+
+    <header class="top-bar">
+        <div class="support-text">🛒 കേരളത്തിന്റെ സ്വന്തം ഓൺലൈൻ പലവ്യഞ്ജന കട</div>
+        <nav class="nav-links">
+            <a href="index.html">ഹോം (Home)</a>
+            <a href="guide.html" style="background-color: #e8f5e9;">📱 എങ്ങനെ ഓർഡർ ചെയ്യാം?</a>
+            <a href="about.html">ഞങ്ങളെക്കുറിച്ച്</a>
+            <a href="contact.html">ബന്ധപ്പെടാൻ</a>
+            <a href="admin.html">അഡ്മിൻ</a>
+            <a href="cart.html">🛒 കാർട്ട്</a>
+        </nav>
+    </header>
+
+    <div class="logo-bar">
+        <a href="index.html" class="logo-container">
+            <div class="logo-cart-icon">
+                <svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
+            </div>
+            <div class="logo-text-wrapper">
+                <div class="logo-text"><span class="logo-quick">Quick</span><span class="logo-mart">M</span><span class="logo-mart">art</span><span class="logo-online">Online</span></div>
+                <div class="logo-tagline">✨ All That Glitters</div>
+            </div>
+        </a>
+    </div>
+
+    <main class="container">
+        <div class="guide-box">
+            <h1 class="main-title">📱 വളരെ എളുപ്പത്തിൽ എങ്ങനെ ഓർഡർ ചെയ്യാം?</h1>
+            <p class="sub-desc">സാധാരണക്കാർക്ക് പോലും ഒറ്റനോട്ടത്തിൽ മനസ്സിലാകുന്ന ലളിതമായ വഴികൾ</p>
+            
+            <div class="step-item">
+                <div class="step-badge">1</div>
+                <div class="step-content">
+                    <h3>സാധനങ്ങൾ തിരഞ്ഞെടുക്കുക</h3>
+                    <p>ഹോം പേജിൽ നൽകിയിരിക്കുന്ന പലവ്യഞ്ജനങ്ങളുടെയും പച്ചക്കറികളുടെയും ലിസ്റ്റിൽ നിന്ന് നിങ്ങൾക്ക് ആവശ്യമുള്ളവ കണ്ടെത്തി <strong>'കാർട്ടിലേക്ക് ചേർക്കുക' (Add to Cart)</strong> എന്ന പച്ച ബട്ടൺ ക്ലിക്ക് ചെയ്യുക.</p>
+                </div>
+            </div>
+
+            <div class="step-item">
+                <div class="step-badge">2</div>
+                <div class="step-content">
+                    <h3>കാർട്ട് പരിശോധിക്കുക</h3>
+                    <p>മുകളിൽ കാണുന്ന <strong>'കാർട്ട്'</strong> ബട്ടൺ അമർത്തിയാൽ നിങ്ങൾ എടുത്ത സാധനങ്ങളും ഓരോന്നിന്റെയും വിലയും ആകെ തുകയും കൃത്യമായി കാണാൻ സാധിക്കും.</p>
+                </div>
+            </div>
+
+            <div class="step-item">
+                <div class="step-badge">3</div>
+                <div class="step-content">
+                    <h3>ഡെലിവറി വിവരങ്ങൾ നൽകുക</h3>
+                    <p>തുടർന്ന് വരുന്ന പേജിൽ നിങ്ങളുടെ <strong>പേര്, ഫോൺ നമ്പർ, സാധനങ്ങൾ എത്തിക്കേണ്ട കൃത്യമായ വിലാസം (Address)</strong> എന്നിവ വ്യക്തമായി ടൈപ്പ് ചെയ്ത് നൽകുക.</p>
+                </div>
+            </div>
+
+            <div class="step-item">
+                <div class="step-badge">4</div>
+                <div class="step-content">
+                    <h3>വാട്സാപ്പിലേക്ക് ഓർഡർ അയക്കുക</h3>
+                    <p>അവസാനം <strong>'Send Order via WhatsApp'</strong> ബട്ടൺ ക്ലിക്ക് ചെയ്യുക. അതോടെ നിങ്ങളുടെ ഓർഡർ ഡീറ്റെയിൽസ് നേരിട്ട് ഞങ്ങളുടെ വാട്സാപ്പിലേക്ക് എത്തുന്നതാണ്!</p>
+                </div>
+            </div>
+
+            <a href="index.html" class="back-home-btn">🏠 ഷോപ്പിംഗ് പേജിലേക്ക് തിരികെ പോവുക</a>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 QuickMart Online. All rights reserved. | കേരളത്തിന്റെ സ്വന്തം ഓൺലൈൻ ഷോപ്പ്</p>
+    </footer>
+
+</body>
+</html>
