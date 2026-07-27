@@ -23,7 +23,7 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         body { background-color: var(--bg-color); color: var(--text-color); }
 
-        /* Professional Rich Header Layout (Taller & Prominent Green Banner) */
+        /* Professional Rich Top Green Banner */
         header {
             background-color: var(--primary-green);
             color: white;
@@ -199,8 +199,23 @@
         }
         .product-card:hover { transform: translateY(-4px); box-shadow: 0 8px 20px rgba(0,0,0,0.08); }
         
-        .product-img-wrapper { width: 100%; height: 170px; border-radius: 8px; overflow: hidden; background: #f1f1f1; display: flex; align-items: center; justify-content: center; margin-bottom: 14px; }
-        .product-img-wrapper img { width: 100%; height: 100%; object-fit: cover; }
+        /* Fixed Image Wrapper & Image Sizing */
+        .product-img-wrapper { 
+            width: 100%; 
+            height: 170px; 
+            border-radius: 8px; 
+            overflow: hidden; 
+            background: #f1f1f1; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            margin-bottom: 14px; 
+        }
+        .product-img-wrapper img { 
+            width: 100% !important; 
+            height: 100% !important; 
+            object-fit: cover !important; 
+        }
 
         .product-name { font-size: 16px; font-weight: 700; color: #333; margin-bottom: 6px; }
         .product-price { font-size: 17px; font-weight: 800; color: var(--accent-orange); margin-bottom: 14px; }
@@ -407,12 +422,22 @@
                 const displayName = (currentLang === 'ml' && prod.nameMl) ? prod.nameMl : prod.name;
                 const btnText = translations[currentLang]['addToCart'] || 'Add to Cart';
 
+                // Handle image rendering securely whether it's an HTML tag or image URL
+                let imageHtml = '🛒';
+                if (prod.image) {
+                    if (prod.image.trim().startsWith('<img')) {
+                        imageHtml = prod.image;
+                    } else {
+                        imageHtml = `<img src="${prod.image}" alt="${displayName}">`;
+                    }
+                }
+
                 let card = document.createElement('div');
                 card.className = 'product-card';
                 card.innerHTML = `
                     <div>
                         <div class="product-img-wrapper">
-                            ${prod.image || '🛒'}
+                            ${imageHtml}
                         </div>
                         <div class="product-name">${displayName}</div>
                         <div class="product-price">₹${prod.price}</div>
