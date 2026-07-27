@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QuickMart Online - Kerala's Fast Grocery Delivery</title>
+    <title id="pageTitle">QuickMart Online - Kerala's Fast Grocery Delivery</title>
     <style>
         html, body { width: 100%; margin: 0; padding: 0; overflow-x: hidden; }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
@@ -12,9 +12,16 @@
         /* Top Bar */
         .top-bar { background-color: #1b5e20; color: #ffffff; display: flex; justify-content: space-between; align-items: center; padding: 12px 40px; flex-wrap: wrap; gap: 10px; }
         .top-bar .support-text { font-size: 14px; font-weight: 600; }
+        
+        .nav-right-group { display: flex; align-items: center; gap: 15px; flex-wrap: wrap; }
         .nav-links { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
         .nav-links a { color: #1b5e20; text-decoration: none; font-weight: 700; font-size: 13px; background-color: #ffffff; border: 2px solid #ffffff; padding: 6px 12px; border-radius: 6px; transition: all 0.2s ease; white-space: nowrap; }
         .nav-links a:hover { background-color: #e8f5e9; }
+
+        /* Language Switcher Buttons */
+        .lang-switch-box { display: flex; background: #123d15; padding: 3px; border-radius: 6px; gap: 3px; }
+        .lang-option-btn { background: transparent; border: none; color: #fff; padding: 4px 10px; font-size: 12px; font-weight: bold; border-radius: 4px; cursor: pointer; transition: 0.2s; }
+        .lang-option-btn.active { background: #ffffff; color: #1b5e20; }
 
         /* Logo Bar */
         .logo-bar { padding: 15px 40px; background: #ffffff; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
@@ -29,7 +36,7 @@
         .cart-btn-top { background: #e8f5e9; border: 2px solid #1b5e20; color: #1b5e20; padding: 8px 18px; border-radius: 8px; font-weight: 700; text-decoration: none; display: flex; align-items: center; gap: 8px; }
         .cart-btn-top:hover { background: #1b5e20; color: #fff; }
 
-        /* Main Content - Products First */
+        /* Main Content */
         .container { max-width: 1200px; margin: 0 auto; padding: 30px 20px 40px 20px; }
         .section-title { font-size: 24px; color: #1b5e20; margin-bottom: 20px; font-weight: 800; border-bottom: 2px solid #c8e6c9; padding-bottom: 8px; }
         
@@ -42,21 +49,27 @@
         .add-to-cart-btn:hover { background-color: #2e7d32; }
 
         footer { text-align: center; padding: 25px; background: #212121; color: #aaa; font-size: 14px; margin-top: 50px; }
-        @media (max-width: 768px) { .top-bar, .logo-bar { padding: 12px 20px; flex-direction: column; text-align: center; } .nav-links { justify-content: center; } }
+        @media (max-width: 768px) { .top-bar, .logo-bar { padding: 12px 20px; flex-direction: column; text-align: center; } .nav-right-group { justify-content: center; } .nav-links { justify-content: center; } }
     </style>
 </head>
 <body>
 
     <header class="top-bar">
-        <div class="support-text">🛒 കേരളത്തിന്റെ സ്വന്തം ഓൺലൈൻ പലവ്യഞ്ജന കട</div>
-        <nav class="nav-links">
-            <a href="index.html">ഹോം (Home)</a>
-            <a href="guide.html">📱 എങ്ങനെ ഓർഡർ ചെയ്യാം?</a>
-            <a href="about.html">ഞങ്ങളെക്കുറിച്ച്</a>
-            <a href="contact.html">ബന്ധപ്പെടാൻ</a>
-            <a href="admin.html">അഡ്മിൻ (Admin)</a>
-            <a href="cart.html">🛒 കാർട്ട്</a>
-        </nav>
+        <div class="support-text" id="topSupportText">🛒 കേരളത്തിന്റെ സ്വന്തം ഓൺലൈൻ പലവ്യഞ്ജന കട</div>
+        <div class="nav-right-group">
+            <div class="lang-switch-box">
+                <button class="lang-option-btn active" id="btnMal" onclick="setLanguage('malayalam')">മലയാളം</button>
+                <button class="lang-option-btn" id="btnEng" onclick="setLanguage('english')">English</button>
+            </div>
+            <nav class="nav-links">
+                <a href="index.html" id="navHome">ഹോം (Home)</a>
+                <a href="guide.html" id="navGuide">📱 എങ്ങനെ ഓർഡർ ചെയ്യാം?</a>
+                <a href="about.html" id="navAbout">ഞങ്ങളെക്കുറിച്ച്</a>
+                <a href="contact.html" id="navContact">ബന്ധപ്പെടാൻ</a>
+                <a href="admin.html" id="navAdmin">അഡ്മിൻ</a>
+                <a href="cart.html" id="navCart">🛒 കാർട്ട്</a>
+            </nav>
+        </div>
     </header>
 
     <div class="logo-bar">
@@ -66,28 +79,97 @@
             </div>
             <div class="logo-text-wrapper">
                 <div class="logo-text"><span class="logo-quick">Quick</span><span class="logo-mart">M</span><span class="logo-mart">art</span><span class="logo-online">Online</span></div>
-                <div class="logo-tagline">✨ All That Glitters</div>
+                <div class="logo-tagline" id="logoTagline">✨ All That Glitters</div>
             </div>
         </a>
-        <a href="cart.html" class="cart-btn-top">🛒 കാർട്ട് പരിശോധിക്കുക</a>
+        <a href="cart.html" class="cart-btn-top" id="cartBtnTop">🛒 കാർട്ട് പരിശോധിക്കുക</a>
     </div>
 
-    <!-- Main Content (Products shown immediately!) -->
+    <!-- Main Content -->
     <main class="container">
-        <h2 class="section-title">പുതിയ പലവ്യഞ്ജനങ്ങളും സാധനങ്ങളും</h2>
+        <h2 class="section-title" id="sectionTitle">പുതിയ പലവ്യഞ്ജനങ്ങളും സാധനങ്ങളും</h2>
         <div class="products-grid" id="productGrid">
-            <!-- Products will be dynamically loaded here -->
+            <!-- Products loaded dynamically -->
         </div>
     </main>
 
-    <footer>
-        <p>&copy; 2026 QuickMart Online. All rights reserved. | കേരളത്തിന്റെ സ്വന്തം ഓൺലൈൻ ഷോപ്പ്</p>
+    <footer id="footerText">
+        &copy; 2026 QuickMart Online. All rights reserved. | കേരളത്തിന്റെ സ്വന്തം ഓൺലൈൻ ഷോപ്പ്
     </footer>
 
     <script>
+        const translations = {
+            malayalam: {
+                title: "QuickMart Online - കേരളത്തിന്റെ വേഗത്തിലുള്ള പലവ്യഞ്ജന ഡെലിവറി",
+                support: "🛒 കേരളത്തിന്റെ സ്വന്തം ഓൺലൈൻ പലവ്യഞ്ജന കട",
+                home: "ഹോം (Home)",
+                guide: "📱 എങ്ങനെ ഓർഡർ ചെയ്യാം?",
+                about: "ഞങ്ങളെക്കുറിച്ച്",
+                contact: "ബന്ധപ്പെടാൻ",
+                admin: "അഡ്മിൻ",
+                cart: "🛒 കാർട്ട്",
+                tagline: "✨ എളുപ്പത്തിൽ ഓർഡർ ചെയ്യൂ",
+                cartBtn: "🛒 കാർട്ട് പരിശോധിക്കുക",
+                sectionTitle: "പുതിയ പലവ്യഞ്ജനങ്ങളും സാധനങ്ങളും",
+                addToCart: "🛒 കാർട്ടിലേക്ക് ചേർക്കുക",
+                alertText: " കാർട്ടിലേക്ക് ചേർത്തിരിക്കുന്നു! 👍",
+                footer: "&copy; 2026 QuickMart Online. All rights reserved. | കേരളത്തിന്റെ സ്വന്തം ഓൺലൈൻ ഷോപ്പ്"
+            },
+            english: {
+                title: "QuickMart Online - Kerala's Fast Grocery Delivery",
+                support: "🛒 Kerala's Fast Online Grocery Delivery Store",
+                home: "Home",
+                guide: "📱 How to Order?",
+                about: "About Us",
+                contact: "Contact",
+                admin: "Admin",
+                cart: "🛒 Cart",
+                tagline: "✨ Order Easily Online",
+                cartBtn: "🛒 Check Cart",
+                sectionTitle: "Fresh Groceries & Items",
+                addToCart: "🛒 Add to Cart",
+                alertText: " added to cart! 👍",
+                footer: "&copy; 2026 QuickMart Online. All rights reserved. | Kerala's Fast Online Store"
+            }
+        };
+
+        function setLanguage(lang) {
+            localStorage.setItem('quickMartLang', lang);
+            
+            document.getElementById('btnMal').classList.remove('active');
+            document.getElementById('btnEng').classList.remove('active');
+
+            if (lang === 'english') {
+                document.getElementById('btnEng').classList.add('active');
+            } else {
+                document.getElementById('btnMal').classList.add('active');
+            }
+
+            let t = translations[lang];
+            document.getElementById('pageTitle').innerText = t.title;
+            document.getElementById('topSupportText').innerText = t.support;
+            document.getElementById('navHome').innerText = t.home;
+            document.getElementById('navGuide').innerText = t.guide;
+            document.getElementById('navAbout').innerText = t.about;
+            document.getElementById('navContact').innerText = t.contact;
+            document.getElementById('navAdmin').innerText = t.admin;
+            document.getElementById('navCart').innerText = t.cart;
+            document.getElementById('logoTagline').innerText = t.tagline;
+            document.getElementById('cartBtnTop').innerText = t.cartBtn;
+            document.getElementById('sectionTitle').innerText = t.sectionTitle;
+            document.getElementById('footerText').innerHTML = t.footer;
+
+            loadProducts();
+        }
+
         function loadProducts() {
+            let currentLang = localStorage.getItem('quickMartLang') || 'malayalam';
+            let t = translations[currentLang];
             let grid = document.getElementById('productGrid');
-            let products = JSON.parse(localStorage.getItem('quickMartProducts')) || [
+            
+            let products = JSON.parse(localStorage.getItem('quickMartProducts')) || 
+                           JSON.parse(localStorage.getItem('products')) || 
+                           JSON.parse(localStorage.getItem('adminProducts')) || [
                 { name: 'Fresh Apple (1kg)', price: 180, image: 'https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?w=400' },
                 { name: 'Fresh Broccoli (500g)', price: 80, image: 'https://images.unsplash.com/photo-1459411621453-7b03977f4bfc?w=400' },
                 { name: 'Organic Milk (1L)', price: 54, image: 'https://images.unsplash.com/photo-1550583724-b2692b85b150?w=400' },
@@ -95,7 +177,7 @@
             ];
 
             let html = '';
-            products.forEach((p, index) => {
+            products.forEach((p) => {
                 let img = p.image || 'https://via.placeholder.com/300';
                 html += `
                     <div class="product-card">
@@ -104,7 +186,7 @@
                             <div class="product-name">${p.name}</div>
                             <div class="product-price">₹${p.price}</div>
                         </div>
-                        <button class="add-to-cart-btn" onclick="addToCart('${p.name}', ${p.price})">🛒 കാർട്ടിലേക്ക് ചേർക്കുക</button>
+                        <button class="add-to-cart-btn" onclick="addToCart('${p.name}', ${p.price})">${t.addToCart}</button>
                     </div>
                 `;
             });
@@ -112,6 +194,8 @@
         }
 
         function addToCart(name, price) {
+            let currentLang = localStorage.getItem('quickMartLang') || 'malayalam';
+            let t = translations[currentLang];
             let cart = JSON.parse(localStorage.getItem('quickMartCart')) || JSON.parse(localStorage.getItem('cart')) || [];
             let existing = cart.find(item => item.name === name);
             if(existing) {
@@ -120,10 +204,14 @@
                 cart.push({ name: name, price: price, qty: 1 });
             }
             localStorage.setItem('quickMartCart', JSON.stringify(cart));
-            alert(name + ' കാർട്ടിലേക്ക് ചേർത്തിരിക്കുന്നു! 👍');
+            alert(name + t.alertText);
         }
 
-        loadProducts();
+        // Initialize saved language or default to Malayalam
+        window.onload = function() {
+            let savedLang = localStorage.getItem('quickMartLang') || 'malayalam';
+            setLanguage(savedLang);
+        };
     </script>
 </body>
 </html>
