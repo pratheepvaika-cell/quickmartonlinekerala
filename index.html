@@ -1,4 +1,147 @@
-<script>
+<!DOCTYPE html>
+<html lang="en" translate="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google" content="notranslate">
+    <title id="pageTitle">QuickMart Online - Kerala's Fast Grocery Delivery</title>
+    
+    <!-- Firebase App & Realtime Database SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+
+    <style>
+        html, body { width: 100%; margin: 0; padding: 0; overflow-x: hidden; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: #f4f7f6; color: #333; line-height: 1.6; }
+        
+        /* Top Bar */
+        .top-bar { background-color: #1b5e20; color: #ffffff; display: flex; justify-content: space-between; align-items: center; padding: 12px 30px; flex-wrap: wrap; gap: 10px; }
+        .top-bar .support-text { font-size: 13px; font-weight: 600; }
+        
+        .nav-right-group { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+        .nav-links { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+        
+        .nav-links a { color: #1b5e20; text-decoration: none; font-weight: 700; font-size: 12px; background-color: #ffffff; border: 1px solid #ffffff; padding: 6px 12px; border-radius: 6px; transition: all 0.2s ease; white-space: nowrap; display: inline-flex; align-items: center; gap: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .nav-links a:hover { background-color: #e8f5e9; }
+
+        .nav-links a.admin-btn-link { background-color: #c62828; color: #ffffff; border-color: #ff8a80; }
+        .nav-links a.admin-btn-link:hover { background-color: #b71c1c; }
+
+        .nav-links a.cart-link-box { background-color: #e65100; color: #ffffff; border-color: #ffb74d; }
+        .nav-links a.cart-link-box:hover { background-color: #ef6c00; }
+
+        /* Language Switcher Buttons */
+        .lang-switch-box { display: flex; background: #123d15; padding: 3px; border-radius: 6px; gap: 3px; border: 1px solid rgba(255,255,255,0.2); }
+        .lang-option-btn { background: transparent; border: none; color: #fff; padding: 4px 8px; font-size: 11px; font-weight: bold; border-radius: 4px; cursor: pointer; transition: 0.2s; }
+        .lang-option-btn.active { background: #ffffff; color: #1b5e20; }
+
+        /* Logo Bar */
+        .logo-bar { padding: 15px 30px; background: #ffffff; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
+        .logo-container { display: inline-flex; align-items: center; gap: 12px; text-decoration: none; }
+        .logo-cart-icon { background-color: #1b5e20; width: 45px; height: 45px; border-radius: 10px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(27, 94, 32, 0.25); }
+        .logo-cart-icon svg { width: 24px; height: 24px; fill: #ffffff; }
+        .logo-text-wrapper { display: flex; flex-direction: column; }
+        .logo-text { font-size: 24px; font-weight: 800; line-height: 1; display: flex; align-items: center; }
+        .logo-quick { color: #1b5e20; } .logo-mart { color: #e65100; } .logo-online { color: #1b5e20; margin-left: 6px; }
+        .logo-tagline { font-size: 11px; color: #d97706; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; margin-top: 3px; }
+        
+        .cart-btn-top { background: #e8f5e9; border: 2px solid #1b5e20; color: #1b5e20; padding: 8px 16px; border-radius: 8px; font-weight: 700; text-decoration: none; display: flex; align-items: center; gap: 6px; font-size: 13px; }
+        .cart-btn-top:hover { background: #1b5e20; color: #fff; }
+
+        /* Categories Bar */
+        .categories-container { background: #ffffff; padding: 12px 20px; border-bottom: 1px solid #e2e8f0; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
+        .categories-bar { max-width: 1200px; margin: 0 auto; display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; }
+        .cat-chip { background: #f1f8e9; border: 1px solid #c8e6c9; padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 700; color: #1b5e20; cursor: pointer; white-space: nowrap; transition: 0.2s; }
+        .cat-chip:hover, .cat-chip.active { background: #1b5e20; color: white; border-color: #1b5e20; }
+
+        /* Main Content & Products Grid */
+        .container { max-width: 1200px; margin: 0 auto; padding: 25px 20px 40px 20px; }
+        .section-title { font-size: 22px; color: #1b5e20; margin-bottom: 20px; font-weight: 800; border-bottom: 2px solid #c8e6c9; padding-bottom: 8px; }
+        
+        .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 20px; }
+        .product-card { background: #ffffff; border-radius: 10px; padding: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; display: flex; flex-direction: column; justify-content: space-between; text-align: center; }
+        
+        /* Fixed Image Styles (Full Picture Support) */
+        .product-image {
+            width: 100%;
+            height: 250px;
+            object-fit: contain;
+            background-color: #f9f9f9;
+            border-radius: 6px;
+        }
+
+        .product-name-box { margin: 10px 0; }
+        .product-name-en { font-size: 16px; font-weight: 700; color: #333; margin-bottom: 2px; }
+        .product-name-ml { font-size: 13px; color: #666; font-weight: normal; }
+        
+        .product-price { font-size: 16px; color: #e65100; font-weight: 800; margin-bottom: 12px; }
+        
+        .add-to-cart-btn { background-color: #2e7d32; color: white; border: none; padding: 10px; border-radius: 6px; font-weight: 700; cursor: pointer; width: 100%; text-align: center; transition: 0.2s; }
+        .add-to-cart-btn:hover { background-color: #1b5e20; }
+
+        footer { text-align: center; padding: 25px; background: #212121; color: #aaa; font-size: 13px; margin-top: 50px; }
+        
+        @media (max-width: 768px) { 
+            .top-bar, .logo-bar { padding: 10px 15px; flex-direction: column; text-align: center; } 
+            .nav-right-group { justify-content: center; } 
+            .nav-links { justify-content: center; } 
+        }
+    </style>
+</head>
+<body>
+
+    <header class="top-bar">
+        <div class="support-text" id="topSupportText">🛒 കേരളത്തിന്റെ സ്വന്തം ഓൺലൈൻ പലവ്യഞ്ജന കട</div>
+        <div class="nav-right-group">
+            <div class="lang-switch-box">
+                <button class="lang-option-btn active" id="btnMal" onclick="setLanguage('malayalam')">മലയാളം</button>
+                <button class="lang-option-btn" id="btnEng" onclick="setLanguage('english')">English</button>
+            </div>
+            <nav class="nav-links">
+                <a href="index.html" id="navHome">ഹോം (Home)</a>
+                <a href="guide.html" id="navGuide">📱 എങ്ങനെ ഓർഡർ ചെയ്യാം?</a>
+                <a href="about.html" id="navAbout">ഞങ്ങളെക്കുറിച്ച്</a>
+                <a href="contact.html" id="navContact">ബന്ധപ്പെടാൻ</a>
+                <a href="admin.html" id="navAdmin" class="admin-btn-link">അഡ്മിൻ</a>
+                <a href="cart.html" id="navCart" class="cart-link-box">🛒 കാർട്ട്</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="logo-bar">
+        <a href="index.html" class="logo-container">
+            <div class="logo-cart-icon">
+                <svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
+            </div>
+            <div class="logo-text-wrapper">
+                <div class="logo-text"><span class="logo-quick">Quick</span><span class="logo-mart">M</span><span class="logo-mart">art</span><span class="logo-online">Online</span></div>
+                <div class="logo-tagline" id="logoTagline">✨ എളുപ്പത്തിൽ ഓർഡർ ചെയ്യൂ</div>
+            </div>
+        </a>
+        <a href="cart.html" class="cart-btn-top" id="cartBtnTop">🛒 കാർട്ട് പരിശോധിക്കുക</a>
+    </div>
+
+    <!-- Categories Section Bar -->
+    <div class="categories-container">
+        <div class="categories-bar" id="categoriesBar">
+            <div class="cat-chip active" onclick="filterCategory('All', this)">എല്ലാം (All)</div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="container">
+        <h2 class="section-title" id="sectionTitle">പുതിയ പലവ്യഞ്ജനങ്ങളും സാധനങ്ങളും</h2>
+        <div class="products-grid" id="productGrid">
+            <!-- Products loaded dynamically from Realtime Database -->
+        </div>
+    </main>
+
+    <footer id="footerText">
+        &copy; 2026 QuickMart Online. All rights reserved. | കേരളത്തിന്റെ സ്വന്തം ഓൺലൈൻ ഷോപ്പ്
+    </footer>
+
+    <script>
         // ==========================================
         // FIREBASE CONFIGURATION (Realtime Database)
         // ==========================================
@@ -139,13 +282,8 @@
             }
 
             filtered.forEach((p) => {
-                // ലാംഗ്വേജ് മലയാളം ആണെങ്കിൽ മലയാളം പേരും, അല്ലെങ്കിൽ ഇംഗ്ലീഷ് പേരും തിരഞ്ഞെടുക്കുന്നു
-                let displayName = '';
-                if (currentLang === 'malayalam') {
-                    displayName = p.nameMl || p.nameEn || p.name || 'Product';
-                } else {
-                    displayName = p.nameEn || p.name || 'Product';
-                }
+                let nameEn = p.nameEn || p.name || 'Product';
+                let nameMl = p.nameMl || '';
                 
                 let imgSrc = '';
                 if (p.image && typeof p.image === 'string' && !p.image.includes('<')) {
@@ -165,15 +303,16 @@
                 card.className = 'product-card';
 
                 card.innerHTML = `
-                    <img src="${imgSrc}" class="product-image" alt="${displayName}" onerror="this.src='https://images.unsplash.com/photo-1542838132-92c53300491e?w=400'">
+                    <img src="${imgSrc}" class="product-image" alt="${nameEn}" onerror="this.src='https://images.unsplash.com/photo-1542838132-92c53300491e?w=400'">
                     
                     <div class="product-name-box">
-                        <div class="product-name-en" style="font-size: 16px; font-weight: 700; color: #333;">${displayName}</div>
+                        <div class="product-name-en">${nameEn}</div>
+                        ${nameMl ? `<div class="product-name-ml">(${nameMl})</div>` : ''}
                     </div>
                     
                     <div class="product-price">₹${p.price}</div>
                     
-                    <button class="add-to-cart-btn" onclick="addToCart('${displayName}', ${p.price})">
+                    <button class="add-to-cart-btn" onclick="addToCart('${nameEn} ${nameMl ? '('+nameMl+')' : ''}', ${p.price})">
                         ${t.addToCart}
                     </button>
                 `;
@@ -202,3 +341,5 @@
             fetchCloudProducts();
         };
     </script>
+</body>
+</html>
