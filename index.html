@@ -62,7 +62,7 @@
         .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 20px; }
         .product-card { background: #ffffff; border-radius: 10px; padding: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; display: flex; flex-direction: column; justify-content: space-between; text-align: center; }
         
-        /* Fixed Image Styles (Full Picture Support) */
+        /* Fixed Image Styles */
         .product-image {
             width: 100%;
             height: 250px;
@@ -72,8 +72,7 @@
         }
 
         .product-name-box { margin: 10px 0; }
-        .product-name-en { font-size: 16px; font-weight: 700; color: #333; margin-bottom: 2px; }
-        .product-name-ml { font-size: 13px; color: #666; font-weight: normal; }
+        .product-name-en { font-size: 16px; font-weight: 700; color: #333; }
         
         .product-price { font-size: 16px; color: #e65100; font-weight: 800; margin-bottom: 12px; }
         
@@ -133,7 +132,7 @@
     <main class="container">
         <h2 class="section-title" id="sectionTitle">പുതിയ പലവ്യഞ്ജനങ്ങളും സാധനങ്ങളും</h2>
         <div class="products-grid" id="productGrid">
-            <!-- Products loaded dynamically from Realtime Database -->
+            <!-- Products loaded dynamically -->
         </div>
     </main>
 
@@ -247,7 +246,6 @@
             renderProducts(cat);
         }
 
-        // Fetch products from Realtime Database
         function fetchCloudProducts() {
             db.ref('products').on('value', (snapshot) => {
                 const data = snapshot.val();
@@ -282,8 +280,13 @@
             }
 
             filtered.forEach((p) => {
-                let nameEn = p.nameEn || p.name || 'Product';
-                let nameMl = p.nameMl || '';
+                // ലാംഗ്വേജ് നോക്കി മലയാളം പേരോ ഇംഗ്ലീഷ് പേരോ എടുക്കുന്നു
+                let displayName = '';
+                if (currentLang === 'malayalam') {
+                    displayName = p.nameMl || p.nameEn || p.name || 'Product';
+                } else {
+                    displayName = p.nameEn || p.name || 'Product';
+                }
                 
                 let imgSrc = '';
                 if (p.image && typeof p.image === 'string' && !p.image.includes('<')) {
@@ -303,16 +306,15 @@
                 card.className = 'product-card';
 
                 card.innerHTML = `
-                    <img src="${imgSrc}" class="product-image" alt="${nameEn}" onerror="this.src='https://images.unsplash.com/photo-1542838132-92c53300491e?w=400'">
+                    <img src="${imgSrc}" class="product-image" alt="${displayName}" onerror="this.src='https://images.unsplash.com/photo-1542838132-92c53300491e?w=400'">
                     
                     <div class="product-name-box">
-                        <div class="product-name-en">${nameEn}</div>
-                        ${nameMl ? `<div class="product-name-ml">(${nameMl})</div>` : ''}
+                        <div class="product-name-en">${displayName}</div>
                     </div>
                     
                     <div class="product-price">₹${p.price}</div>
                     
-                    <button class="add-to-cart-btn" onclick="addToCart('${nameEn} ${nameMl ? '('+nameMl+')' : ''}', ${p.price})">
+                    <button class="add-to-cart-btn" onclick="addToCart('${displayName}', ${p.price})">
                         ${t.addToCart}
                     </button>
                 `;
