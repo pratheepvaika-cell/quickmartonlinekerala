@@ -5,6 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="google" content="notranslate">
     <title id="pageTitle">QuickMart Online - Kerala's Fast Grocery Delivery</title>
+    
+    <!-- Firebase App & Realtime Database SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+
     <style>
         html, body { width: 100%; margin: 0; padding: 0; overflow-x: hidden; }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
@@ -113,7 +118,7 @@
     <main class="container">
         <h2 class="section-title" id="sectionTitle">പുതിയ പലവ്യഞ്ജനങ്ങളും സാധനങ്ങളും</h2>
         <div class="products-grid" id="productGrid">
-            <!-- Products loaded dynamically -->
+            <!-- Products loaded dynamically from Realtime Database -->
         </div>
     </main>
 
@@ -122,6 +127,23 @@
     </footer>
 
     <script>
+        // ==========================================
+        // FIREBASE CONFIGURATION (Realtime Database)
+        // ==========================================
+        const firebaseConfig = {
+            apiKey: "AIzaSyD_geMtD7UVO5lZq7AI5annvw70gWAVhDE",
+            authDomain: "quickmart-ce511.firebaseapp.com",
+            databaseURL: "https://quickmart-ce511-default-rtdb.firebaseio.com",
+            projectId: "quickmart-ce511",
+            storageBucket: "quickmart-ce511.firebasestorage.app",
+            messagingSenderId: "884034920995",
+            appId: "1:884034920995:web:085bfa590c02a981988796",
+            measurementId: "G-Q0JX7JZ1PC"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
         const translations = {
             malayalam: {
                 title: "QuickMart Online - കേരളത്തിന്റെ വേഗത്തിലുള്ള പലവ്യഞ്ജന ഡെലിവറി",
@@ -158,6 +180,7 @@
         };
 
         let currentSelectedCategory = 'All';
+        let cloudProductsList = [];
 
         function setLanguage(lang) {
             localStorage.setItem('quickMartLang', lang);
@@ -186,7 +209,7 @@
             document.getElementById('footerText').innerHTML = t.footer;
 
             loadCategories();
-            loadProducts(currentSelectedCategory);
+            renderProducts(currentSelectedCategory);
         }
 
         function loadCategories() {
@@ -206,17 +229,29 @@
             currentSelectedCategory = cat;
             document.querySelectorAll('.cat-chip').forEach(c => c.classList.remove('active'));
             if(element) element.classList.add('active');
-            loadProducts(cat);
+            renderProducts(cat);
         }
 
-        function loadProducts(selectedCat = 'All') {
+        // Fetch products from Realtime Database
+        function fetchCloudProducts() {
+            db.ref('products').on('value', (snapshot) => {
+                const data = snapshot.val();
+                cloudProductsList = [];
+                if (data) {
+                    Object.keys(data).forEach(id => {
+                        cloudProductsList.push({ id: id, ...data[id] });
+                    });
+                }
+                renderProducts(currentSelectedCategory);
+            });
+        }
+
+        function renderProducts(selectedCat = 'All') {
             let currentLang = localStorage.getItem('quickMartLang') || 'malayalam';
             let t = translations[currentLang];
             let grid = document.getElementById('productGrid');
             
-            let products = JSON.parse(localStorage.getItem('quickMartProducts')) || 
-                           JSON.parse(localStorage.getItem('products')) || 
-                           JSON.parse(localStorage.getItem('adminProducts')) || [
+            let products = cloudProductsList.length > 0 ? cloudProductsList : [
                 { name: 'Fresh Apple (1kg)', category: 'Fruits', price: 180, image: 'https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?w=400' },
                 { name: 'Fresh Broccoli (500g)', category: 'Vegetables', price: 80, image: 'https://images.unsplash.com/photo-1459411621453-7b03977f4bfc?w=400' },
                 { name: 'Organic Milk (1L)', category: 'Groceries', price: 54, image: 'https://images.unsplash.com/photo-1550583724-b2692b85b150?w=400' },
@@ -238,10 +273,20 @@
                 let img = document.createElement('img');
                 img.className = 'product-img';
                 
-                let imgSrc = p.image ? p.image.trim() : '';
-                if (!imgSrc || imgSrc.includes('<') || imgSrc.includes('>')) {
+                let imgSrc = '';
+                if (p.image && typeof p.image === 'string' && !p.image.includes('<')) {
+                    imgSrc = p.image.trim();
+                } else if (p.image && typeof p.image === 'string' && p.image.includes('src="')) {
+                    try {
+                        let match = p.image.match(/src="([^"]+)"/);
+                        if (match) imgSrc = match[1];
+                    } catch(e) {}
+                }
+
+                if (!imgSrc) {
                     imgSrc = 'https://images.unsplash.com/photo-1542838132-92c53300491e?w=400';
                 }
+                
                 img.src = imgSrc;
                 img.alt = p.name || 'Product';
                 img.onerror = function() {
@@ -293,6 +338,7 @@
         window.onload = function() {
             let savedLang = localStorage.getItem('quickMartLang') || 'malayalam';
             setLanguage(savedLang);
+            fetchCloudProducts();
         };
     </script>
 </body>
