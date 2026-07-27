@@ -231,7 +231,8 @@
             <div class="box-container">
                 <h3 style="color: var(--primary-green); margin-bottom: 12px; font-weight: 800;">Add New Product (Cloud Sync)</h3>
                 <form onsubmit="addProduct(event)">
-                    <div class="form-group"><label>Product Name</label><input type="text" id="pName" required></div>
+                    <div class="form-group"><label>Product Name (English)</label><input type="text" id="pName" required></div>
+                    <div class="form-group"><label>Product Name (Malayalam - മലയാളം പേര്)</label><input type="text" id="pNameMl" placeholder="ഉദാ: ഫ്രഷ് ഫിഷ് ഫ്രൈ"></div>
                     <div class="form-group"><label>Price (₹)</label><input type="number" id="pPrice" required></div>
                     <div class="form-group"><label>Stock Quantity</label><input type="number" id="pStock" required></div>
                     <div class="form-group"><label>Product Image</label><input type="file" id="pImageFile" accept="image/*" required></div>
@@ -242,7 +243,7 @@
             <div class="table-responsive">
                 <table>
                     <thead>
-                        <tr><th>Image</th><th>Name</th><th>Price</th><th>Stock</th><th>Actions</th></tr>
+                        <tr><th>Image</th><th>Name (En / Ml)</th><th>Price</th><th>Stock</th><th>Actions</th></tr>
                     </thead>
                     <tbody id="productsTableBody"></tbody>
                 </table>
@@ -309,7 +310,8 @@
         <div class="modal-content">
             <h3 style="color: var(--primary-green); margin-bottom: 12px; font-weight: 800;">Edit Product</h3>
             <input type="hidden" id="editDocId">
-            <div class="form-group"><label>Name</label><input type="text" id="editPName"></div>
+            <div class="form-group"><label>Name (English)</label><input type="text" id="editPName"></div>
+            <div class="form-group"><label>Name (Malayalam)</label><input type="text" id="editPNameMl"></div>
             <div class="form-group"><label>Price</label><input type="number" id="editPPrice"></div>
             <div class="form-group"><label>Stock</label><input type="number" id="editPStock"></div>
             <div style="margin-top: 15px; display: flex; gap: 10px; justify-content: flex-end;">
@@ -450,6 +452,7 @@
         function addProduct(event) {
             event.preventDefault();
             const name = document.getElementById('pName').value;
+            const nameMl = document.getElementById('pNameMl').value;
             const price = document.getElementById('pPrice').value;
             const stock = document.getElementById('pStock').value;
             const fileInput = document.getElementById('pImageFile');
@@ -464,12 +467,14 @@
                     const newProdRef = db.ref('products').push();
                     newProdRef.set({
                         name: name,
+                        nameMl: nameMl,
                         price: price,
                         stock: parseInt(stock) || 0,
                         image: imageHtml
                     }).then(() => {
-                        alert('Product successfully uploaded to Cloud!');
+                        alert('Product successfully uploaded to Cloud with Malayalam name!');
                         document.getElementById('pName').value = '';
+                        document.getElementById('pNameMl').value = '';
                         document.getElementById('pPrice').value = '';
                         document.getElementById('pStock').value = '';
                         document.getElementById('pImageFile').value = '';
@@ -499,11 +504,11 @@
                     let row = document.createElement('tr');
                     row.innerHTML = `
                         <td>${prod.image || '🛒'}</td>
-                        <td><strong>${prod.name}</strong></td>
+                        <td><strong>${prod.name}</strong><br><small style="color:var(--primary-green); font-weight:600;">${prod.nameMl || 'No Malayalam name'}</small></td>
                         <td>₹${prod.price}</td>
                         <td><strong>${prod.stock || 0} units</strong></td>
                         <td>
-                            <button class="btn-action btn-edit" onclick="openEditModal('${docId}', '${prod.name}', '${prod.price}', '${prod.stock || 0}')">Edit</button>
+                            <button class="btn-action btn-edit" onclick="openEditModal('${docId}', '${prod.name}', '${prod.nameMl || ''}', '${prod.price}', '${prod.stock || 0}')">Edit</button>
                             <button class="btn-action btn-delete" onclick="deleteProduct('${docId}')">Delete</button>
                         </td>
                     `;
@@ -540,7 +545,7 @@
                     let row = document.createElement('tr');
                     row.innerHTML = `
                         <td>${prod.image || '🛒'}</td>
-                        <td><strong>${prod.name}</strong></td>
+                        <td><strong>${prod.name}</strong><br><small style="color:var(--primary-green);">${prod.nameMl || ''}</small></td>
                         <td>₹${prod.price}</td>
                         <td><strong>${stock}</strong></td>
                         <td>${statusBadge}</td>
@@ -567,9 +572,10 @@
             });
         }
 
-        function openEditModal(docId, name, price, stock) {
+        function openEditModal(docId, name, nameMl, price, stock) {
             document.getElementById('editDocId').value = docId;
             document.getElementById('editPName').value = name;
+            document.getElementById('editPNameMl').value = nameMl;
             document.getElementById('editPPrice').value = price;
             document.getElementById('editPStock').value = stock;
             document.getElementById('editModal').style.display = 'flex';
@@ -580,11 +586,13 @@
         function saveEditedProduct() {
             let docId = document.getElementById('editDocId').value;
             let name = document.getElementById('editPName').value;
+            let nameMl = document.getElementById('editPNameMl').value;
             let price = document.getElementById('editPPrice').value;
             let stock = parseInt(document.getElementById('editPStock').value) || 0;
 
             db.ref('products/' + docId).update({
                 name: name,
+                nameMl: nameMl,
                 price: price,
                 stock: stock
             }).then(() => {
@@ -658,16 +666,10 @@
                         <td>${order.customer || 'N/A'}<br><small style="color:#666;">${order.phone || ''}</small></td>
                         <td>${itemsStr}</td>
                         <td><strong>₹${order.price || 0}</strong></td>
+                        <td><span class="badge-lowstock">${order.status || 'Pending'}</span></td>
                         <td>
-                            <select onchange="updateOrderStatus('${order.id}', this.value)">
-                                <option value="Pending" ${order.status === 'Pending' ? 'selected' : ''}>Pending</option>
-                                <option value="Processing" ${order.status === 'Processing' ? 'selected' : ''}>Processing</option>
-                                <option value="Delivered" ${order.status === 'Delivered' ? 'selected' : ''}>Delivered</option>
-                                <option value="Cancelled" ${order.status === 'Cancelled' ? 'selected' : ''}>Cancelled</option>
-                            </select>
-                        </td>
-                        <td>
-                            <button class="btn-action btn-delete" onclick="deleteOrder('${order.id}')">Delete</button>
+                            <button class="btn-action btn-edit" onclick="updateOrderStatus('${order.id}', 'Delivered')">Deliver</button>
+                            <button class="btn-action btn-delete" onclick="updateOrderStatus('${order.id}', 'Cancelled')">Cancel</button>
                         </td>
                     `;
                     tbody.appendChild(row);
@@ -677,58 +679,33 @@
             populateTable('ordersTableBody2');
         }
 
-        function updateOrderStatus(docId, newStatus) {
-            db.ref('orders/' + docId).update({
-                status: newStatus
-            }).then(() => {
-                alert('Order status updated in Cloud!');
-            });
-        }
-
-        function deleteOrder(docId) {
-            if (confirm('Delete this order?')) {
-                db.ref('orders/' + docId).remove().then(() => {
-                    // Real-time listener will refresh UI
-                });
-            }
-        }
-
         function loadDailyHistory() {
-            let filterDate = document.getElementById('filterDate').value;
+            const filterDateStr = document.getElementById('filterDate').value;
             const tbody = document.getElementById('historyTableBody');
             if (!tbody) return;
             tbody.innerHTML = '';
 
-            let filtered = globalOrdersCache.filter(o => checkDateMatch(o.date, filterDate));
+            let filtered = globalOrdersCache.filter(o => checkDateMatch(o.date, filterDateStr));
             let rev = 0;
-            filtered.forEach(o => {
-                if (o.status !== 'Cancelled') rev += parseInt(o.price || 0);
-            });
 
-            document.getElementById('historyOrdersCount').textContent = filtered.length;
-            document.getElementById('historyRevenue').textContent = '₹' + rev;
-
-            if (filtered.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; color:#888;">No history found for selected date!</td></tr>';
-                return;
-            }
-
-            filtered.forEach((order) => {
+            filtered.forEach(order => {
+                if (order.status !== 'Cancelled') rev += parseInt(order.price || 0);
                 let itemsStr = formatItems(order.items);
                 let row = document.createElement('tr');
                 row.innerHTML = `
                     <td><strong>#${order.id.slice(-5)}</strong></td>
                     <td>${order.date || 'Today'}</td>
-                    <td>${order.customer || 'N/A'}<br><small style="color:#666;">${order.phone || ''}</small></td>
+                    <td>${order.customer || 'N/A'}</td>
                     <td>${itemsStr}</td>
                     <td><strong>₹${order.price || 0}</strong></td>
-                    <td><span style="font-weight:700; color: ${order.status === 'Delivered' ? 'var(--primary-green)' : (order.status === 'Cancelled' ? '#d32f2f' : 'var(--accent-orange)}')};">${order.status || 'Pending'}</span></td>
-                    <td>
-                        <button class="btn-action btn-delete" onclick="deleteOrder('${order.id}')">Delete</button>
-                    </td>
+                    <td>${order.status || 'Pending'}</td>
+                    <td><button class="btn-action btn-delete" onclick="deleteOrder('${order.id}')">Delete</button></td>
                 `;
                 tbody.appendChild(row);
             });
+
+            document.getElementById('historyOrdersCount').textContent = filtered.length;
+            document.getElementById('historyRevenue').textContent = '₹' + rev;
         }
 
         function resetDateFilter() {
@@ -736,14 +713,25 @@
             loadDailyHistory();
         }
 
-        function logout() {
-            if (confirm('Are you sure you want to logout?')) {
-                window.location.href = 'index.html';
+        function updateOrderStatus(orderId, newStatus) {
+            db.ref('orders/' + orderId).update({ status: newStatus }).then(() => {
+                alert('Order status updated to ' + newStatus);
+            });
+        }
+
+        function deleteOrder(orderId) {
+            if (confirm('Delete this order record?')) {
+                db.ref('orders/' + orderId).remove();
             }
+        }
+
+        function logout() {
+            window.location.href = 'index.html';
         }
 
         window.onload = function() {
             initRealtimeOrdersListener();
+            switchTab('dashboard');
         };
     </script>
 </body>
