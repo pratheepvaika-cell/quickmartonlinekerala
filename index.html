@@ -64,7 +64,11 @@
         
         .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 20px; }
         .product-card { background: #ffffff; border-radius: 10px; padding: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; display: flex; flex-direction: column; justify-content: space-between; }
-        .product-img { width: 100%; height: 160px; object-fit: cover; border-radius: 8px; background: #eee; margin-bottom: 12px; }
+        .product-image {width: 100%;       /* കാർഡിന്റെ വീതി മുഴുവൻ എടുക്കാൻ */
+    height: 250px;     /* ഒരു നിശ്ചിത ഉയരം നൽകുക (ആവശ്യാനുസരണം മാറ്റാം) */
+    object-fit: contain; /* ഇത് വളരെ പ്രധാനമാണ്! ഫോട്ടോ സ്‌ട്രെച്ച് ചെയ്യാതെ, കട്ടാക്കാതെ മുഴുവനായി കാണിക്കാൻ ഇത് സഹായിക്കുന്നു */
+    background-color: #f9f9f9; /* ഫോട്ടോയ്ക്ക് ചുറ്റും ചെറിയ പശ്ചാത്തല നിറം നൽകാൻ */
+}
         .product-name { font-size: 16px; font-weight: 700; color: #333; margin-bottom: 6px; }
         .product-price { font-size: 16px; color: #e65100; font-weight: 800; margin-bottom: 12px; }
         .add-to-cart-btn { background-color: #1b5e20; color: white; border: none; padding: 10px; border-radius: 6px; font-weight: 700; cursor: pointer; width: 100%; text-align: center; }
