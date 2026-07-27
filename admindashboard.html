@@ -231,8 +231,8 @@
             <div class="box-container">
                 <h3 style="color: var(--primary-green); margin-bottom: 12px; font-weight: 800;">Add New Product (Cloud Sync)</h3>
                 <form onsubmit="addProduct(event)">
-                    <div class="form-group"><label>Product Name (English)</label><input type="text" id="pName" required></div>
-                    <div class="form-group"><label>Product Name (Malayalam - മലയാളം പേര്)</label><input type="text" id="pNameMl" placeholder="ഉദാ: ഫ്രഷ് ഫിഷ് ഫ്രൈ"></div>
+                    <div class="form-group"><label>Product Name (English)</label><input type="text" id="pName" required oninput="autoFillMalayalam(this.value)"></div>
+                    <div class="form-group"><label>Product Name (Malayalam - മംഗ്ലീഷിൽ അടിക്കുമ്പോൾ ഓട്ടോമാറ്റിക്കായി മാറും)</label><input type="text" id="pNameMl" placeholder="ഉദാ: ayala fish അടിക്കുമ്പോൾ മലയാളമാകും"></div>
                     <div class="form-group"><label>Price (₹)</label><input type="number" id="pPrice" required></div>
                     <div class="form-group"><label>Stock Quantity</label><input type="number" id="pStock" required></div>
                     <div class="form-group"><label>Product Image</label><input type="file" id="pImageFile" accept="image/*" required></div>
@@ -343,6 +343,20 @@
         let lastOrderCount = null;
         let globalOrdersCache = [];
 
+        // Manglish to Malayalam Auto Transliteration helper using Google Input Tools API
+        function autoFillMalayalam(englishText) {
+            if (!englishText) return;
+            const url = `https://inputtools.google.com/request?text=${encodeURIComponent(englishText)}&itc=ml-t-i0-und&num=1&cp=0&cs=1&ie=utf-8&oe=utf-8`;
+            fetch(url)
+                .then(res => res.json())
+                .then(data => {
+                    if (data && data[1] && data[1][0] && data[1][0][1] && data[1][0][1][0]) {
+                        document.getElementById('pNameMl').value = data[1][0][1][0];
+                    }
+                })
+                .catch(err => console.log('Transliteration error:', err));
+        }
+
         function toggleSidebar() {
             const sidebar = document.getElementById('sidebarPanel');
             const overlay = document.getElementById('sidebarOverlay');
@@ -452,7 +466,7 @@
         function addProduct(event) {
             event.preventDefault();
             const name = document.getElementById('pName').value;
-            const nameMl = document.getElementById('pNameMl').value;
+            const nameMl = document.getElementById('pNameMl').value || name;
             const price = document.getElementById('pPrice').value;
             const stock = document.getElementById('pStock').value;
             const fileInput = document.getElementById('pImageFile');
@@ -472,7 +486,7 @@
                         stock: parseInt(stock) || 0,
                         image: imageHtml
                     }).then(() => {
-                        alert('Product successfully uploaded to Cloud with Malayalam name!');
+                        alert('Product successfully uploaded to Cloud!');
                         document.getElementById('pName').value = '';
                         document.getElementById('pNameMl').value = '';
                         document.getElementById('pPrice').value = '';
@@ -699,7 +713,7 @@
                     <td>${itemsStr}</td>
                     <td><strong>₹${order.price || 0}</strong></td>
                     <td>${order.status || 'Pending'}</td>
-                    <td><button class="btn-action btn-delete" onclick="deleteOrder('${order.id}')">Delete</button></td>
+                    <td><button class="btn-action btn-delete" onclick="deleteOrder('${order.id}')">Delete/button></td>
                 `;
                 tbody.appendChild(row);
             });
