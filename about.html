@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ml">
 <head>
     <meta charset="UTF-8">
+    <meta name="google" content="notranslate">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About Us - QuickMart Online</title>
     <style>
@@ -10,9 +11,18 @@
         body { background-color: #f4f7f6; color: #333; line-height: 1.6; }
         .top-bar { background-color: #1b5e20; color: #ffffff; display: flex; justify-content: space-between; align-items: center; padding: 12px 40px; flex-wrap: wrap; gap: 10px; }
         .top-bar .support-text { font-size: 14px; font-weight: 600; }
+        
+        .header-right-group { display: flex; align-items: center; gap: 15px; flex-wrap: wrap; }
+
+        /* Language Switcher Styles */
+        .lang-switch { display: flex; background: #123d15; border-radius: 6px; padding: 3px; border: 1px solid rgba(255,255,255,0.25); }
+        .lang-btn { background: transparent; border: none; color: #fff; padding: 5px 10px; font-size: 12px; font-weight: 700; cursor: pointer; border-radius: 4px; transition: 0.2s; }
+        .lang-btn.active { background: #ffffff; color: #1b5e20; }
+
         .nav-links { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
         .nav-links a { color: #1b5e20; text-decoration: none; font-weight: 700; font-size: 13px; background-color: #ffffff; border: 2px solid #ffffff; padding: 6px 12px; border-radius: 6px; transition: all 0.2s ease; white-space: nowrap; }
         .nav-links a:hover { background-color: #e8f5e9; }
+        
         .logo-bar { padding: 15px 40px; background: #ffffff; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); display: flex; align-items: center; }
         .logo-container { display: inline-flex; align-items: center; gap: 14px; text-decoration: none; }
         .logo-cart-icon { background-color: #1b5e20; width: 50px; height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(27, 94, 32, 0.25); }
@@ -21,6 +31,7 @@
         .logo-text { font-size: 28px; font-weight: 800; line-height: 1; display: flex; align-items: center; }
         .logo-quick { color: #1b5e20; } .logo-mart { color: #e65100; } .logo-online { color: #1b5e20; margin-left: 6px; }
         .logo-tagline { font-size: 12px; color: #d97706; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; margin-top: 4px; }
+        
         .container { max-width: 900px; margin: 40px auto; padding: 0 20px; }
         .about-card { background: #ffffff; border-radius: 12px; padding: 40px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04); border: 1px solid #e0e0e0; }
         .section-title { font-size: 28px; color: #1b5e20; margin-bottom: 20px; font-weight: 800; }
@@ -35,14 +46,22 @@
 </head>
 <body>
     <header class="top-bar">
-        <div class="support-text">🛒 Kerala's Fast Online Grocery Shopping</div>
-        <nav class="nav-links">
-            <a href="index.html">Home</a>
-            <a href="about.html">About Us</a>
-            <a href="contact.html">Contact Us</a>
-            <a href="cart.html">🛒 Cart</a>
-        </nav>
+        <div class="support-text" data-key="supportText">🛒 Kerala's Fast Online Grocery Shopping</div>
+        <div class="header-right-group">
+            <!-- Language Switcher -->
+            <div class="lang-switch">
+                <button class="lang-btn" id="langMl" onclick="setLanguage('ml')">മലയാളം</button>
+                <button class="lang-btn" id="langEn" onclick="setLanguage('en')">English</button>
+            </div>
+            <nav class="nav-links">
+                <a href="index.html" data-key="home">Home</a>
+                <a href="about.html" data-key="aboutUs">About Us</a>
+                <a href="contact.html" data-key="contactUs">Contact Us</a>
+                <a href="cart.html" data-key="cart">🛒 Cart</a>
+            </nav>
+        </div>
     </header>
+
     <div class="logo-bar">
         <a href="index.html" class="logo-container">
             <div class="logo-cart-icon">
@@ -50,21 +69,91 @@
             </div>
             <div class="logo-text-wrapper">
                 <div class="logo-text"><span class="logo-quick">Quick</span><span class="logo-mart">M</span><span class="logo-mart">art</span><span class="logo-online">Online</span></div>
-                <div class="logo-tagline">✨ All That Glitters</div>
+                <div class="logo-tagline" data-key="tagline">✨ All That Glitters</div>
             </div>
         </a>
     </div>
+
     <main class="container">
         <div class="about-card">
-            <h2 class="section-title">About QuickMart Online</h2>
-            <p class="about-text">Welcome to <strong>QuickMart Online</strong>, Kerala's trusted destination for fast, reliable, and convenient online grocery shopping. We bring your daily household essentials right to your doorstep.</p>
+            <h2 class="section-title" data-key="aboutTitle">About QuickMart Online</h2>
+            <p class="about-text" data-key="aboutDesc">Welcome to <strong>QuickMart Online</strong>, Kerala's trusted destination for fast, reliable, and convenient online grocery shopping. We bring your daily household essentials right to your doorstep.</p>
+            
             <div class="features-grid">
-                <div class="feature-box"><h3>🚀 Fast Delivery</h3><p>Quick delivery services ensuring freshness.</p></div>
-                <div class="feature-box"><h3>💎 Best Quality</h3><p>Handpicked products and groceries.</p></div>
-                <div class="feature-box"><h3>💬 Easy Ordering</h3><p>Seamless checkout via WhatsApp.</p></div>
+                <div class="feature-box">
+                    <h3 data-key="feat1Title">🚀 Fast Delivery</h3>
+                    <p data-key="feat1Desc">Quick delivery services ensuring freshness.</p>
+                </div>
+                <div class="feature-box">
+                    <h3 data-key="feat2Title">💎 Best Quality</h3>
+                    <p data-key="feat2Desc">Handpicked products and groceries.</p>
+                </div>
+                <div class="feature-box">
+                    <h3 data-key="feat3Title">💬 Easy Ordering</h3>
+                    <p data-key="feat3Desc">Seamless checkout via WhatsApp.</p>
+                </div>
             </div>
         </div>
     </main>
-    <footer><p>&copy; 2026 QuickMart Online. All rights reserved.</p></footer>
+
+    <footer><p data-key="footerText">&copy; 2026 QuickMart Online. All rights reserved.</p></footer>
+
+    <script>
+        const translations = {
+            en: {
+                supportText: "🛒 Kerala's Fast Online Grocery Shopping",
+                home: "Home",
+                aboutUs: "About Us",
+                contactUs: "Contact Us",
+                cart: "🛒 Cart",
+                tagline: "✨ All That Glitters",
+                aboutTitle: "About QuickMart Online",
+                aboutDesc: "Welcome to QuickMart Online, Kerala's trusted destination for fast, reliable, and convenient online grocery shopping. We bring your daily household essentials right to your doorstep.",
+                feat1Title: "🚀 Fast Delivery",
+                feat1Desc: "Quick delivery services ensuring freshness.",
+                feat2Title: "💎 Best Quality",
+                feat2Desc: "Handpicked products and groceries.",
+                feat3Title: "💬 Easy Ordering",
+                feat3Desc: "Seamless checkout via WhatsApp.",
+                footerText: "© 2026 QuickMart Online. All rights reserved."
+            },
+            ml: {
+                supportText: "🛒 കേരളത്തിലെ ഏറ്റവും വേഗതയേറിയ ഓൺലൈൻ പലവ്യഞ്ജക ഷോപ്പിംഗ്",
+                home: "ഹോം",
+                aboutUs: "ഞങ്ങളെക്കുറിച്ച്",
+                contactUs: "ബന്ധപ്പെടുക",
+                cart: "🛒 കാർട്ട്",
+                tagline: "✨ സേവനമാണ് മുഖമുദ്ര",
+                aboutTitle: "ക്വിക്ക്മാർട്ട് ഓൺലൈനെക്കുറിച്ച്",
+                aboutDesc: "ക്വിക്ക്മാർട്ട് ഓൺലൈനിലേക്ക് സ്വാഗതം! കേരളത്തിൽ വളരെ വേഗത്തിലും വിശ്വസനീയമായും പലവ്യഞ്ജനങ്ങളും പച്ചക്കറികളും നിങ്ങളുടെ വീട്ടിലെത്തിക്കുന്ന വിശ്വസ്തമായ ഓൺലൈൻ ഷോപ്പിംഗ് കൂട്ടായ്മയാണിത്.",
+                feat1Title: "🚀 വേഗത്തിലുള്ള ഡെലിവറി",
+                feat1Desc: "സാധനങ്ങൾ ഫ്രഷായി കൃത്യസമയത്ത് നിങ്ങളുടെ വീട്ടിൽ എത്തിക്കുന്നു.",
+                feat2Title: "💎 മികച്ച ഗുണനിലവാരം",
+                feat2Desc: "തിരഞ്ഞെടുത്ത മികച്ച ഗുണനിലവാരമുള്ള പലവ്യഞ്ജനങ്ങൾ.",
+                feat3Title: "💬 എളുപ്പത്തിലുള്ള ഓർഡറിംഗ്",
+                feat3Desc: "വാട്സാപ്പ് വഴി വളരെ എളുപ്പത്തിൽ ഓർഡർ ചെയ്യാം.",
+                footerText: "© 2026 QuickMart Online. സർവ്വ അവകാശങ്ങളും നിക്ഷിപ്തം."
+            }
+        };
+
+        function setLanguage(lang) {
+            localStorage.setItem('quickmart_lang', lang);
+            document.getElementById('langEn').classList.toggle('active', lang === 'en');
+            document.getElementById('langMl').classList.toggle('active', lang === 'ml');
+
+            document.querySelectorAll('[data-key]').forEach(el => {
+                const key = el.getAttribute('data-key');
+                if (translations[lang] && translations[lang][key]) {
+                    // HTML ടാഗുകൾ (ഉദാഹരണത്തിന് <strong>) നിലനിർത്താൻ innerHTML ഉപയോഗിക്കുന്നു
+                    el.innerHTML = translations[lang][key];
+                }
+            });
+        }
+
+        window.onload = function() {
+            const savedLang = localStorage.getItem('quickmart_lang') || 'ml';
+            setLanguage(savedLang);
+        };
+    </script>
 </body>
 </html>
