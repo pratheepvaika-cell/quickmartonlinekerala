@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ml">
 <head>
     <meta charset="UTF-8">
+    <meta name="google" content="notranslate">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>QuickMart Online - Fast Grocery Delivery</title>
     
@@ -14,14 +15,15 @@
             --primary-green: #1b5e20;
             --dark-green: #123d15;
             --accent-orange: #e65100;
-            --bg-color: #f8f9fa;
+            --bg-color: #f4f7f6;
             --card-bg: #ffffff;
             --border-color: #e2e8f0;
             --text-color: #333;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { background-color: var(--bg-color); color: var(--text-color); }
+        html, body { width: 100%; overflow-x: hidden; }
+        body { background-color: var(--bg-color); color: var(--text-color); line-height: 1.6; }
 
         /* Professional Rich Top Green Banner */
         header {
@@ -99,6 +101,7 @@
             align-items: center;
             gap: 6px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            white-space: nowrap;
         }
         .nav-link:hover { background-color: #f1f1f1; transform: translateY(-1px); }
         
@@ -123,6 +126,8 @@
             justify-content: space-between;
             align-items: center;
             box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+            flex-wrap: wrap;
+            gap: 15px;
         }
 
         .brand-box { display: flex; align-items: center; gap: 15px; }
@@ -154,13 +159,14 @@
             display: flex;
             gap: 12px;
             overflow-x: auto;
-            background: #fff;
+            background: #ffffff;
             border-bottom: 1px solid var(--border-color);
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.02);
         }
         .cat-chip {
-            background: #e8f5e9;
+            background: #f4f7f6;
             color: var(--primary-green);
-            border: 1px solid #c8e6c9;
+            border: 1px solid #d0dcd1;
             padding: 9px 18px;
             border-radius: 25px;
             font-size: 13px;
@@ -178,7 +184,7 @@
 
         /* Products Grid */
         .container { max-width: 1250px; margin: 30px auto; padding: 0 20px; }
-        .section-heading { font-size: 20px; font-weight: 800; color: var(--primary-green); margin-bottom: 20px; border-bottom: 2px solid #c8e6c9; padding-bottom: 8px; }
+        .section-heading { font-size: 20px; font-weight: 800; color: var(--primary-green); margin-bottom: 20px; border-bottom: 2px solid #c8e6c9; padding-bottom: 8px; text-align: left; }
         
         .products-grid {
             display: grid;
@@ -217,8 +223,8 @@
             object-fit: cover !important; 
         }
 
-        .product-name { font-size: 16px; font-weight: 700; color: #333; margin-bottom: 6px; }
-        .product-price { font-size: 17px; font-weight: 800; color: var(--accent-orange); margin-bottom: 14px; }
+        .product-name { font-size: 16px; font-weight: 700; color: #333; margin-bottom: 6px; text-align: left; }
+        .product-price { font-size: 17px; font-weight: 800; color: var(--accent-orange); margin-bottom: 14px; text-align: left; }
         
         .btn-add-cart {
             background-color: var(--primary-green);
@@ -242,6 +248,7 @@
             header { padding: 12px 15px; }
             .sub-header { padding: 12px 15px; }
             .brand-title h1 { font-size: 18px; }
+            .categories-container { padding: 12px 15px; }
         }
     </style>
 </head>
@@ -289,7 +296,7 @@
 
     <!-- Categories Filter Bar -->
     <div class="categories-container">
-        <div class="cat-chip active" onclick="filterCategory('all', this)"><span data-key="catAll">എല്ലാം (All)</span></div>
+        <div class="cat-chip active" onclick="filterCategory('all', this)"><span data-key="catAll">All</span></div>
         <div class="cat-chip" onclick="filterCategory('General', this)"><span data-key="catGeneral">General</span></div>
         <div class="cat-chip" onclick="filterCategory('Groceries', this)"><span data-key="catGroceries">Groceries</span></div>
         <div class="cat-chip" onclick="filterCategory('Vegetables', this)"><span data-key="catVegetables">Vegetables</span></div>
@@ -346,20 +353,20 @@
                 addToCart: "Add to Cart"
             },
             ml: {
-                tagline: "കേരളത്തിന്റെ സ്വന്തം ഓൺലൈൻ പലവ്യഞ്ജന കട",
+                tagline: "കേരളത്തിലെ ഏറ്റവും വേഗതയേറിയ ഓൺലൈൻ പലവ്യഞ്ജക ഷോപ്പിംഗ്",
                 home: "ഹോം",
                 howToOrder: "എങ്ങനെ ഓർഡർ ചെയ്യാം?",
                 aboutUs: "ഞങ്ങളെക്കുറിച്ച്",
-                contact: "ബന്ധപ്പെടാൻ",
+                contact: "ബന്ധപ്പെടുക",
                 admin: "അഡ്മിൻ",
                 cart: "കാർട്ട്",
                 subTagline: "✨ എളുപ്പത്തിൽ ഓർഡർ ചെയ്യൂ",
                 checkCart: "കാർട്ട് പരിശോധിക്കുക",
-                catAll: "എല്ലാം (All)",
-                catGeneral: "General",
-                catGroceries: "Groceries",
-                catVegetables: "Vegetables",
-                catFruits: "Fruits",
+                catAll: "എല്ലാം",
+                catGeneral: "ജനറൽ",
+                catGroceries: "പലവ്യഞ്ജനങ്ങൾ",
+                catVegetables: "പച്ചക്കറികൾ",
+                catFruits: "പഴങ്ങൾ",
                 newProductsHeading: "പുതിയ പലവ്യഞ്ജനങ്ങളും സാധനങ്ങളും",
                 addToCart: "കാർട്ടിലേക്ക് ചേർക്കുക"
             }
@@ -406,7 +413,7 @@
             const container = document.getElementById('productsGridContainer');
             container.innerHTML = '';
 
-            const currentLang = localStorage.getItem('quickmart_lang') || 'en';
+            const currentLang = localStorage.getItem('quickmart_lang') || 'ml';
             
             let filtered = products;
             if (currentCategory !== 'all') {
@@ -422,7 +429,6 @@
                 const displayName = (currentLang === 'ml' && prod.nameMl) ? prod.nameMl : prod.name;
                 const btnText = translations[currentLang]['addToCart'] || 'Add to Cart';
 
-                // Handle image rendering securely whether it's an HTML tag or image URL
                 let imageHtml = '🛒';
                 if (prod.image) {
                     if (prod.image.trim().startsWith('<img')) {
