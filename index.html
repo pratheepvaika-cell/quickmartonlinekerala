@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>QuickMart Online - Fast Grocery Delivery</title>
     
-    <!-- Firebase App & Realtime Database SDKs -->
+    <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
 
@@ -23,7 +23,7 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         body { background-color: var(--bg-color); color: var(--text-color); }
 
-        /* Professional Rich Top Green Banner */
+        /* Header Layout */
         header {
             background-color: var(--primary-green);
             color: white;
@@ -61,7 +61,6 @@
             flex-wrap: wrap;
         }
 
-        /* Language Switcher */
         .lang-switch {
             display: flex;
             background: var(--dark-green);
@@ -85,7 +84,6 @@
             color: var(--primary-green);
         }
 
-        /* Nav Links Styling */
         .nav-link {
             background-color: #ffffff;
             color: var(--primary-green);
@@ -94,6 +92,7 @@
             text-decoration: none;
             font-size: 13px;
             font-weight: 700;
+            cursor: pointer;
             transition: 0.2s;
             display: inline-flex;
             align-items: center;
@@ -102,19 +101,13 @@
         }
         .nav-link:hover { background-color: #f1f1f1; transform: translateY(-1px); }
         
-        .nav-link.admin-btn {
-            background-color: #c62828;
-            color: white;
-        }
+        .nav-link.admin-btn { background-color: #c62828; color: white; }
         .nav-link.admin-btn:hover { background-color: #b71c1c; }
 
-        .nav-link.cart-btn {
-            background-color: var(--accent-orange);
-            color: white;
-        }
+        .nav-link.cart-btn { background-color: var(--accent-orange); color: white; }
         .nav-link.cart-btn:hover { background-color: #bf360c; }
 
-        /* Main Sub-Header / Brand Section */
+        /* Sub Header & Branding */
         .sub-header {
             background: white;
             padding: 18px 30px;
@@ -125,7 +118,7 @@
             box-shadow: 0 2px 6px rgba(0,0,0,0.02);
         }
 
-        .brand-box { display: flex; align-items: center; gap: 15px; }
+        .brand-box { display: flex; align-items: center; gap: 15px; cursor: pointer; }
         .brand-icon { background: var(--primary-green); width: 50px; height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(27,94,32,0.3); }
         .brand-icon svg { width: 28px; height: 28px; fill: white; }
         .brand-title h1 { font-size: 24px; font-weight: 800; color: var(--primary-green); line-height: 1.1; }
@@ -176,7 +169,7 @@
             box-shadow: 0 2px 6px rgba(27,94,32,0.2);
         }
 
-        /* Products Grid */
+        /* Container & Sections */
         .container { max-width: 1250px; margin: 30px auto; padding: 0 20px; }
         .section-heading { font-size: 20px; font-weight: 800; color: var(--primary-green); margin-bottom: 20px; border-bottom: 2px solid #c8e6c9; padding-bottom: 8px; }
         
@@ -199,7 +192,6 @@
         }
         .product-card:hover { transform: translateY(-4px); box-shadow: 0 8px 20px rgba(0,0,0,0.08); }
         
-        /* Fixed Image Wrapper & Image Sizing */
         .product-img-wrapper { 
             width: 100%; 
             height: 170px; 
@@ -238,6 +230,38 @@
         }
         .btn-add-cart:hover { background-color: var(--dark-green); }
 
+        /* Dynamic Section Styling (Hidden/Visible) */
+        .page-section { display: none; }
+        .page-section.active-section { display: block; }
+
+        .content-box {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            line-height: 1.6;
+        }
+        .content-box h2 { color: var(--primary-green); margin-bottom: 15px; }
+        .content-box p { margin-bottom: 10px; color: #555; }
+
+        /* Admin Form Styling */
+        .admin-form { display: flex; flex-direction: column; gap: 15px; max-width: 500px; }
+        .admin-form input, .admin-form select {
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 14px;
+        }
+        .admin-form button {
+            background: var(--primary-green);
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 6px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
         @media (max-width: 768px) {
             header { padding: 12px 15px; }
             .sub-header { padding: 12px 15px; }
@@ -247,33 +271,32 @@
 </head>
 <body>
 
-    <!-- Professional Rich Top Green Banner -->
+    <!-- Header Banner -->
     <header>
         <div class="header-top-row">
             🛒 <span data-key="tagline">Kerala's Fast Online Grocery Delivery Store</span>
         </div>
 
         <div class="header-nav-row">
-            <!-- Language Switcher -->
             <div class="lang-switch">
                 <button class="lang-btn" id="langMl" onclick="setLanguage('ml')">മലയാളം</button>
                 <button class="lang-btn" id="langEn" onclick="setLanguage('en')">English</button>
             </div>
 
             <div class="nav-menu-group">
-                <a href="index.html" class="nav-link">🏠 <span data-key="home">Home</span></a>
-                <a href="how-to-order.html" class="nav-link">📱 <span data-key="howToOrder">How to Order?</span></a>
-                <a href="about.html" class="nav-link"><span data-key="aboutUs">About Us</span></a>
-                <a href="contact.html" class="nav-link"><span data-key="contact">Contact</span></a>
-                <a href="admin.html" class="nav-link admin-btn"><span data-key="admin">Admin</span></a>
-                <a href="cart.html" class="nav-link cart-btn">🛒 <span data-key="cart">Cart</span></a>
+                <a class="nav-link" onclick="switchSection('home')">🏠 <span data-key="home">Home</span></a>
+                <a class="nav-link" onclick="switchSection('howToOrder')">📱 <span data-key="howToOrder">How to Order?</span></a>
+                <a class="nav-link" onclick="switchSection('about')"><span data-key="aboutUs">About Us</span></a>
+                <a class="nav-link" onclick="switchSection('contact')"><span data-key="contact">Contact</span></a>
+                <a class="nav-link admin-btn" onclick="switchSection('admin')"><span data-key="admin">Admin</span></a>
+                <a class="nav-link cart-btn" onclick="switchSection('cart')">🛒 <span data-key="cart">Cart</span></a>
             </div>
         </div>
     </header>
 
-    <!-- Sub Header & Branding -->
+    <!-- Sub Header -->
     <div class="sub-header">
-        <div class="brand-box">
+        <div class="brand-box" onclick="switchSection('home')">
             <div class="brand-icon">
                 <svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
             </div>
@@ -282,32 +305,96 @@
                 <span data-key="subTagline">✨ ORDER EASILY ONLINE</span>
             </div>
         </div>
-        <button class="check-cart-top" onclick="window.location.href='cart.html'">
+        <button class="check-cart-top" onclick="switchSection('cart')">
             🛒 <span data-key="checkCart">Check Cart</span>
         </button>
     </div>
 
-    <!-- Categories Filter Bar -->
-    <div class="categories-container">
-        <div class="cat-chip active" onclick="filterCategory('all', this)"><span data-key="catAll">എല്ലാം (All)</span></div>
-        <div class="cat-chip" onclick="filterCategory('General', this)"><span data-key="catGeneral">General</span></div>
-        <div class="cat-chip" onclick="filterCategory('Groceries', this)"><span data-key="catGroceries">Groceries</span></div>
-        <div class="cat-chip" onclick="filterCategory('Vegetables', this)"><span data-key="catVegetables">Vegetables</span></div>
-        <div class="cat-chip" onclick="filterCategory('Fruits', this)"><span data-key="catFruits">Fruits</span></div>
+    <!-- 1. HOME SECTION -->
+    <div id="homeSection" class="page-section active-section">
+        <div class="categories-container">
+            <div class="cat-chip active" onclick="filterCategory('all', this)"><span data-key="catAll">എല്ലാം (All)</span></div>
+            <div class="cat-chip" onclick="filterCategory('General', this)"><span data-key="catGeneral">General</span></div>
+            <div class="cat-chip" onclick="filterCategory('Groceries', this)"><span data-key="catGroceries">Groceries</span></div>
+            <div class="cat-chip" onclick="filterCategory('Vegetables', this)"><span data-key="catVegetables">Vegetables</span></div>
+            <div class="cat-chip" onclick="filterCategory('Fruits', this)"><span data-key="catFruits">Fruits</span></div>
+        </div>
+
+        <div class="container">
+            <h2 class="section-heading" data-key="newProductsHeading">പുതിയ പലവ്യഞ്ജനങ്ങളും സാധനങ്ങളും</h2>
+            <div class="products-grid" id="productsGridContainer"></div>
+        </div>
     </div>
 
-    <!-- Main Products Listing Section -->
-    <div class="container">
-        <h2 class="section-heading" data-key="newProductsHeading">പുതിയ പലവ്യഞ്ജനങ്ങളും സാധനങ്ങളും</h2>
-        <div class="products-grid" id="productsGridContainer">
-            <!-- Dynamic Products from Firebase Realtime DB will load here -->
+    <!-- 2. HOW TO ORDER SECTION -->
+    <div id="howToOrderSection" class="page-section">
+        <div class="container">
+            <div class="content-box">
+                <h2>📱 എങ്ങനെ ഓർഡർ ചെയ്യാം? / How to Order?</h2>
+                <p>1. ആവശ്യമായ സാധനങ്ങൾ ഹോം പേജിൽ നിന്ന് കാർട്ടിലേക്ക് ചേർക്കുക (Add to Cart).</p>
+                <p>2. കാർട്ട് പേജിൽ പോയി നിങ്ങളുടെ ഓർഡർ പരിശോധിക്കുക.</p>
+                <p>3. WhatsApp വഴി നേരിട്ട് ഓർഡർ കൺഫർം ചെയ്യാം.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. ABOUT US SECTION -->
+    <div id="aboutSection" class="page-section">
+        <div class="container">
+            <div class="content-box">
+                <h2>🛒 ഞങ്ങളെക്കുറിച്ച് / About Us</h2>
+                <p>QuickMart Online - കേരളത്തിലെ ഏറ്റവും വേഗത്തിലുള്ള ഓൺലൈൻ പലവ്യഞ്ജന വിതരണ ശൃംഖല.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 4. CONTACT SECTION -->
+    <div id="contactSection" class="page-section">
+        <div class="container">
+            <div class="content-box">
+                <h2>📞 ബന്ധപ്പെടാൻ / Contact Us</h2>
+                <p>Email: support@quickmart.com</p>
+                <p>Phone: +91 9876543210</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 5. CART SECTION -->
+    <div id="cartSection" class="page-section">
+        <div class="container">
+            <div class="content-box">
+                <h2>🛒 നിങ്ങളുടെ കാർട്ട് (Your Cart)</h2>
+                <div id="cartItemsContainer">
+                    <p>കാർട്ട് കാലിയാണ് (Cart is empty).</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 6. ADMIN SECTION -->
+    <div id="adminSection" class="page-section">
+        <div class="container">
+            <div class="content-box">
+                <h2>🛠️ അഡ്മിൻ പാനൽ (Admin Panel)</h2>
+                <form class="admin-form" onsubmit="addProduct(event)">
+                    <input type="text" id="adminName" placeholder="Product Name (English)" required>
+                    <input type="text" id="adminNameMl" placeholder="Product Name (Malayalam)">
+                    <input type="number" id="adminPrice" placeholder="Price (₹)" required>
+                    <select id="adminCategory">
+                        <option value="General">General</option>
+                        <option value="Groceries">Groceries</option>
+                        <option value="Vegetables">Vegetables</option>
+                        <option value="Fruits">Fruits</option>
+                    </select>
+                    <input type="text" id="adminImage" placeholder="Image URL (or HTML tag)" required>
+                    <button type="submit">Add Product to Cloud</button>
+                </form>
+            </div>
         </div>
     </div>
 
     <script>
-        // ==========================================
-        // FIREBASE CONFIGURATION (Realtime Database)
-        // ==========================================
+        // Firebase Config
         const firebaseConfig = {
             apiKey: "AIzaSyD_geMtD7UVO5lZq7AI5annvw70gWAVhDE",
             authDomain: "quickmart-ce511.firebaseapp.com",
@@ -325,7 +412,6 @@
         let currentCategory = 'all';
         let allProductsCache = [];
 
-        // Dictionary for Multilingual UI Texts
         const translations = {
             en: {
                 tagline: "Kerala's Fast Online Grocery Delivery Store",
@@ -365,6 +451,20 @@
             }
         };
 
+        function switchSection(sectionId) {
+            document.querySelectorAll('.page-section').forEach(sec => sec.classList.remove('active-section'));
+            if (sectionId === 'home') document.getElementById('homeSection').classList.add('active-section');
+            if (sectionId === 'howToOrder') document.getElementById('howToOrderSection').classList.add('active-section');
+            if (sectionId === 'about') document.getElementById('aboutSection').classList.add('active-section');
+            if (sectionId === 'contact') document.getElementById('contactSection').classList.add('active-section');
+            if (sectionId === 'cart') {
+                document.getElementById('cartSection').classList.add('active-section');
+                renderCart();
+            }
+            if (sectionId === 'admin') document.getElementById('adminSection').classList.add('active-section');
+            window.scrollTo(0, 0);
+        }
+
         function setLanguage(lang) {
             localStorage.setItem('quickmart_lang', lang);
             document.getElementById('langEn').classList.toggle('active', lang === 'en');
@@ -376,7 +476,6 @@
                     el.textContent = translations[lang][key];
                 }
             });
-
             renderProducts(allProductsCache);
         }
 
@@ -404,10 +503,10 @@
 
         function renderProducts(products) {
             const container = document.getElementById('productsGridContainer');
+            if (!container) return;
             container.innerHTML = '';
 
             const currentLang = localStorage.getItem('quickmart_lang') || 'en';
-            
             let filtered = products;
             if (currentCategory !== 'all') {
                 filtered = products.filter(p => p.category === currentCategory);
@@ -422,7 +521,6 @@
                 const displayName = (currentLang === 'ml' && prod.nameMl) ? prod.nameMl : prod.name;
                 const btnText = translations[currentLang]['addToCart'] || 'Add to Cart';
 
-                // Handle image rendering securely whether it's an HTML tag or image URL
                 let imageHtml = '🛒';
                 if (prod.image) {
                     if (prod.image.trim().startsWith('<img')) {
@@ -436,15 +534,11 @@
                 card.className = 'product-card';
                 card.innerHTML = `
                     <div>
-                        <div class="product-img-wrapper">
-                            ${imageHtml}
-                        </div>
+                        <div class="product-img-wrapper">${imageHtml}</div>
                         <div class="product-name">${displayName}</div>
                         <div class="product-price">₹${prod.price}</div>
                     </div>
-                    <button class="btn-add-cart" onclick='addToCart(${JSON.stringify(prod)})'>
-                        🛒 ${btnText}
-                    </button>
+                    <button class="btn-add-cart" onclick='addToCart(${JSON.stringify(prod)})'>🛒 ${btnText}</button>
                 `;
                 container.appendChild(card);
             });
@@ -467,6 +561,51 @@
             }
             localStorage.setItem('quickmart_cart', JSON.stringify(cart));
             alert('Item added to cart successfully!');
+        }
+
+        function renderCart() {
+            const container = document.getElementById('cartItemsContainer');
+            let cart = JSON.parse(localStorage.getItem('quickmart_cart')) || [];
+            if (cart.length === 0) {
+                container.innerHTML = '<p>കാർട്ട് കാലിയാണ് (Cart is empty).</p>';
+                return;
+            }
+            let html = '<ul style="list-style: none; padding:0;">';
+            let total = 0;
+            cart.forEach((item, index) => {
+                total += (item.price * (item.qty || 1));
+                html += `<li style="padding: 10px 0; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center;">
+                    <span><b>${item.name}</b> - ₹${item.price} x ${item.qty || 1}</span>
+                    <button onclick="removeFromCart(${index})" style="background:red; color:white; border:none; padding:5px 10px; border-radius:4px; cursor:pointer;">Remove</button>
+                </li>`;
+            });
+            html += `</ul><h3 style="margin-top: 15px;">Total: ₹${total}</h3>`;
+            container.innerHTML = html;
+        }
+
+        function removeFromCart(index) {
+            let cart = JSON.parse(localStorage.getItem('quickmart_cart')) || [];
+            cart.splice(index, 1);
+            localStorage.setItem('quickmart_cart', JSON.stringify(cart));
+            renderCart();
+        }
+
+        function addProduct(e) {
+            e.preventDefault();
+            const name = document.getElementById('adminName').value;
+            const nameMl = document.getElementById('adminNameMl').value;
+            const price = document.getElementById('adminPrice').value;
+            const category = document.getElementById('adminCategory').value;
+            const image = document.getElementById('adminImage').value;
+
+            db.ref('products').push({ name, nameMl, price, category, image }).then(() => {
+                alert('Product added successfully!');
+                document.querySelector('.admin-form').reset();
+                loadProductsFromCloud();
+                switchSection('home');
+            }).catch(err => {
+                alert('Error adding product: ' + err.message);
+            });
         }
 
         window.onload = function() {
