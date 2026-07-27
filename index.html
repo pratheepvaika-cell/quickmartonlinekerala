@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="ml">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title id="pageTitle">QuickMart Online - കേരളത്തിന്റെ സ്വന്തം ഓൺലൈൻ പലവ്യഞ്ജന കട</title>
+    <title id="pageTitle">QuickMart Online - Kerala's Fast Grocery Delivery</title>
     <style>
         html, body { width: 100%; margin: 0; padding: 0; overflow-x: hidden; }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
@@ -152,6 +152,9 @@
 
         function setLanguage(lang) {
             localStorage.setItem('quickMartLang', lang);
+            
+            // ബ്രൗസർ ട്രാൻസ്ലേറ്റ് പോപ്പ്-അപ്പ് വരാതിരിക്കാൻ HTML lang ആട്രിബ്യൂട്ട് ഡൈനാമിക് ആയി മാറ്റുന്നു
+            document.documentElement.lang = (lang === 'english') ? 'en' : 'ml';
             
             document.getElementById('btnMal').classList.remove('active');
             document.getElementById('btnEng').classList.remove('active');
