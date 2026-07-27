@@ -225,26 +225,55 @@
 
             let filtered = selectedCat === 'All' ? products : products.filter(p => (p.category || 'General') === selectedCat);
 
-            let html = '';
+            grid.innerHTML = '';
             if (filtered.length === 0) {
                 grid.innerHTML = '<p style="grid-column: 1/-1; text-align:center; color:#666; padding: 20px;">ഈ വിഭാഗത്തിൽ സാധനങ്ങളൊന്നും ലഭ്യമല്ല.</p>';
                 return;
             }
 
             filtered.forEach((p) => {
-                let cleanImg = (p.image || 'https://via.placeholder.com/300').replace(/"/g, '&quot;');
-                html += `
-                    <div class="product-card">
-                        <img src="${cleanImg}" class="product-img" alt="${p.name}">
-                        <div>
-                            <div class="product-name">${p.name}</div>
-                            <div class="product-price">₹${p.price}</div>
-                        </div>
-                        <button class="add-to-cart-btn" onclick="addToCart('${p.name}', ${p.price})">${t.addToCart}</button>
-                    </div>
-                `;
+                let card = document.createElement('div');
+                card.className = 'product-card';
+
+                let img = document.createElement('img');
+                img.className = 'product-img';
+                
+                let imgSrc = p.image ? p.image.trim() : '';
+                if (!imgSrc || imgSrc.includes('<') || imgSrc.includes('>')) {
+                    imgSrc = 'https://images.unsplash.com/photo-1542838132-92c53300491e?w=400';
+                }
+                img.src = imgSrc;
+                img.alt = p.name || 'Product';
+                img.onerror = function() {
+                    this.src = 'https://images.unsplash.com/photo-1542838132-92c53300491e?w=400';
+                };
+
+                let contentDiv = document.createElement('div');
+                
+                let nameDiv = document.createElement('div');
+                nameDiv.className = 'product-name';
+                nameDiv.textContent = p.name;
+
+                let priceDiv = document.createElement('div');
+                priceDiv.className = 'product-price';
+                priceDiv.textContent = '₹' + p.price;
+
+                contentDiv.appendChild(nameDiv);
+                contentDiv.appendChild(priceDiv);
+
+                let btn = document.createElement('button');
+                btn.className = 'add-to-cart-btn';
+                btn.textContent = t.addToCart;
+                btn.onclick = function() {
+                    addToCart(p.name, p.price);
+                };
+
+                card.appendChild(img);
+                card.appendChild(contentDiv);
+                card.appendChild(btn);
+
+                grid.appendChild(card);
             });
-            grid.innerHTML = html;
         }
 
         function addToCart(name, price) {
