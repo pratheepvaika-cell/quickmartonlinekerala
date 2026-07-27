@@ -1,431 +1,425 @@
 let statusChartInstance = null;
-    let salesChartInstance = null;
-    let lastOrderCount = null;
+let salesChartInstance = null;
+let lastOrderCount = null;
 
-    function switchTab(tabName, element) {
-        document.querySelectorAll('.sidebar nav a').forEach(a => a.classList.remove('active'));
-        if(element) element.classList.add('active');
+function switchTab(tabName, element) {
+    document.querySelectorAll('.sidebar nav a').forEach(a => a.classList.remove('active'));
+    if(element) element.classList.add('active');
 
-        const dashSec = document.getElementById('dashboardSection');
-        const prodSec = document.getElementById('productsSection');
-        const stockSec = document.getElementById('stockSection');
-        const ordSec = document.getElementById('ordersSection');
-        const histSec = document.getElementById('historySection');
+    const dashSec = document.getElementById('dashboardSection');
+    const prodSec = document.getElementById('productsSection');
+    const stockSec = document.getElementById('stockSection');
+    const ordSec = document.getElementById('ordersSection');
+    const histSec = document.getElementById('historySection');
 
-        dashSec.style.display = 'none';
-        prodSec.style.display = 'none';
-        stockSec.style.display = 'none';
-        ordSec.style.display = 'none';
-        histSec.style.display = 'none';
+    dashSec.style.display = 'none';
+    prodSec.style.display = 'none';
+    stockSec.style.display = 'none';
+    ordSec.style.display = 'none';
+    histSec.style.display = 'none';
 
-        if (tabName === 'dashboard') {
-            dashSec.style.display = 'block';
-            loadDashboardData();
-        } else if (tabName === 'products') {
-            prodSec.style.display = 'block';
-            loadAdminProductsList();
-        } else if (tabName === 'stock') {
-            stockSec.style.display = 'block';
-            loadStockInventory();
-        } else if (tabName === 'orders') {
-            ordSec.style.display = 'block';
-            loadLiveOrders();
-        } else if (tabName === 'history') {
-            histSec.style.display = 'block';
-            loadDailyHistory();
-        }
-    }
-
-    function playRailwayChime() {
-        return new Promise((resolve) => {
-            try {
-                const AudioContext = window.AudioContext || window.webkitAudioContext;
-                const ctx = new AudioContext();
-
-                const playNote = (freq, startTime, duration) => {
-                    const osc = ctx.createOscillator();
-                    const gain = ctx.createGain();
-
-                    osc.type = 'sine';
-                    osc.frequency.setValueAtTime(freq, startTime);
-
-                    gain.gain.setValueAtTime(0, startTime);
-                    gain.gain.linearRampToValueAtTime(0.35, startTime + 0.02);
-                    gain.gain.exponentialRampToValueAtTime(0.0001, startTime + duration);
-
-                    osc.connect(gain);
-                    gain.connect(ctx.destination);
-
-                    osc.start(startTime);
-                    osc.stop(startTime + duration);
-                };
-
-                const now = ctx.currentTime;
-                playNote(659.25, now, 0.9);     
-                playNote(523.25, now + 0.45, 1.2); 
-
-                setTimeout(() => {
-                    ctx.close();
-                    resolve();
-                }, 1500);
-            } catch (e) {
-                resolve();
-            }
-        });
-    }
-
-    function speakVoice(text) {
-        return new Promise((resolve) => {
-            if (!('speechSynthesis' in window)) {
-                resolve();
-                return;
-            }
-            window.speechSynthesis.cancel();
-            const msg = new SpeechSynthesisUtterance(text);
-            msg.lang = 'en-US';
-            msg.rate = 0.88;
-            msg.pitch = 1.0;
-            msg.volume = 1.0;
-
-            msg.onend = () => resolve();
-            msg.onerror = () => resolve();
-
-            window.speechSynthesis.speak(msg);
-        });
-    }
-
-    function sleep(ms) { return new Promise(resolve => setTimeout(resolve, ms)); }
-
-    async function triggerRailwayStyleAlert() {
-        for (let i = 0; i < 2; i++) {
-            await playRailwayChime();
-            await sleep(600);          
-            await speakVoice("Your order has been received, please check"); 
-            await sleep(800);          
-        }
-    }
-
-    function addProduct(event) {
-        event.preventDefault();
-        const name = document.getElementById('pName').value;
-        const price = document.getElementById('pPrice').value;
-        const stock = document.getElementById('pStock').value;
-        const fileInput = document.getElementById('pImageFile');
-        const file = fileInput.files[0];
-
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const base64Image = e.target.result;
-                const imageHtml = '<img src="' + base64Image + '" style="width: 50px; height: 50px; object-fit: contain; border-radius: 6px;">';
-                saveData(name, price, stock, imageHtml);
-            };
-            reader.readAsDataURL(file);
-        }
-    }
-
-    function saveData(name, price, stock, imageHtml) {
-        const newProduct = { name: name, price: price, stock: parseInt(stock) || 0, img: imageHtml };
-        
-        // Save to both keys so website & admin both can read it smoothly
-        let products = JSON.parse(localStorage.getItem('adminProducts')) || [];
-        products.push(newProduct);
-        
-        let websiteProducts = JSON.parse(localStorage.getItem('quickMartProducts')) || [];
-        websiteProducts.push(newProduct);
-        
-        try {
-            localStorage.setItem('adminProducts', JSON.stringify(products));
-            localStorage.setItem('quickMartProducts', JSON.stringify(websiteProducts));
-            
-            alert('Product "' + name + '" added successfully!');
-            document.getElementById('pName').value = '';
-            document.getElementById('pPrice').value = '';
-            document.getElementById('pStock').value = '';
-            document.getElementById('pImageFile').value = '';
-            loadAdminProductsList();
-        } catch(e) {
-            alert('⚠️ Image size is too large! Please choose a smaller image.');
-        }
-    }
-
-    function loadAdminProductsList() {
-        let products = JSON.parse(localStorage.getItem('adminProducts')) || [];
-        const tbody = document.getElementById('productsTableBody');
-        tbody.innerHTML = '';
-
-        if (products.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding: 15px; color:#888;">No products added yet!</td></tr>';
-            return;
-        }
-
-        products.forEach((prod, index) => {
-            let stockVal = prod.stock !== undefined ? prod.stock : 0;
-            let row = document.createElement('tr');
-            row.innerHTML = `
-                <td>${prod.img || '🛒'}</td>
-                <td><strong>${prod.name}</strong></td>
-                <td>₹${prod.price}</td>
-                <td><strong>${stockVal} units</strong></td>
-                <td>
-                    <button class="btn-action btn-edit" onclick="openEditModal(${index})">Edit</button>
-                    <button class="btn-action btn-delete" onclick="deleteProduct(${index})">Delete</button>
-                </td>
-            `;
-            tbody.appendChild(row);
-        });
-    }
-
-    function loadStockInventory() {
-        let products = JSON.parse(localStorage.getItem('adminProducts')) || [];
-        const tbody = document.getElementById('stockTableBody');
-        tbody.innerHTML = '';
-
-        let totalTypes = products.length;
-        let totalQty = 0;
-        let lowAlertCount = 0;
-
-        if (products.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding: 20px; color:#888;">No stock available!</td></tr>';
-            document.getElementById('stockTotalTypes').textContent = '0';
-            document.getElementById('stockTotalQty').textContent = '0';
-            document.getElementById('stockLowAlertCount').textContent = '0';
-            return;
-        }
-
-        products.forEach((prod, index) => {
-            let stock = prod.stock !== undefined ? parseInt(prod.stock) : 0;
-            totalQty += stock;
-
-            let statusBadge = '';
-            if (stock === 0) {
-                statusBadge = '<span class="badge-outstock">Out of Stock</span>';
-                lowAlertCount++;
-            } else if (stock < 5) {
-                statusBadge = '<span class="badge-lowstock">Low Stock</span>';
-                lowAlertCount++;
-            } else {
-                statusBadge = '<span class="badge-instock">In Stock</span>';
-            }
-
-            let row = document.createElement('tr');
-            row.innerHTML = `
-                <td>${prod.img || '🛒'}</td>
-                <td><strong>${prod.name}</strong></td>
-                <td>₹${prod.price}</td>
-                <td><strong>${stock}</strong></td>
-                <td>${statusBadge}</td>
-                <td>
-                    <input type="number" id="stockInput_${index}" value="${stock}" style="width: 80px; padding: 5px; border: 1px solid #ccc; border-radius: 4px; margin-right: 5px;">
-                    <button class="btn-action btn-edit" onclick="updateStockDirect(${index})">Save</button>
-                </td>
-            `;
-            tbody.appendChild(row);
-        });
-
-        document.getElementById('stockTotalTypes').textContent = totalTypes;
-        document.getElementById('stockTotalQty').textContent = totalQty;
-        document.getElementById('stockLowAlertCount').textContent = lowAlertCount;
-    }
-
-    function updateStockDirect(index) {
-        let newStockVal = document.getElementById(`stockInput_${index}`).value;
-        let products = JSON.parse(localStorage.getItem('adminProducts')) || [];
-        let websiteProducts = JSON.parse(localStorage.getItem('quickMartProducts')) || [];
-
-        products[index].stock = parseInt(newStockVal) || 0;
-        if(websiteProducts[index]) websiteProducts[index].stock = products[index].stock;
-
-        localStorage.setItem('adminProducts', JSON.stringify(products));
-        localStorage.setItem('quickMartProducts', JSON.stringify(websiteProducts));
-
-        alert('Stock updated successfully!');
-        loadStockInventory();
-    }
-
-    function openEditModal(index) {
-        let products = JSON.parse(localStorage.getItem('adminProducts')) || [];
-        document.getElementById('editIndex').value = index;
-        document.getElementById('editPName').value = products[index].name;
-        document.getElementById('editPPrice').value = products[index].price;
-        document.getElementById('editPStock').value = products[index].stock !== undefined ? products[index].stock : 0;
-        document.getElementById('editModal').style.display = 'flex';
-    }
-
-    function closeModal() {
-        document.getElementById('editModal').style.display = 'none';
-    }
-
-    function saveEditedProduct() {
-        let index = document.getElementById('editIndex').value;
-        let products = JSON.parse(localStorage.getItem('adminProducts')) || [];
-        let websiteProducts = JSON.parse(localStorage.getItem('quickMartProducts')) || [];
-
-        products[index].name = document.getElementById('editPName').value;
-        products[index].price = document.getElementById('editPPrice').value;
-        products[index].stock = parseInt(document.getElementById('editPStock').value) || 0;
-
-        if(websiteProducts[index]) {
-            websiteProducts[index].name = products[index].name;
-            websiteProducts[index].price = products[index].price;
-            websiteProducts[index].stock = products[index].stock;
-        }
-
-        localStorage.setItem('adminProducts', JSON.stringify(products));
-        localStorage.setItem('quickMartProducts', JSON.stringify(websiteProducts));
-
-        closeModal();
+    if (tabName === 'dashboard') {
+        dashSec.style.display = 'block';
+        loadDashboardData();
+    } else if (tabName === 'products') {
+        prodSec.style.display = 'block';
         loadAdminProductsList();
-        alert('Product updated successfully!');
-    }
-
-    function deleteProduct(index) {
-        if (confirm('Are you sure you want to delete this product?')) {
-            let products = JSON.parse(localStorage.getItem('adminProducts')) || [];
-            let websiteProducts = JSON.parse(localStorage.getItem('quickMartProducts')) || [];
-
-            products.splice(index, 1);
-            if(websiteProducts[index]) websiteProducts.splice(index, 1);
-
-            localStorage.setItem('adminProducts', JSON.stringify(products));
-            localStorage.setItem('quickMartProducts', JSON.stringify(websiteProducts));
-
-            loadAdminProductsList();
-        }
-    }
-
-    function loadDashboardData() {
-        let orders = JSON.parse(localStorage.getItem('quickMartOrders')) || [];
-
-        if (lastOrderCount !== null && orders.length > lastOrderCount) {
-            triggerRailwayStyleAlert();
-        }
-        lastOrderCount = orders.length;
-
-        let totalRevenue = 0, pendingCount = 0, deliveredCount = 0;
-
-        orders.forEach((order) => {
-            if (order.status !== 'Cancelled') totalRevenue += parseInt(order.price || 0);
-            if (order.status === 'Pending') pendingCount++;
-            else if (order.status === 'Delivered') deliveredCount++;
-        });
-
-        document.getElementById('totalRevenue').textContent = '₹' + totalRevenue;
-        document.getElementById('totalOrdersCount').textContent = orders.length;
-        document.getElementById('pendingOrdersCount').textContent = pendingCount;
-        document.getElementById('deliveredOrdersCount').textContent = deliveredCount;
-
+    } else if (tabName === 'stock') {
+        stockSec.style.display = 'block';
+        loadStockInventory();
+    } else if (tabName === 'orders') {
+        ordSec.style.display = 'block';
         loadLiveOrders();
-    }
-
-    function loadLiveOrders() {
-        let orders = JSON.parse(localStorage.getItem('quickMartOrders')) || [];
-        const tbody = document.getElementById('ordersTableBody');
-        if (!tbody) return;
-        tbody.innerHTML = '';
-        
-        let liveOrders = orders.filter(o => o.status !== 'Delivered' && o.status !== 'Cancelled');
-        
-        if (liveOrders.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding: 15px; color:#888;">No live orders right now!</td></tr>';
-            return;
-        }
-
-        liveOrders.forEach((order, index) => {
-            let row = document.createElement('tr');
-            row.innerHTML = `
-                <td><strong>#${order.id || (index + 1000)}</strong></td>
-                <td>${order.date || 'Today'}</td>
-                <td>${order.customer || 'N/A'}<br><small>${order.phone || ''}</small></td>
-                <td>${order.items || 'Supermarket Items'}</td>
-                <td><strong>₹${order.price || 0}</strong></td>
-                <td>
-                    <select class="status-select status-${order.status || 'Pending'}" onchange="updateOrderStatus(${index}, this.value)">
-                        <option value="Pending" ${order.status === 'Pending' ? 'selected' : ''}>Pending</option>
-                        <option value="Processing" ${order.status === 'Processing' ? 'selected' : ''}>Processing</option>
-                        <option value="Delivered" ${order.status === 'Delivered' ? 'selected' : ''}>Delivered</option>
-                        <option value="Cancelled" ${order.status === 'Cancelled' ? 'selected' : ''}>Cancelled</option>
-                    </select>
-                </td>
-                <td>
-                    <button class="btn-action btn-delete" onclick="deleteOrder(${index})">Delete</button>
-                </td>
-            `;
-            tbody.appendChild(row);
-        });
-    }
-
-    function updateOrderStatus(index, newStatus) {
-        let orders = JSON.parse(localStorage.getItem('quickMartOrders')) || [];
-        if (orders[index]) {
-            orders[index].status = newStatus;
-            localStorage.setItem('quickMartOrders', JSON.stringify(orders));
-            loadDashboardData();
-            loadLiveOrders();
-        }
-    }
-
-    function deleteOrder(index) {
-        if (confirm('Are you sure you want to delete this order?')) {
-            let orders = JSON.parse(localStorage.getItem('quickMartOrders')) || [];
-            orders.splice(index, 1);
-            localStorage.setItem('quickMartOrders', JSON.stringify(orders));
-            loadDashboardData();
-            loadLiveOrders();
-        }
-    }
-
-    function loadDailyHistory() {
-        let orders = JSON.parse(localStorage.getItem('quickMartOrders')) || [];
-        const filterDate = document.getElementById('filterDate').value;
-        const tbody = document.getElementById('historyTableBody');
-        if (!tbody) return;
-        tbody.innerHTML = '';
-
-        let filtered = orders;
-        if (filterDate) {
-            filtered = orders.filter(o => o.date && o.date.includes(filterDate));
-        }
-
-        let histRev = 0;
-        filtered.forEach(o => {
-            if (o.status !== 'Cancelled') histRev += parseInt(o.price || 0);
-        });
-
-        document.getElementById('historyOrdersCount').textContent = filtered.length;
-        document.getElementById('historyRevenue').textContent = '₹' + histRev;
-
-        if (filtered.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding: 15px; color:#888;">No history found for selected date!</td></tr>';
-            return;
-        }
-
-        filtered.forEach((order, index) => {
-            let row = document.createElement('tr');
-            row.innerHTML = `
-                <td><strong>#${order.id || (index + 1000)}</strong></td>
-                <td>${order.date || 'N/A'}</td>
-                <td>${order.customer || 'N/A'}</td>
-                <td>${order.items || 'Items'}</td>
-                <td><strong>₹${order.price || 0}</strong></td>
-                <td><span class="status-select status-${order.status || 'Pending'}" style="padding: 2px 8px; font-size:12px;">${order.status || 'Pending'}</span></td>
-                <td>
-                    <button class="btn-action btn-delete" onclick="deleteOrder(${index})">Delete</button>
-                </td>
-            `;
-            tbody.appendChild(row);
-        });
-    }
-
-    function resetDateFilter() {
-        document.getElementById('filterDate').value = '';
+    } else if (tabName === 'history') {
+        histSec.style.display = 'block';
         loadDailyHistory();
     }
+}
 
-    function logout() {
-        window.location.href = 'admin.html';
+function playRailwayChime() {
+    return new Promise((resolve) => {
+        try {
+            const AudioContext = window.AudioContext || window.webkitAudioContext;
+            const ctx = new AudioContext();
+            const playNote = (freq, startTime, duration) => {
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(freq, startTime);
+                gain.gain.setValueAtTime(0, startTime);
+                gain.gain.linearRampToValueAtTime(0.35, startTime + 0.02);
+                gain.gain.exponentialRampToValueAtTime(0.0001, startTime + duration);
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.start(startTime);
+                osc.stop(startTime + duration);
+            };
+            const now = ctx.currentTime;
+            playNote(659.25, now, 0.9);     
+            playNote(523.25, now + 0.45, 1.2); 
+            setTimeout(() => {
+                ctx.close();
+                resolve();
+            }, 1500);
+        } catch (e) {
+            resolve();
+        }
+    });
+}
+
+function speakVoice(text) {
+    return new Promise((resolve) => {
+        if (!('speechSynthesis' in window)) {
+            resolve();
+            return;
+        }
+        window.speechSynthesis.cancel();
+        const msg = new SpeechSynthesisUtterance(text);
+        msg.lang = 'en-US';
+        msg.rate = 0.88;
+        msg.pitch = 1.0;
+        msg.volume = 1.0;
+        msg.onend = () => resolve();
+        msg.onerror = () => resolve();
+        window.speechSynthesis.speak(msg);
+    });
+}
+
+function sleep(ms) { 
+    return new Promise(resolve => setTimeout(resolve, ms)); 
+}
+
+async function triggerRailwayStyleAlert() {
+    for (let i = 0; i < 2; i++) {
+        await playRailwayChime();
+        await sleep(600);          
+        await speakVoice("Your order has been received, please check"); 
+        await sleep(800);          
+    }
+}
+
+function addProduct(event) {
+    event.preventDefault();
+    const name = document.getElementById('pName').value;
+    const price = document.getElementById('pPrice').value;
+    const stock = document.getElementById('pStock').value;
+    const fileInput = document.getElementById('pImageFile');
+    const file = fileInput.files[0];
+
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const base64Image = e.target.result;
+            const imageHtml = '<img src="' + base64Image + '" style="width: 50px; height: 50px; object-fit: contain; border-radius: 6px;">';
+            saveData(name, price, stock, imageHtml);
+        };
+        reader.readAsDataURL(file);
+    }
+}
+
+function saveData(name, price, stock, imageHtml) {
+    const newProduct = { name: name, price: price, stock: parseInt(stock) || 0, img: imageHtml };
+    
+    let products = JSON.parse(localStorage.getItem('adminProducts')) || [];
+    products.push(newProduct);
+    
+    let websiteProducts = JSON.parse(localStorage.getItem('quickMartProducts')) || [];
+    websiteProducts.push(newProduct);
+    
+    try {
+        localStorage.setItem('adminProducts', JSON.stringify(products));
+        localStorage.setItem('quickMartProducts', JSON.stringify(websiteProducts));
+        
+        alert('Product "' + name + '" added successfully!');
+        document.getElementById('pName').value = '';
+        document.getElementById('pPrice').value = '';
+        document.getElementById('pStock').value = '';
+        document.getElementById('pImageFile').value = '';
+        loadAdminProductsList();
+    } catch(e) {
+        alert('Image size is too large! Please choose a smaller image.');
+    }
+}
+
+function loadAdminProductsList() {
+    let products = JSON.parse(localStorage.getItem('adminProducts')) || [];
+    const tbody = document.getElementById('productsTableBody');
+    if(!tbody) return;
+    tbody.innerHTML = '';
+
+    if (products.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding: 15px; color:#888;">No products added yet!</td></tr>';
+        return;
     }
 
-    window.onload = function() {
+    products.forEach((prod, index) => {
+        let stockVal = prod.stock !== undefined ? prod.stock : 0;
+        let row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${prod.img || '🛒'}</td>
+            <td><strong>${prod.name}</strong></td>
+            <td>₹${prod.price}</td>
+            <td><strong>${stockVal} units</strong></td>
+            <td>
+                <button class="btn-action btn-edit" onclick="openEditModal(${index})">Edit</button>
+                <button class="btn-action btn-delete" onclick="deleteProduct(${index})">Delete</button>
+            </td>
+        `;
+        tbody.appendChild(row);
+    });
+}
+
+function loadStockInventory() {
+    let products = JSON.parse(localStorage.getItem('adminProducts')) || [];
+    const tbody = document.getElementById('stockTableBody');
+    if(!tbody) return;
+    tbody.innerHTML = '';
+
+    let totalTypes = products.length;
+    let totalQty = 0;
+    let lowAlertCount = 0;
+
+    if (products.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding: 20px; color:#888;">No stock available!</td></tr>';
+        document.getElementById('stockTotalTypes').textContent = '0';
+        document.getElementById('stockTotalQty').textContent = '0';
+        document.getElementById('stockLowAlertCount').textContent = '0';
+        return;
+    }
+
+    products.forEach((prod, index) => {
+        let stock = prod.stock !== undefined ? parseInt(prod.stock) : 0;
+        totalQty += stock;
+
+        let statusBadge = '';
+        if (stock === 0) {
+            statusBadge = '<span class="badge-outstock">Out of Stock</span>';
+            lowAlertCount++;
+        } else if (stock < 5) {
+            statusBadge = '<span class="badge-lowstock">Low Stock</span>';
+            lowAlertCount++;
+        } else {
+            statusBadge = '<span class="badge-instock">In Stock</span>';
+        }
+
+        let row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${prod.img || '🛒'}</td>
+            <td><strong>${prod.name}</strong></td>
+            <td>₹${prod.price}</td>
+            <td><strong>${stock}</strong></td>
+            <td>${statusBadge}</td>
+            <td>
+                <input type="number" id="stockInput_${index}" value="${stock}" style="width: 80px; padding: 5px; border: 1px solid #ccc; border-radius: 4px; margin-right: 5px;">
+                <button class="btn-action btn-edit" onclick="updateStockDirect(${index})">Save</button>
+            </td>
+        `;
+        tbody.appendChild(row);
+    });
+
+    document.getElementById('stockTotalTypes').textContent = totalTypes;
+    document.getElementById('stockTotalQty').textContent = totalQty;
+    document.getElementById('stockLowAlertCount').textContent = lowAlertCount;
+}
+
+function updateStockDirect(index) {
+    let newStockVal = document.getElementById('stockInput_' + index).value;
+    let products = JSON.parse(localStorage.getItem('adminProducts')) || [];
+    let websiteProducts = JSON.parse(localStorage.getItem('quickMartProducts')) || [];
+
+    products[index].stock = parseInt(newStockVal) || 0;
+    if(websiteProducts[index]) websiteProducts[index].stock = products[index].stock;
+
+    localStorage.setItem('adminProducts', JSON.stringify(products));
+    localStorage.setItem('quickMartProducts', JSON.stringify(websiteProducts));
+
+    alert('Stock updated successfully!');
+    loadStockInventory();
+}
+
+function openEditModal(index) {
+    let products = JSON.parse(localStorage.getItem('adminProducts')) || [];
+    document.getElementById('editIndex').value = index;
+    document.getElementById('editPName').value = products[index].name;
+    document.getElementById('editPPrice').value = products[index].price;
+    document.getElementById('editPStock').value = products[index].stock !== undefined ? products[index].stock : 0;
+    document.getElementById('editModal').style.display = 'flex';
+}
+
+function closeModal() {
+    document.getElementById('editModal').style.display = 'none';
+}
+
+function saveEditedProduct() {
+    let index = document.getElementById('editIndex').value;
+    let products = JSON.parse(localStorage.getItem('adminProducts')) || [];
+    let websiteProducts = JSON.parse(localStorage.getItem('quickMartProducts')) || [];
+
+    products[index].name = document.getElementById('editPName').value;
+    products[index].price = document.getElementById('editPPrice').value;
+    products[index].stock = parseInt(document.getElementById('editPStock').value) || 0;
+
+    if(websiteProducts[index]) {
+        websiteProducts[index].name = products[index].name;
+        websiteProducts[index].price = products[index].price;
+        websiteProducts[index].stock = products[index].stock;
+    }
+
+    localStorage.setItem('adminProducts', JSON.stringify(products));
+    localStorage.setItem('quickMartProducts', JSON.stringify(websiteProducts));
+
+    closeModal();
+    loadAdminProductsList();
+    alert('Product updated successfully!');
+}
+
+function deleteProduct(index) {
+    if (confirm('Are you sure you want to delete this product?')) {
+        let products = JSON.parse(localStorage.getItem('adminProducts')) || [];
+        let websiteProducts = JSON.parse(localStorage.getItem('quickMartProducts')) || [];
+
+        products.splice(index, 1);
+        if(websiteProducts[index]) websiteProducts.splice(index, 1);
+
+        localStorage.setItem('adminProducts', JSON.stringify(products));
+        localStorage.setItem('quickMartProducts', JSON.stringify(websiteProducts));
+
+        loadAdminProductsList();
+    }
+}
+
+function loadDashboardData() {
+    let orders = JSON.parse(localStorage.getItem('quickMartOrders')) || [];
+
+    if (lastOrderCount !== null && orders.length > lastOrderCount) {
+        triggerRailwayStyleAlert();
+    }
+    lastOrderCount = orders.length;
+
+    let totalRevenue = 0, pendingCount = 0, deliveredCount = 0;
+
+    orders.forEach((order) => {
+        if (order.status !== 'Cancelled') totalRevenue += parseInt(order.price || 0);
+        if (order.status === 'Pending') pendingCount++;
+        else if (order.status === 'Delivered') deliveredCount++;
+    });
+
+    document.getElementById('totalRevenue').textContent = '₹' + totalRevenue;
+    document.getElementById('totalOrdersCount').textContent = orders.length;
+    document.getElementById('pendingOrdersCount').textContent = pendingCount;
+    document.getElementById('deliveredOrdersCount').textContent = deliveredCount;
+
+    loadLiveOrders();
+}
+
+function loadLiveOrders() {
+    let orders = JSON.parse(localStorage.getItem('quickMartOrders')) || [];
+    const tbody = document.getElementById('ordersTableBody');
+    if (!tbody) return;
+    tbody.innerHTML = '';
+    
+    let liveOrders = orders.filter(o => o.status !== 'Delivered' && o.status !== 'Cancelled');
+    
+    if (liveOrders.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding: 15px; color:#888;">No live orders right now!</td></tr>';
+        return;
+    }
+
+    liveOrders.forEach((order, index) => {
+        let row = document.createElement('tr');
+        row.innerHTML = `
+            <td><strong>#${order.id || (index + 1000)}</strong></td>
+            <td>${order.date || 'Today'}</td>
+            <td>${order.customer || 'N/A'}<br><small>${order.phone || ''}</small></td>
+            <td>${order.items || 'Supermarket Items'}</td>
+            <td><strong>₹${order.price || 0}</strong></td>
+            <td>
+                <select class="status-select status-${order.status || 'Pending'}" onchange="updateOrderStatus(${index}, this.value)">
+                    <option value="Pending" ${order.status === 'Pending' ? 'selected' : ''}>Pending</option>
+                    <option value="Processing" ${order.status === 'Processing' ? 'selected' : ''}>Processing</option>
+                    <option value="Delivered" ${order.status === 'Delivered' ? 'selected' : ''}>Delivered</option>
+                    <option value="Cancelled" ${order.status === 'Cancelled' ? 'selected' : ''}>Cancelled</option>
+                </select>
+            </td>
+            <td>
+                <button class="btn-action btn-delete" onclick="deleteOrder(${index})">Delete</button>
+            </td>
+        `;
+        tbody.appendChild(row);
+    });
+}
+
+function updateOrderStatus(index, newStatus) {
+    let orders = JSON.parse(localStorage.getItem('quickMartOrders')) || [];
+    if (orders[index]) {
+        orders[index].status = newStatus;
+        localStorage.setItem('quickMartOrders', JSON.stringify(orders));
         loadDashboardData();
-    };
+        loadLiveOrders();
+    }
+}
+
+function deleteOrder(index) {
+    if (confirm('Are you sure you want to delete this order?')) {
+        let orders = JSON.parse(localStorage.getItem('quickMartOrders')) || [];
+        orders.splice(index, 1);
+        localStorage.setItem('quickMartOrders', JSON.stringify(orders));
+        loadDashboardData();
+        loadLiveOrders();
+    }
+}
+
+function loadDailyHistory() {
+    let orders = JSON.parse(localStorage.getItem('quickMartOrders')) || [];
+    const filterDate = document.getElementById('filterDate').value;
+    const tbody = document.getElementById('historyTableBody');
+    if (!tbody) return;
+    tbody.innerHTML = '';
+
+    let filtered = orders;
+    if (filterDate) {
+        filtered = orders.filter(o => o.date && o.date.includes(filterDate));
+    }
+
+    let histRev = 0;
+    filtered.forEach(o => {
+        if (o.status !== 'Cancelled') histRev += parseInt(o.price || 0);
+    });
+
+    document.getElementById('historyOrdersCount').textContent = filtered.length;
+    document.getElementById('historyRevenue').textContent = '₹' + histRev;
+
+    if (filtered.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding: 15px; color:#888;">No history found for selected date!</td></tr>';
+        return;
+    }
+
+    filtered.forEach((order, index) => {
+        let row = document.createElement('tr');
+        row.innerHTML = `
+            <td><strong>#${order.id || (index + 1000)}</strong></td>
+            <td>${order.date || 'N/A'}</td>
+            <td>${order.customer || 'N/A'}</td>
+            <td>${order.items || 'Items'}</td>
+            <td><strong>₹${order.price || 0}</strong></td>
+            <td><span class="status-select status-${order.status || 'Pending'}" style="padding: 2px 8px; font-size:12px;">${order.status || 'Pending'}</span></td>
+            <td>
+                <button class="btn-action btn-delete" onclick="deleteOrder(${index})">Delete</button>
+            </td>
+        `;
+        tbody.appendChild(row);
+    });
+}
+
+function resetDateFilter() {
+    document.getElementById('filterDate').value = '';
+    loadDailyHistory();
+}
+
+function logout() {
+    window.location.href = 'admin.html';
+}
+
+window.onload = function() {
+    loadDashboardData();
+};
