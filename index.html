@@ -1,217 +1,222 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ml">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title id="pageTitle">QuickMart Online - Kerala's Fast Grocery Delivery</title>
+    <title>QuickMart Online - കേരളത്തിന്റെ സ്വന്തം ഓൺലൈൻ പലവ്യഞ്ജന കട</title>
     <style>
-        html, body { width: 100%; margin: 0; padding: 0; overflow-x: hidden; }
+        :root {
+            --primary-green: #1b5e20;
+            --dark-green: #123d15;
+            --accent-orange: #e65100;
+            --accent-red: #c62828;
+            --bg-color: #f4f7f6;
+            --card-bg: #ffffff;
+            --border-color: #e2e8f0;
+            --text-color: #333;
+        }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { background-color: #f4f7f6; color: #333; line-height: 1.6; }
+        body { background-color: var(--bg-color); color: var(--text-color); }
         
-        /* Top Bar */
-        .top-bar { background-color: #1b5e20; color: #ffffff; display: flex; justify-content: space-between; align-items: center; padding: 12px 40px; flex-wrap: wrap; gap: 10px; }
-        .top-bar .support-text { font-size: 14px; font-weight: 600; }
+        /* Top Horizontal Navigation Bar */
+        .top-navbar {
+            background-color: var(--primary-green);
+            padding: 12px 15px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .top-nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+            border-bottom: 1px solid rgba(255,255,255,0.15);
+            padding-bottom: 8px;
+        }
+        .logo-icon { background: #fff; width: 34px; height: 34px; border-radius: 6px; display: flex; align-items: center; justify-content: center; }
+        .logo-icon svg { width: 18px; height: 18px; fill: var(--primary-green); }
+        .top-nav-brand h2 { font-size: 16px; font-weight: 800; color: #fff; line-height: 1.1; }
+        .top-nav-brand span { font-size: 10px; color: #ffb74d; display: block; font-weight: 600; }
         
-        .nav-right-group { display: flex; align-items: center; gap: 15px; flex-wrap: wrap; }
-        .nav-links { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-        .nav-links a { color: #1b5e20; text-decoration: none; font-weight: 700; font-size: 13px; background-color: #ffffff; border: 2px solid #ffffff; padding: 6px 12px; border-radius: 6px; transition: all 0.2s ease; white-space: nowrap; }
-        .nav-links a:hover { background-color: #e8f5e9; }
-
-        /* Language Switcher Buttons */
-        .lang-switch-box { display: flex; background: #123d15; padding: 3px; border-radius: 6px; gap: 3px; }
-        .lang-option-btn { background: transparent; border: none; color: #fff; padding: 4px 10px; font-size: 12px; font-weight: bold; border-radius: 4px; cursor: pointer; transition: 0.2s; }
-        .lang-option-btn.active { background: #ffffff; color: #1b5e20; }
-
-        /* Logo Bar */
-        .logo-bar { padding: 15px 40px; background: #ffffff; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
-        .logo-container { display: inline-flex; align-items: center; gap: 14px; text-decoration: none; }
-        .logo-cart-icon { background-color: #1b5e20; width: 50px; height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(27, 94, 32, 0.25); }
-        .logo-cart-icon svg { width: 28px; height: 28px; fill: #ffffff; }
-        .logo-text-wrapper { display: flex; flex-direction: column; }
-        .logo-text { font-size: 28px; font-weight: 800; line-height: 1; display: flex; align-items: center; }
-        .logo-quick { color: #1b5e20; } .logo-mart { color: #e65100; } .logo-online { color: #1b5e20; margin-left: 6px; }
-        .logo-tagline { font-size: 12px; color: #d97706; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; margin-top: 4px; }
+        .nav-buttons-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+        .nav-btn {
+            background-color: rgba(255, 255, 255, 0.15);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 12px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .nav-btn:hover { background-color: var(--accent-red); }
         
-        .cart-btn-top { background: #e8f5e9; border: 2px solid #1b5e20; color: #1b5e20; padding: 8px 18px; border-radius: 8px; font-weight: 700; text-decoration: none; display: flex; align-items: center; gap: 8px; }
-        .cart-btn-top:hover { background: #1b5e20; color: #fff; }
-
-        /* Main Content */
-        .container { max-width: 1200px; margin: 0 auto; padding: 30px 20px 40px 20px; }
-        .section-title { font-size: 24px; color: #1b5e20; margin-bottom: 20px; font-weight: 800; border-bottom: 2px solid #c8e6c9; padding-bottom: 8px; }
+        /* Main Layout */
+        .container { max-width: 1200px; margin: 0 auto; padding: 15px; }
+        .section-title { font-size: 18px; color: var(--primary-green); margin: 20px 0 10px 0; font-weight: 800; }
         
-        .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; }
-        .product-card { background: #ffffff; border-radius: 10px; padding: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; display: flex; flex-direction: column; justify-content: space-between; }
-        .product-img { width: 100%; height: 180px; object-fit: cover; border-radius: 8px; background: #eee; margin-bottom: 12px; }
-        .product-name { font-size: 18px; font-weight: 700; color: #333; margin-bottom: 6px; }
-        .product-price { font-size: 16px; color: #e65100; font-weight: 800; margin-bottom: 12px; }
-        .add-to-cart-btn { background-color: #1b5e20; color: white; border: none; padding: 10px; border-radius: 6px; font-weight: 700; cursor: pointer; width: 100%; text-align: center; }
-        .add-to-cart-btn:hover { background-color: #2e7d32; }
+        /* Categories Filter / Buttons */
+        .categories-bar {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+        .cat-chip {
+            background: white;
+            border: 1px solid var(--border-color);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--primary-green);
+            cursor: pointer;
+            white-space: nowrap;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+        }
+        .cat-chip.active { background: var(--primary-green); color: white; }
 
-        footer { text-align: center; padding: 25px; background: #212121; color: #aaa; font-size: 14px; margin-top: 50px; }
-        @media (max-width: 768px) { .top-bar, .logo-bar { padding: 12px 20px; flex-direction: column; text-align: center; } .nav-right-group { justify-content: center; } .nav-links { justify-content: center; } }
+        /* Products Grid */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 12px;
+        }
+        .product-card {
+            background: white;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+        }
+        .product-card img {
+            width: 100%;
+            height: 110px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 8px;
+        }
+        .product-card h4 { font-size: 13px; font-weight: 700; margin-bottom: 4px; color: #333; }
+        .product-card .price { font-size: 14px; font-weight: 800; color: var(--accent-orange); margin-bottom: 8px; }
+        .btn-add-cart {
+            background: var(--primary-green);
+            color: white;
+            border: none;
+            padding: 6px;
+            border-radius: 4px;
+            font-weight: 700;
+            font-size: 11px;
+            cursor: pointer;
+            width: 100%;
+        }
+        .btn-add-cart:hover { background: var(--dark-green); }
     </style>
 </head>
 <body>
-
-    <header class="top-bar">
-        <div class="support-text" id="topSupportText">🛒 കേരളത്തിന്റെ സ്വന്തം ഓൺലൈൻ പലവ്യഞ്ജന കട</div>
-        <div class="nav-right-group">
-            <div class="lang-switch-box">
-                <button class="lang-option-btn active" id="btnMal" onclick="setLanguage('malayalam')">മലയാളം</button>
-                <button class="lang-option-btn" id="btnEng" onclick="setLanguage('english')">English</button>
-            </div>
-            <nav class="nav-links">
-                <a href="index.html" id="navHome">ഹോം (Home)</a>
-                <a href="guide.html" id="navGuide">📱 എങ്ങനെ ഓർഡർ ചെയ്യാം?</a>
-                <a href="about.html" id="navAbout">ഞങ്ങളെക്കുറിച്ച്</a>
-                <a href="contact.html" id="navContact">ബന്ധപ്പെടാൻ</a>
-                <a href="admin.html" id="navAdmin">അഡ്മിൻ</a>
-                <a href="cart.html" id="navCart">🛒 കാർട്ട്</a>
-            </nav>
-        </div>
-    </header>
-
-    <div class="logo-bar">
-        <a href="index.html" class="logo-container">
-            <div class="logo-cart-icon">
+    <!-- Top Horizontal Navigation Bar -->
+    <div class="top-navbar">
+        <div class="top-nav-brand">
+            <div class="logo-icon">
                 <svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
             </div>
-            <div class="logo-text-wrapper">
-                <div class="logo-text"><span class="logo-quick">Quick</span><span class="logo-mart">M</span><span class="logo-mart">art</span><span class="logo-online">Online</span></div>
-                <div class="logo-tagline" id="logoTagline">✨ All That Glitters</div>
+            <div>
+                <h2>QuickMart Online</h2>
+                <span>കേരളത്തിന്റെ സ്വന്തം ഓൺലൈൻ പലവ്യഞ്ജന കട</span>
             </div>
-        </a>
-        <a href="cart.html" class="cart-btn-top" id="cartBtnTop">🛒 കാർട്ട് പരിശോധിക്കുക</a>
+        </div>
+        <div class="nav-buttons-grid">
+            <a href="#" class="nav-btn">മലയാളം</a>
+            <a href="#" class="nav-btn">English</a>
+            <a href="index.html" class="nav-btn active">ഹോം (Home)</a>
+            <a href="#how-to-order" class="nav-btn">എങ്ങനെ ഓർഡർ ചെയ്യാം?</a>
+            <a href="#about" class="nav-btn">ഞങ്ങളെക്കുറിച്ച്</a>
+            <a href="#contact" class="nav-btn">ബന്ധപ്പെടാൻ</a>
+            <a href="admin.html" class="nav-btn" style="background-color: var(--accent-red);">അഡ്മിൻ</a>
+            <a href="#cart" class="nav-btn" style="background-color: var(--accent-orange);">കാർട്ട്</a>
+        </div>
     </div>
 
-    <!-- Main Content -->
-    <main class="container">
-        <h2 class="section-title" id="sectionTitle">പുതിയ പലവ്യഞ്ജനങ്ങളും സാധനങ്ങളും</h2>
-        <div class="products-grid" id="productGrid">
-            <!-- Products loaded dynamically -->
+    <div class="container">
+        <!-- Categories Section -->
+        <h3 class="section-title">വിഭാഗങ്ങൾ (Categories)</h3>
+        <div class="categories-bar" id="categoriesBar">
+            <div class="cat-chip active" onclick="filterCategory('All', this)">എല്ലാം (All)</div>
         </div>
-    </main>
 
-    <footer id="footerText">
-        &copy; 2026 QuickMart Online. All rights reserved. | കേരളത്തിന്റെ സ്വന്തം ഓൺലൈൻ ഷോപ്പ്
-    </footer>
+        <!-- Products Section -->
+        <h3 class="section-title">പുതിയ പലവ്യഞ്ജനങ്ങളും സാധനങ്ങളും</h3>
+        <div class="products-grid" id="productsGrid">
+            <!-- Products will load dynamically -->
+        </div>
+    </div>
 
     <script>
-        const translations = {
-            malayalam: {
-                title: "QuickMart Online - കേരളത്തിന്റെ വേഗത്തിലുള്ള പലവ്യഞ്ജന ഡെലിവറി",
-                support: "🛒 കേരളത്തിന്റെ സ്വന്തം ഓൺലൈൻ പലവ്യഞ്ജന കട",
-                home: "ഹോം (Home)",
-                guide: "📱 എങ്ങനെ ഓർഡർ ചെയ്യാം?",
-                about: "ഞങ്ങളെക്കുറിച്ച്",
-                contact: "ബന്ധപ്പെടാൻ",
-                admin: "അഡ്മിൻ",
-                cart: "🛒 കാർട്ട്",
-                tagline: "✨ എളുപ്പത്തിൽ ഓർഡർ ചെയ്യൂ",
-                cartBtn: "🛒 കാർട്ട് പരിശോധിക്കുക",
-                sectionTitle: "പുതിയ പലവ്യഞ്ജനങ്ങളും സാധനങ്ങളും",
-                addToCart: "🛒 കാർട്ടിലേക്ക് ചേർക്കുക",
-                alertText: " കാർട്ടിലേക്ക് ചേർത്തിരിക്കുന്നു! 👍",
-                footer: "&copy; 2026 QuickMart Online. All rights reserved. | കേരളത്തിന്റെ സ്വന്തം ഓൺലൈൻ ഷോപ്പ്"
-            },
-            english: {
-                title: "QuickMart Online - Kerala's Fast Grocery Delivery",
-                support: "🛒 Kerala's Fast Online Grocery Delivery Store",
-                home: "Home",
-                guide: "📱 How to Order?",
-                about: "About Us",
-                contact: "Contact",
-                admin: "Admin",
-                cart: "🛒 Cart",
-                tagline: "✨ Order Easily Online",
-                cartBtn: "🛒 Check Cart",
-                sectionTitle: "Fresh Groceries & Items",
-                addToCart: "🛒 Add to Cart",
-                alertText: " added to cart! 👍",
-                footer: "&copy; 2026 QuickMart Online. All rights reserved. | Kerala's Fast Online Store"
-            }
-        };
-
-        function setLanguage(lang) {
-            localStorage.setItem('quickMartLang', lang);
-            
-            document.getElementById('btnMal').classList.remove('active');
-            document.getElementById('btnEng').classList.remove('active');
-
-            if (lang === 'english') {
-                document.getElementById('btnEng').classList.add('active');
-            } else {
-                document.getElementById('btnMal').classList.add('active');
-            }
-
-            let t = translations[lang];
-            document.getElementById('pageTitle').innerText = t.title;
-            document.getElementById('topSupportText').innerText = t.support;
-            document.getElementById('navHome').innerText = t.home;
-            document.getElementById('navGuide').innerText = t.guide;
-            document.getElementById('navAbout').innerText = t.about;
-            document.getElementById('navContact').innerText = t.contact;
-            document.getElementById('navAdmin').innerText = t.admin;
-            document.getElementById('navCart').innerText = t.cart;
-            document.getElementById('logoTagline').innerText = t.tagline;
-            document.getElementById('cartBtnTop').innerText = t.cartBtn;
-            document.getElementById('sectionTitle').innerText = t.sectionTitle;
-            document.getElementById('footerText').innerHTML = t.footer;
-
-            loadProducts();
-        }
-
-        function loadProducts() {
-            let currentLang = localStorage.getItem('quickMartLang') || 'malayalam';
-            let t = translations[currentLang];
-            let grid = document.getElementById('productGrid');
-            
-            let products = JSON.parse(localStorage.getItem('quickMartProducts')) || 
-                           JSON.parse(localStorage.getItem('products')) || 
-                           JSON.parse(localStorage.getItem('adminProducts')) || [
-                { name: 'Fresh Apple (1kg)', price: 180, image: 'https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?w=400' },
-                { name: 'Fresh Broccoli (500g)', price: 80, image: 'https://images.unsplash.com/photo-1459411621453-7b03977f4bfc?w=400' },
-                { name: 'Organic Milk (1L)', price: 54, image: 'https://images.unsplash.com/photo-1550583724-b2692b85b150?w=400' },
-                { name: 'Fresh Tomatoes (1kg)', price: 40, image: 'https://images.unsplash.com/photo-1592924357228-91a4daadcfea?w=400' }
-            ];
-
-            let html = '';
-            products.forEach((p) => {
-                let img = p.image || 'https://via.placeholder.com/300';
-                html += `
-                    <div class="product-card">
-                        <img src="${img}" class="product-img" alt="${p.name}">
-                        <div>
-                            <div class="product-name">${p.name}</div>
-                            <div class="product-price">₹${p.price}</div>
-                        </div>
-                        <button class="add-to-cart-btn" onclick="addToCart('${p.name}', ${p.price})">${t.addToCart}</button>
-                    </div>
-                `;
+        function loadIndexCategories() {
+            let categories = JSON.parse(localStorage.getItem('quickMartCategories')) || ['General', 'Groceries', 'Vegetables', 'Fruits'];
+            let bar = document.getElementById('categoriesBar');
+            if(!bar) return;
+            bar.innerHTML = `<div class="cat-chip active" onclick="filterCategory('All', this)">എല്ലാം (All)</div>`;
+            categories.forEach(cat => {
+                let chip = document.createElement('div');
+                chip.className = 'cat-chip';
+                chip.textContent = cat;
+                chip.onclick = () => filterCategory(cat, chip);
+                bar.appendChild(chip);
             });
-            grid.innerHTML = html;
         }
 
-        function addToCart(name, price) {
-            let currentLang = localStorage.getItem('quickMartLang') || 'malayalam';
-            let t = translations[currentLang];
-            let cart = JSON.parse(localStorage.getItem('quickMartCart')) || JSON.parse(localStorage.getItem('cart')) || [];
-            let existing = cart.find(item => item.name === name);
-            if(existing) {
-                existing.qty = (existing.qty || 1) + 1;
-            } else {
-                cart.push({ name: name, price: price, qty: 1 });
+        function loadIndexProducts(selectedCat = 'All') {
+            let products = JSON.parse(localStorage.getItem('quickMartProducts')) || [];
+            let grid = document.getElementById('productsGrid');
+            if(!grid) return;
+            grid.innerHTML = '';
+            
+            let filtered = selectedCat === 'All' ? products : products.filter(p => (p.category || 'General') === selectedCat);
+            
+            if(filtered.length === 0) {
+                grid.innerHTML = '<p style="grid-column: 1/-1; text-align:center; color:#666; padding: 20px;">ഈ വിഭാഗത്തിൽ സാധനങ്ങളൊന്നും ലഭ്യമല്ല.</p>';
+                return;
             }
-            localStorage.setItem('quickMartCart', JSON.stringify(cart));
-            alert(name + t.alertText);
+
+            filtered.forEach(prod => {
+                let card = document.createElement('div');
+                card.className = 'product-card';
+                card.innerHTML = `
+                    <div>
+                        ${prod.image || '<div style="width:100%;height:110px;background:#eee;display:flex;align-items:center;justify-content:center;border-radius:6px;">🛒</div>'}
+                        <h4>${prod.name}</h4>
+                        <div class="price">₹${prod.price}</div>
+                    </div>
+                    <button class="btn-add-cart" onclick="alert('${prod.name} കാർട്ടിലേക്ക് ചേർത്തു!')">കാർട്ടിലേക്ക് ചേർക്കുക</button>
+                `;
+                grid.appendChild(card);
+            });
         }
 
-        // Initialize saved language or default to Malayalam
+        function filterCategory(cat, element) {
+            document.querySelectorAll('.cat-chip').forEach(c => c.classList.remove('active'));
+            if(element) element.classList.add('active');
+            loadIndexProducts(cat);
+        }
+
         window.onload = function() {
-            let savedLang = localStorage.getItem('quickMartLang') || 'malayalam';
-            setLanguage(savedLang);
+            loadIndexCategories();
+            loadIndexProducts();
         };
     </script>
 </body>
-</html>
+</html> 
