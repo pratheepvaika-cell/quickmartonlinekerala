@@ -23,54 +23,61 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         body { background-color: var(--bg-color); color: var(--text-color); }
 
-        /* Professional Fixed Header Layout */
+        /* Professional Rich Header Layout (Taller & Prominent Green Banner) */
         header {
             background-color: var(--primary-green);
             color: white;
-            padding: 10px 20px;
+            padding: 15px 30px;
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: nowrap;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            flex-direction: column;
+            gap: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.18);
             width: 100%;
-            overflow-x: auto;
         }
 
-        .header-tagline {
-            font-size: 13px;
+        .header-top-row {
+            font-size: 14px;
             font-weight: 600;
-            white-space: nowrap;
+            color: #dcedc8;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
+            border-bottom: 1px solid rgba(255,255,255,0.15);
+            padding-bottom: 8px;
         }
 
-        .nav-menu {
+        .header-nav-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .nav-menu-group {
             display: flex;
             align-items: center;
             gap: 10px;
-            flex-wrap: nowrap;
+            flex-wrap: wrap;
         }
 
-        /* Language Toggle Switcher */
+        /* Language Switcher */
         .lang-switch {
             display: flex;
             background: var(--dark-green);
             border-radius: 6px;
-            padding: 2px;
-            border: 1px solid rgba(255,255,255,0.2);
+            padding: 3px;
+            border: 1px solid rgba(255,255,255,0.25);
         }
         .lang-btn {
             background: transparent;
             border: none;
             color: #fff;
-            padding: 5px 10px;
-            font-size: 12px;
+            padding: 6px 12px;
+            font-size: 13px;
             font-weight: 700;
             cursor: pointer;
             border-radius: 4px;
-            white-space: nowrap;
             transition: 0.2s;
         }
         .lang-btn.active {
@@ -82,19 +89,18 @@
         .nav-link {
             background-color: #ffffff;
             color: var(--primary-green);
-            padding: 6px 12px;
+            padding: 8px 14px;
             border-radius: 6px;
             text-decoration: none;
             font-size: 13px;
             font-weight: 700;
-            white-space: nowrap;
             transition: 0.2s;
             display: inline-flex;
             align-items: center;
-            gap: 5px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            gap: 6px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
-        .nav-link:hover { background-color: #f1f1f1; }
+        .nav-link:hover { background-color: #f1f1f1; transform: translateY(-1px); }
         
         .nav-link.admin-btn {
             background-color: #c62828;
@@ -111,41 +117,42 @@
         /* Main Sub-Header / Brand Section */
         .sub-header {
             background: white;
-            padding: 15px 25px;
+            padding: 18px 30px;
             border-bottom: 1px solid var(--border-color);
             display: flex;
             justify-content: space-between;
             align-items: center;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
         }
 
-        .brand-box { display: flex; align-items: center; gap: 12px; }
-        .brand-icon { background: var(--primary-green); width: 45px; height: 45px; border-radius: 10px; display: flex; align-items: center; justify-content: center; }
-        .brand-icon svg { width: 24px; height: 24px; fill: white; }
-        .brand-title h1 { font-size: 22px; font-weight: 800; color: var(--primary-green); line-height: 1.1; }
-        .brand-title span { font-size: 11px; color: var(--accent-orange); font-weight: 700; display: block; letter-spacing: 0.5px; }
+        .brand-box { display: flex; align-items: center; gap: 15px; }
+        .brand-icon { background: var(--primary-green); width: 50px; height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(27,94,32,0.3); }
+        .brand-icon svg { width: 28px; height: 28px; fill: white; }
+        .brand-title h1 { font-size: 24px; font-weight: 800; color: var(--primary-green); line-height: 1.1; }
+        .brand-title span { font-size: 12px; color: var(--accent-orange); font-weight: 800; display: block; letter-spacing: 0.5px; margin-top: 2px; }
 
         .check-cart-top {
             background: #ffffff;
             border: 2px solid var(--primary-green);
             color: var(--primary-green);
-            padding: 8px 16px;
+            padding: 10px 18px;
             border-radius: 8px;
             font-weight: 700;
-            font-size: 13px;
+            font-size: 14px;
             cursor: pointer;
             transition: 0.2s;
             display: inline-flex;
             align-items: center;
-            gap: 6px;
-            white-space: nowrap;
+            gap: 8px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
         }
         .check-cart-top:hover { background: var(--primary-green); color: white; }
 
-        /* Categories Bar */
+        /* Categories Filter Bar */
         .categories-container {
-            padding: 15px 25px;
+            padding: 15px 30px;
             display: flex;
-            gap: 10px;
+            gap: 12px;
             overflow-x: auto;
             background: #fff;
             border-bottom: 1px solid var(--border-color);
@@ -154,8 +161,8 @@
             background: #e8f5e9;
             color: var(--primary-green);
             border: 1px solid #c8e6c9;
-            padding: 8px 16px;
-            border-radius: 20px;
+            padding: 9px 18px;
+            border-radius: 25px;
             font-size: 13px;
             font-weight: 700;
             cursor: pointer;
@@ -166,43 +173,44 @@
             background: var(--primary-green);
             color: white;
             border-color: var(--primary-green);
+            box-shadow: 0 2px 6px rgba(27,94,32,0.2);
         }
 
         /* Products Grid */
-        .container { max-width: 1200px; margin: 25px auto; padding: 0 15px; }
-        .section-heading { font-size: 18px; font-weight: 800; color: var(--primary-green); margin-bottom: 15px; border-bottom: 2px solid #c8e6c9; padding-bottom: 5px; }
+        .container { max-width: 1250px; margin: 30px auto; padding: 0 20px; }
+        .section-heading { font-size: 20px; font-weight: 800; color: var(--primary-green); margin-bottom: 20px; border-bottom: 2px solid #c8e6c9; padding-bottom: 8px; }
         
         .products-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+            gap: 22px;
         }
 
         .product-card {
             background: var(--card-bg);
             border: 1px solid var(--border-color);
-            border-radius: 10px;
-            padding: 15px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+            border-radius: 12px;
+            padding: 16px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.04);
             display: flex;
             flex-direction: column;
             justify-content: space-between;
             transition: 0.2s;
         }
-        .product-card:hover { transform: translateY(-3px); box-shadow: 0 6px 15px rgba(0,0,0,0.08); }
+        .product-card:hover { transform: translateY(-4px); box-shadow: 0 8px 20px rgba(0,0,0,0.08); }
         
-        .product-img-wrapper { width: 100%; height: 160px; border-radius: 8px; overflow: hidden; background: #f1f1f1; display: flex; align-items: center; justify-content: center; margin-bottom: 12px; }
+        .product-img-wrapper { width: 100%; height: 170px; border-radius: 8px; overflow: hidden; background: #f1f1f1; display: flex; align-items: center; justify-content: center; margin-bottom: 14px; }
         .product-img-wrapper img { width: 100%; height: 100%; object-fit: cover; }
 
-        .product-name { font-size: 15px; font-weight: 700; color: #333; margin-bottom: 6px; }
-        .product-price { font-size: 16px; font-weight: 800; color: var(--accent-orange); margin-bottom: 12px; }
+        .product-name { font-size: 16px; font-weight: 700; color: #333; margin-bottom: 6px; }
+        .product-price { font-size: 17px; font-weight: 800; color: var(--accent-orange); margin-bottom: 14px; }
         
         .btn-add-cart {
             background-color: var(--primary-green);
             color: white;
             border: none;
-            padding: 9px;
-            border-radius: 6px;
+            padding: 10px;
+            border-radius: 8px;
             font-weight: 700;
             font-size: 13px;
             cursor: pointer;
@@ -215,46 +223,36 @@
         }
         .btn-add-cart:hover { background-color: var(--dark-green); }
 
-        /* Responsive adjustments */
         @media (max-width: 768px) {
-            header { padding: 8px 10px; }
-            .header-tagline { display: none; } /* Hide long tagline on mobile to preserve space */
+            header { padding: 12px 15px; }
+            .sub-header { padding: 12px 15px; }
+            .brand-title h1 { font-size: 18px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Professional Top Navigation Bar -->
+    <!-- Professional Rich Top Green Banner -->
     <header>
-        <div class="header-tagline">
+        <div class="header-top-row">
             🛒 <span data-key="tagline">Kerala's Fast Online Grocery Delivery Store</span>
         </div>
 
-        <div class="nav-menu">
+        <div class="header-nav-row">
             <!-- Language Switcher -->
             <div class="lang-switch">
                 <button class="lang-btn" id="langMl" onclick="setLanguage('ml')">മലയാളം</button>
                 <button class="lang-btn" id="langEn" onclick="setLanguage('en')">English</button>
             </div>
 
-            <a href="index.html" class="nav-link">
-                🏠 <span data-key="home">Home</span>
-            </a>
-            <a href="how-to-order.html" class="nav-link">
-                📱 <span data-key="howToOrder">How to Order?</span>
-            </a>
-            <a href="about.html" class="nav-link">
-                <span data-key="aboutUs">About Us</span>
-            </a>
-            <a href="contact.html" class="nav-link">
-                <span data-key="contact">Contact</span>
-            </a>
-            <a href="admin.html" class="nav-link admin-btn">
-                <span data-key="admin">Admin</span>
-            </a>
-            <a href="cart.html" class="nav-link cart-btn">
-                🛒 <span data-key="cart">Cart</span>
-            </a>
+            <div class="nav-menu-group">
+                <a href="index.html" class="nav-link">🏠 <span data-key="home">Home</span></a>
+                <a href="how-to-order.html" class="nav-link">📱 <span data-key="howToOrder">How to Order?</span></a>
+                <a href="about.html" class="nav-link"><span data-key="aboutUs">About Us</span></a>
+                <a href="contact.html" class="nav-link"><span data-key="contact">Contact</span></a>
+                <a href="admin.html" class="nav-link admin-btn"><span data-key="admin">Admin</span></a>
+                <a href="cart.html" class="nav-link cart-btn">🛒 <span data-key="cart">Cart</span></a>
+            </div>
         </div>
     </header>
 
@@ -357,7 +355,6 @@
             document.getElementById('langEn').classList.toggle('active', lang === 'en');
             document.getElementById('langMl').classList.toggle('active', lang === 'ml');
 
-            // Update UI texts safely using data attributes
             document.querySelectorAll('[data-key]').forEach(el => {
                 const key = el.getAttribute('data-key');
                 if (translations[lang] && translations[lang][key]) {
@@ -365,7 +362,6 @@
                 }
             });
 
-            // Re-render products to respect language choice for product names
             renderProducts(allProductsCache);
         }
 
@@ -408,7 +404,6 @@
             }
 
             filtered.forEach(prod => {
-                // If Malayalam is selected, show nameMl if available, otherwise fallback to name
                 const displayName = (currentLang === 'ml' && prod.nameMl) ? prod.nameMl : prod.name;
                 const btnText = translations[currentLang]['addToCart'] || 'Add to Cart';
 
@@ -450,7 +445,7 @@
         }
 
         window.onload = function() {
-            const savedLang = localStorage.getItem('quickmart_lang') || 'ml'; // Default to Malayalam if preferred
+            const savedLang = localStorage.getItem('quickmart_lang') || 'ml';
             setLanguage(savedLang);
             loadProductsFromCloud();
         };
