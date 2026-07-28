@@ -25,42 +25,41 @@
         html, body { width: 100%; overflow-x: hidden; }
         body { background-color: var(--bg-color); color: var(--text-color); line-height: 1.6; display: flex; flex-direction: column; min-height: 100vh; }
 
-        /* Professional Rich Top Green Banner */
+        /* Perfect Header Layout matching Guide Page */
         header {
             background-color: var(--primary-green);
             color: white;
-            padding: 15px 30px;
+            padding: 12px 25px;
             display: flex;
-            flex-direction: column;
-            gap: 12px;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: nowrap;
             box-shadow: 0 4px 12px rgba(0,0,0,0.18);
             width: 100%;
+            gap: 15px;
         }
 
-        .header-top-row {
-            font-size: 14px;
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            white-space: nowrap;
+        }
+
+        .header-tagline {
+            font-size: 13px;
             font-weight: 600;
             color: #dcedc8;
             display: flex;
             align-items: center;
-            gap: 8px;
-            border-bottom: 1px solid rgba(255,255,255,0.15);
-            padding-bottom: 8px;
+            gap: 6px;
         }
 
-        .header-nav-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 12px;
-        }
-
-        .nav-menu-group {
+        .header-right {
             display: flex;
             align-items: center;
             gap: 10px;
-            flex-wrap: wrap;
+            flex-wrap: nowrap;
         }
 
         /* Language Switcher */
@@ -68,15 +67,15 @@
             display: flex;
             background: var(--dark-green);
             border-radius: 6px;
-            padding: 3px;
+            padding: 2px;
             border: 1px solid rgba(255,255,255,0.25);
         }
         .lang-btn {
             background: transparent;
             border: none;
             color: #fff;
-            padding: 6px 12px;
-            font-size: 13px;
+            padding: 5px 10px;
+            font-size: 12px;
             font-weight: 700;
             cursor: pointer;
             border-radius: 4px;
@@ -91,7 +90,7 @@
         .nav-link {
             background-color: #ffffff;
             color: var(--primary-green);
-            padding: 8px 14px;
+            padding: 7px 12px;
             border-radius: 6px;
             text-decoration: none;
             font-size: 13px;
@@ -99,7 +98,7 @@
             transition: 0.2s;
             display: inline-flex;
             align-items: center;
-            gap: 6px;
+            gap: 5px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
             white-space: nowrap;
         }
@@ -131,10 +130,11 @@
         }
 
         .brand-box { display: flex; align-items: center; gap: 15px; }
-        .brand-icon { background: var(--primary-green); width: 50px; height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(27,94,32,0.3); }
+        .brand-icon { background: var(--primary-green); width: 50px; height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(27,94,32,0.3); flex-shrink: 0; }
         .brand-icon svg { width: 28px; height: 28px; fill: white; }
         
-        .brand-title h1 { font-size: 24px; font-weight: 800; color: var(--primary-green); line-height: 1.1; }
+        .brand-title { white-space: nowrap; }
+        .brand-title h1 { font-size: 24px; font-weight: 800; color: var(--primary-green); line-height: 1.1; display: inline-block; }
         .brand-title h1 .highlight-m { color: var(--accent-orange); }
         
         .brand-title span { font-size: 12px; color: var(--accent-orange); font-weight: 800; display: block; letter-spacing: 0.5px; margin-top: 2px; }
@@ -153,6 +153,7 @@
             align-items: center;
             gap: 8px;
             box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+            white-space: nowrap;
         }
         .check-cart-top:hover { background: var(--primary-green); color: white; }
 
@@ -208,7 +209,6 @@
         }
         .product-card:hover { transform: translateY(-4px); box-shadow: 0 8px 20px rgba(0,0,0,0.08); }
         
-        /* Fixed Image Wrapper & Image Sizing */
         .product-img-wrapper { 
             width: 100%; 
             height: 180px; 
@@ -284,8 +284,13 @@
         }
         footer p { margin-bottom: 5px; }
 
+        @media (max-width: 1024px) {
+            header { flex-wrap: wrap; padding: 12px 15px; justify-content: center; }
+            .header-left { width: 100%; justify-content: space-between; }
+            .header-right { width: 100%; justify-content: center; flex-wrap: wrap; }
+        }
+
         @media (max-width: 768px) {
-            header { padding: 12px 15px; }
             .sub-header { padding: 12px 15px; }
             .brand-title h1 { font-size: 18px; }
             .categories-container { padding: 12px 15px; }
@@ -299,26 +304,26 @@
 </head>
 <body>
 
-    <!-- Professional Rich Top Green Banner -->
+    <!-- Perfect Header matching Guide Page -->
     <header>
-        <div class="header-top-row">
-            🛒 <span data-key="tagline">Kerala's Fast Online Grocery Shopping</span>
-        </div>
-
-        <div class="header-nav-row">
+        <div class="header-left">
+            <div class="header-tagline">
+                🛒 <span data-key="tagline">Kerala's Fast Online Grocery Shopping</span>
+            </div>
             <!-- Language Switcher -->
             <div class="lang-switch">
                 <button class="lang-btn" id="langMl" onclick="setLanguage('ml')">മലയാളം</button>
                 <button class="lang-btn" id="langEn" onclick="setLanguage('en')">English</button>
             </div>
+        </div>
 
-            <!-- Header Nav Links -->
-            <div class="nav-menu-group">
-                <a href="index.html" class="nav-link">🏠 <span data-key="home">Home</span></a>
-                <a class="nav-link" href="guide.html">📱 <span data-key="howToOrder">How to Order?</span></a>
-                <a href="admin.html" class="nav-link admin-btn"><span data-key="admin">Admin</span></a>
-                <a href="cart.html" class="nav-link cart-btn">🛒 <span data-key="cart">Cart</span></a>
-            </div>
+        <div class="header-right">
+            <a href="index.html" class="nav-link">🏠 <span data-key="home">Home</span></a>
+            <a class="nav-link" href="guide.html">📱 <span data-key="howToOrder">How to Order?</span></a>
+            <a href="about.html" class="nav-link">ℹ️ <span data-key="aboutUs">About Us</span></a>
+            <a href="contact.html" class="nav-link">📞 <span data-key="contactUs">Contact Us</span></a>
+            <a href="admin.html" class="nav-link admin-btn"><span data-key="admin">Admin</span></a>
+            <a href="cart.html" class="nav-link cart-btn">🛒 <span data-key="cart">Cart</span></a>
         </div>
     </header>
 
@@ -388,6 +393,8 @@
                 tagline: "Kerala's Fast Online Grocery Shopping",
                 home: "Home",
                 howToOrder: "How to Order?",
+                aboutUs: "About Us",
+                contactUs: "Contact Us",
                 admin: "Admin",
                 cart: "Cart",
                 subTagline: "✨ ALL THAT GLITTERS",
@@ -405,6 +412,8 @@
                 tagline: "കേരളത്തിലെ ഏറ്റവും വേഗതയേറിയ ഓൺലൈൻ പലവ്യഞ്ജന ഷോപ്പിംഗ്",
                 home: "ഹോം",
                 howToOrder: "എങ്ങനെ ഓർഡർ ചെയ്യാം?",
+                aboutUs: "ഞങ്ങളെക്കുറിച്ച്",
+                contactUs: "ബന്ധപ്പെടുക",
                 admin: "അഡ്മിൻ",
                 cart: "കാർട്ട്",
                 subTagline: "✨ മിന്നുന്നതെല്ലാം",
