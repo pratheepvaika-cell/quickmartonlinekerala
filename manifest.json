@@ -1,9 +1,9 @@
 {
-  "name": "Quick Mart Supermarket",
-  "short_name": "Quick Mart",
-  "start_url": "index.html",
+  "name": "QuickMart Online",
+  "short_name": "QuickMart",
+  "start_url": "/index.html",
   "display": "standalone",
-  "background_color": "#ffffff",
+  "background_color": "#f4f7f6",
   "theme_color": "#1b5e20",
   "icons": [
     {
@@ -12,7 +12,7 @@
       "type": "image/png"
     },
     {
-      "src": "icon.png",
+      "src": "icon-512.png",
       "sizes": "512x512",
       "type": "image/png"
     }
