@@ -472,16 +472,16 @@
         }
 
         function addToCart(product) {
-            let cart = JSON.parse(localStorage.getItem('quickmart_cart')) || [];
-            let existing = cart.find(item => item.id === product.id);
-            if (existing) {
-                existing.qty = (existing.qty || 1) + 1;
-            } else {
-                cart.push({ ...product, qty: 1 });
-            }
-            localStorage.setItem('quickmart_cart', JSON.stringify(cart));
-            alert('Item added to cart successfully!');
-        }
+    let cart = JSON.parse(localStorage.getItem('quickmart_cart')) || [];
+    let existing = cart.find(item => item.id === product.id);
+    if (existing) {
+        existing.qty = (existing.qty || 1) + 1;
+    } else {
+        cart.push({ ...product, qty: 1 });
+    }
+    localStorage.setItem('quickmart_cart', JSON.stringify(cart));
+    // അലേർട്ട് പൂർണ്ണമായി ഒഴിവാക്കിരിക്കുന്നു
+}
 
         window.onload = function() {
             const savedLang = localStorage.getItem('quickmart_lang') || 'ml';
