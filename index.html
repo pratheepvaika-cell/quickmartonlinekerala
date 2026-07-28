@@ -163,6 +163,33 @@
             gap: 5px;
         }
 
+        /* -------------------------------------------------------------
+           [NEW ADDED] Custom Toast Notification Style (CSS)
+           ------------------------------------------------------------- */
+        #quickToast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #1b5e20;
+            color: #ffffff;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 700;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 9999;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+        }
+        #quickToast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
         footer { text-align: center; padding: 20px; background: #212121; color: #aaa; font-size: 12px; margin-top: 30px; }
 
         @media (min-width: 768px) {
@@ -227,6 +254,11 @@
         <h2 class="section-heading" data-key="newProductsHeading">പുതിയ പലവ്യഞ്ജനങ്ങളും സാധനങ്ങളും</h2>
         <div class="products-grid" id="productsGridContainer"></div>
     </main>
+
+    <!-- -------------------------------------------------------------
+       [NEW ADDED] Toast Notification Element (HTML)
+       ------------------------------------------------------------- -->
+    <div id="quickToast">🛒 കാർട്ടിലേക്ക് ചേർത്തു!</div>
 
     <footer>
         <p data-key="footerText">&copy; 2026 QuickMart Online. All rights reserved. | കേരളത്തിന്റെ സ്വന്തം ഓൺലൈൻ ഷോപ്പ്</p>
@@ -385,6 +417,9 @@
             renderProducts(allProductsCache);
         }
 
+        /* -------------------------------------------------------------
+           [NEW UPDATED] addToCart & showToast Functions (JavaScript)
+           ------------------------------------------------------------- */
         function addToCart(product) {
             let cart = JSON.parse(localStorage.getItem('quickmart_cart')) || [];
             let existing = cart.find(item => item.id === product.id);
@@ -395,7 +430,25 @@
             }
             localStorage.setItem('quickmart_cart', JSON.stringify(cart));
             updateCartCount();
-            alert('Added to cart!');
+
+            // Show Custom Toast Notification instead of alert()
+            showToast();
+        }
+
+        function showToast() {
+            const toast = document.getElementById('quickToast');
+            const currentLang = localStorage.getItem('quickmart_lang') || 'ml';
+            
+            if (currentLang === 'en') {
+                toast.innerHTML = "🛒 Added to cart successfully!";
+            } else {
+                toast.innerHTML = "🛒 സാധനം കാർട്ടിലേക്ക് ചേർത്തു!";
+            }
+
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2500);
         }
 
         window.onload = function() {
