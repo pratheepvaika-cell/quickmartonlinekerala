@@ -119,7 +119,8 @@
 
     <script>
         function loadCheckoutSummary() {
-            let cart = JSON.parse(localStorage.getItem('quickMartCart')) || JSON.parse(localStorage.getItem('cart')) || JSON.parse(localStorage.getItem('shoppingCart')) || [];
+            // Updated to prioritize 'quickmart_cart' used in index.html and cart.html
+            let cart = JSON.parse(localStorage.getItem('quickmart_cart')) || JSON.parse(localStorage.getItem('quickMartCart')) || JSON.parse(localStorage.getItem('cart')) || [];
             const summaryBox = document.getElementById('orderSummaryBox');
 
             if (cart.length === 0) {
@@ -147,7 +148,7 @@
             let customerPhone = document.getElementById('customerPhone').value.trim();
             let customerAddress = document.getElementById('customerAddress').value.trim();
 
-            let cartItems = JSON.parse(localStorage.getItem('quickMartCart')) || JSON.parse(localStorage.getItem('cart')) || JSON.parse(localStorage.getItem('shoppingCart')) || []; 
+            let cartItems = JSON.parse(localStorage.getItem('quickmart_cart')) || JSON.parse(localStorage.getItem('quickMartCart')) || JSON.parse(localStorage.getItem('cart')) || []; 
 
             if (cartItems.length === 0) {
                 alert('നിങ്ങളുടെ കാർട്ട് കാലിയാണ്!');
@@ -178,6 +179,8 @@
             existingOrders.push(newOrder);
             localStorage.setItem('quickMartOrders', JSON.stringify(existingOrders));
 
+            // Clear all possible cart keys
+            localStorage.removeItem('quickmart_cart');
             localStorage.removeItem('quickMartCart');
             localStorage.removeItem('cart');
             localStorage.removeItem('shoppingCart');
@@ -196,11 +199,9 @@
             
             let whatsappUrl = `https://wa.me/${adminWhatsAppNumber}?text=` + encodeURIComponent(rawMessage);
 
-            // Hide form and show success screen cleanly
             document.getElementById('formSection').style.display = 'none';
             document.getElementById('successSection').style.display = 'block';
 
-            // Insert WhatsApp button neatly. NO automatic window.open() here, so user clicks manually!
             document.getElementById('whatsappButtonWrapper').innerHTML = `
                 <p style="font-size: 14px; color: #1b5e20; font-weight: 700; margin-bottom: 8px;">സെല്ലർക്ക് വാട്സാപ്പിൽ ഓർഡർ ഡീറ്റെയിൽസ് അയക്കാൻ താഴെയുള്ള ബട്ടൺ ക്ലിക്ക് ചെയ്യുക:</p>
                 <a href="${whatsappUrl}" target="_blank" class="whatsapp-open-btn">💬 Send Order via WhatsApp</a>
