@@ -23,7 +23,7 @@
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         html, body { width: 100%; overflow-x: hidden; }
-        body { background-color: var(--bg-color); color: var(--text-color); line-height: 1.6; }
+        body { background-color: var(--bg-color); color: var(--text-color); line-height: 1.6; display: flex; flex-direction: column; min-height: 100vh; }
 
         /* Professional Rich Top Green Banner */
         header {
@@ -183,7 +183,7 @@
         }
 
         /* Products Grid */
-        .container { max-width: 1250px; margin: 30px auto; padding: 0 20px; }
+        .container { max-width: 1250px; margin: 30px auto; padding: 0 20px; flex: 1; width: 100%; }
         .section-heading { font-size: 20px; font-weight: 800; color: var(--primary-green); margin-bottom: 20px; border-bottom: 2px solid #c8e6c9; padding-bottom: 8px; text-align: left; }
         
         .products-grid {
@@ -243,6 +243,18 @@
             transition: 0.2s;
         }
         .btn-add-cart:hover { background-color: var(--dark-green); }
+
+        /* Footer Section */
+        footer {
+            background-color: var(--dark-green);
+            color: #ffffff;
+            text-align: center;
+            padding: 20px;
+            margin-top: 40px;
+            font-size: 14px;
+            border-top: 3px solid var(--accent-orange);
+        }
+        footer p { margin-bottom: 5px; }
 
         @media (max-width: 768px) {
             header { padding: 12px 15px; }
@@ -310,6 +322,12 @@
             <!-- Dynamic Products from Firebase Realtime DB will load here -->
         </div>
     </div>
+
+    <!-- Footer Section -->
+    <footer>
+        <p>&copy; 2026 QuickMart Online. All Rights Reserved.</p>
+        <p><span data-key="contact">Contact</span> Us: support@quickmart.com | Ph: +91 9876543210</p>
+    </footer>
 
     <script>
         // ==========================================
@@ -417,7 +435,6 @@
             
             let filtered = products;
             if (currentCategory !== 'all') {
-                // Robust Category Mapping to match both English and Malayalam category entries from Database
                 const categoryMap = {
                     'General': ['General', 'ജനറൽ'],
                     'Groceries': ['Groceries', 'പലവ്യഞ്ജനങ്ങൾ', 'grocery', 'groceries'],
@@ -472,16 +489,15 @@
         }
 
         function addToCart(product) {
-    let cart = JSON.parse(localStorage.getItem('quickmart_cart')) || [];
-    let existing = cart.find(item => item.id === product.id);
-    if (existing) {
-        existing.qty = (existing.qty || 1) + 1;
-    } else {
-        cart.push({ ...product, qty: 1 });
-    }
-    localStorage.setItem('quickmart_cart', JSON.stringify(cart));
-    // അലേർട്ട് പൂർണ്ണമായി ഒഴിവാക്കിരിക്കുന്നു
-}
+            let cart = JSON.parse(localStorage.getItem('quickmart_cart')) || [];
+            let existing = cart.find(item => item.id === product.id);
+            if (existing) {
+                existing.qty = (existing.qty || 1) + 1;
+            } else {
+                cart.push({ ...product, qty: 1 });
+            }
+            localStorage.setItem('quickmart_cart', JSON.stringify(cart));
+        }
 
         window.onload = function() {
             const savedLang = localStorage.getItem('quickmart_lang') || 'ml';
