@@ -55,7 +55,6 @@
         
         footer { text-align: center; padding: 20px; background: #212121; color: #aaa; font-size: 14px; margin-top: 50px; }
 
-        /* Responsive Design for smaller screens */
         @media (max-width: 900px) { 
             .top-bar { flex-direction: column; text-align: center; padding: 15px 20px; gap: 12px; } 
             .top-bar .support-text { white-space: normal; }
@@ -69,7 +68,6 @@
     <header class="top-bar">
         <div class="support-text" data-key="supportText">🛒 Kerala's Fast Online Grocery Shopping</div>
         <div class="header-right-group">
-            <!-- Language Switcher -->
             <div class="lang-switch">
                 <button class="lang-btn" id="langMl" onclick="setLanguage('ml')">മലയാളം</button>
                 <button class="lang-btn" id="langEn" onclick="setLanguage('en')">English</button>
@@ -179,7 +177,8 @@
         }
 
         function loadCart() {
-            let cart = JSON.parse(localStorage.getItem('quickMartCart')) || JSON.parse(localStorage.getItem('cart')) || JSON.parse(localStorage.getItem('shoppingCart')) || [];
+            // Updated to prioritize 'quickmart_cart' used in index.html
+            let cart = JSON.parse(localStorage.getItem('quickmart_cart')) || JSON.parse(localStorage.getItem('quickMartCart')) || JSON.parse(localStorage.getItem('cart')) || [];
             const cartContainer = document.getElementById('cartContainer');
             const emptyCartMsg = document.getElementById('emptyCartMsg');
             const cartFooterSection = document.getElementById('cartFooterSection');
@@ -228,7 +227,7 @@
         }
 
         function changeQty(index, change) {
-            let cart = JSON.parse(localStorage.getItem('quickMartCart')) || JSON.parse(localStorage.getItem('cart')) || JSON.parse(localStorage.getItem('shoppingCart')) || [];
+            let cart = JSON.parse(localStorage.getItem('quickmart_cart')) || JSON.parse(localStorage.getItem('quickMartCart')) || JSON.parse(localStorage.getItem('cart')) || [];
             if(cart[index]) {
                 cart[index].qty = (cart[index].qty || cart[index].quantity || 1) + change;
                 if(cart[index].qty <= 0) {
@@ -237,14 +236,14 @@
                     cart[index].quantity = cart[index].qty;
                 }
             }
-            localStorage.setItem('quickMartCart', JSON.stringify(cart));
+            localStorage.setItem('quickmart_cart', JSON.stringify(cart));
             loadCart();
         }
 
         function removeItem(index) {
-            let cart = JSON.parse(localStorage.getItem('quickMartCart')) || JSON.parse(localStorage.getItem('cart')) || JSON.parse(localStorage.getItem('shoppingCart')) || [];
+            let cart = JSON.parse(localStorage.getItem('quickmart_cart')) || JSON.parse(localStorage.getItem('quickMartCart')) || JSON.parse(localStorage.getItem('cart')) || [];
             cart.splice(index, 1);
-            localStorage.setItem('quickMartCart', JSON.stringify(cart));
+            localStorage.setItem('quickmart_cart', JSON.stringify(cart));
             loadCart();
         }
 
