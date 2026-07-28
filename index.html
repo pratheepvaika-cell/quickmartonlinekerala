@@ -1,8 +1,7 @@
 <!DOCTYPE html>
-<html lang="ml">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="google" content="notranslate">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>QuickMart Online - Fast Grocery Delivery</title>
     
@@ -11,139 +10,36 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
 
     <style>
-        :root {
-            --primary-green: #1b5e20;
-            --dark-green: #123d15;
-            --accent-orange: #e65100;
-            --bg-color: #f4f7f6;
-            --card-bg: #ffffff;
-            --border-color: #e2e8f0;
-            --text-color: #333333;
-        }
-
+        html, body { width: 100%; margin: 0; padding: 0; overflow-x: hidden; }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        html, body { width: 100%; overflow-x: hidden; }
-        body { background-color: var(--bg-color); color: var(--text-color); line-height: 1.6; display: flex; flex-direction: column; min-height: 100vh; }
-
-        /* Perfect Header Layout matching Guide Page */
-        header {
-            background-color: var(--primary-green);
-            color: white;
-            padding: 12px 25px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: nowrap;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.18);
-            width: 100%;
-            gap: 15px;
-        }
-
-        .header-left {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            white-space: nowrap;
-        }
-
-        .header-tagline {
-            font-size: 13px;
-            font-weight: 600;
-            color: #dcedc8;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .header-right {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            flex-wrap: nowrap;
-        }
-
-        /* Language Switcher */
-        .lang-switch {
-            display: flex;
-            background: var(--dark-green);
-            border-radius: 6px;
-            padding: 2px;
-            border: 1px solid rgba(255,255,255,0.25);
-        }
-        .lang-btn {
-            background: transparent;
-            border: none;
-            color: #fff;
-            padding: 5px 10px;
-            font-size: 12px;
-            font-weight: 700;
-            cursor: pointer;
-            border-radius: 4px;
-            transition: 0.2s;
-        }
-        .lang-btn.active {
-            background: #ffffff;
-            color: var(--primary-green);
-        }
-
-        /* Nav Links Styling */
-        .nav-link {
-            background-color: #ffffff;
-            color: var(--primary-green);
-            padding: 7px 12px;
-            border-radius: 6px;
-            text-decoration: none;
-            font-size: 13px;
-            font-weight: 700;
-            transition: 0.2s;
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            white-space: nowrap;
-        }
-        .nav-link:hover { background-color: #f1f1f1; transform: translateY(-1px); }
+        body { background-color: #f4f7f6; color: #333; line-height: 1.6; display: flex; flex-direction: column; min-height: 100vh; }
         
-        .nav-link.admin-btn {
-            background-color: #c62828;
-            color: white;
-        }
-        .nav-link.admin-btn:hover { background-color: #b71c1c; }
-
-        .nav-link.cart-btn {
-            background-color: var(--accent-orange);
-            color: white;
-        }
-        .nav-link.cart-btn:hover { background-color: #bf360c; }
-
-        /* Main Sub-Header / Brand Section */
-        .sub-header {
-            background: #ffffff;
-            padding: 18px 30px;
-            border-bottom: 1px solid var(--border-color);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
-            flex-wrap: wrap;
-            gap: 15px;
-        }
-
-        .brand-box { display: flex; align-items: center; gap: 15px; }
-        .brand-icon { background: var(--primary-green); width: 50px; height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(27,94,32,0.3); flex-shrink: 0; }
-        .brand-icon svg { width: 28px; height: 28px; fill: white; }
+        .top-bar { background-color: #1b5e20; color: #ffffff; display: flex; justify-content: space-between; align-items: center; padding: 12px 40px; flex-wrap: wrap; gap: 10px; }
+        .top-bar .support-text { font-size: 14px; font-weight: 600; }
         
-        .brand-title { white-space: nowrap; }
-        .brand-title h1 { font-size: 24px; font-weight: 800; color: var(--primary-green); line-height: 1.1; display: inline-block; }
-        .brand-title h1 .highlight-m { color: var(--accent-orange); }
-        
-        .brand-title span { font-size: 12px; color: var(--accent-orange); font-weight: 800; display: block; letter-spacing: 0.5px; margin-top: 2px; }
+        .header-right-group { display: flex; align-items: center; gap: 15px; flex-shrink: 0; }
+        .lang-switch { display: flex; background: #123d15; border-radius: 6px; padding: 3px; border: 1px solid rgba(255,255,255,0.25); }
+        .lang-btn { background: transparent; border: none; color: #fff; padding: 5px 10px; font-size: 12px; font-weight: 700; cursor: pointer; border-radius: 4px; transition: 0.2s; }
+        .lang-btn.active { background: #ffffff; color: #1b5e20; }
+
+        .nav-links { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+        .nav-links a { color: #1b5e20; text-decoration: none; font-weight: 700; font-size: 13px; background-color: #ffffff; border: 2px solid #ffffff; padding: 6px 12px; border-radius: 6px; transition: all 0.2s ease; white-space: nowrap; }
+        .nav-links a:hover { background-color: #e8f5e9; }
+
+        .logo-bar { padding: 15px 40px; background: #ffffff; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
+        .logo-container { display: inline-flex; align-items: center; gap: 14px; text-decoration: none; }
+        .logo-cart-icon { background-color: #1b5e20; width: 50px; height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(27, 94, 32, 0.25); }
+        .logo-cart-icon svg { width: 28px; height: 28px; fill: #ffffff; }
+        .logo-text-wrapper { display: flex; flex-direction: column; }
+        .logo-text { font-size: 28px; font-weight: 800; line-height: 1; display: flex; align-items: center; }
+        .logo-quick { color: #1b5e20; } .logo-mart { color: #e65100; } .logo-online { color: #1b5e20; margin-left: 6px; }
+        .logo-tagline { font-size: 12px; color: #d97706; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; margin-top: 4px; }
 
         .check-cart-top {
             background: #ffffff;
-            border: 2px solid var(--primary-green);
-            color: var(--primary-green);
-            padding: 10px 18px;
+            border: 2px solid #1b5e20;
+            color: #1b5e20;
+            padding: 8px 16px;
             border-radius: 8px;
             font-weight: 700;
             font-size: 14px;
@@ -153,42 +49,39 @@
             align-items: center;
             gap: 8px;
             box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-            white-space: nowrap;
         }
-        .check-cart-top:hover { background: var(--primary-green); color: white; }
+        .check-cart-top:hover { background: #1b5e20; color: white; }
 
         /* Categories Filter Bar */
         .categories-container {
-            padding: 15px 30px;
+            padding: 15px 40px;
             display: flex;
             gap: 12px;
             overflow-x: auto;
             background: #ffffff;
-            border-bottom: 1px solid var(--border-color);
+            border-bottom: 1px solid #e2e8f0;
         }
         .cat-chip {
             background: #ffffff;
-            color: var(--primary-green);
+            color: #1b5e20;
             border: 1px solid #cbd5e1;
-            padding: 9px 18px;
+            padding: 8px 16px;
             border-radius: 25px;
             font-size: 13px;
             font-weight: 700;
             cursor: pointer;
             white-space: nowrap;
             transition: 0.2s;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
         }
         .cat-chip.active, .cat-chip:hover {
-            background: var(--primary-green);
+            background: #1b5e20;
             color: white;
-            border-color: var(--primary-green);
-            box-shadow: 0 2px 6px rgba(27,94,32,0.2);
+            border-color: #1b5e20;
         }
 
         /* Products Grid */
         .container { max-width: 1250px; margin: 30px auto; padding: 0 20px; flex: 1; width: 100%; }
-        .section-heading { font-size: 20px; font-weight: 800; color: var(--primary-green); margin-bottom: 20px; border-bottom: 2px solid #c8e6c9; padding-bottom: 8px; text-align: left; }
+        .section-heading { font-size: 22px; font-weight: 800; color: #1b5e20; margin-bottom: 20px; border-bottom: 2px solid #c8e6c9; padding-bottom: 8px; text-align: left; }
         
         .products-grid {
             display: grid;
@@ -197,8 +90,8 @@
         }
 
         .product-card {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
             border-radius: 12px;
             padding: 16px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.04);
@@ -227,35 +120,12 @@
             object-fit: cover !important; 
         }
 
-        .product-info-box {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-            margin-bottom: 14px;
-        }
-
-        .product-name { 
-            font-size: 16px; 
-            font-weight: 700; 
-            color: #2d3748; 
-            text-align: left; 
-            line-height: 1.3;
-            min-height: 40px;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
-        
-        .product-price { 
-            font-size: 18px; 
-            font-weight: 800; 
-            color: var(--accent-orange); 
-            text-align: left; 
-        }
+        .product-info-box { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
+        .product-name { font-size: 16px; font-weight: 700; color: #2d3748; text-align: left; line-height: 1.3; min-height: 40px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+        .product-price { font-size: 18px; font-weight: 800; color: #e65100; text-align: left; }
         
         .btn-add-cart {
-            background-color: var(--primary-green);
+            background-color: #1b5e20;
             color: white;
             border: none;
             padding: 10px;
@@ -270,74 +140,49 @@
             gap: 6px;
             transition: 0.2s;
         }
-        .btn-add-cart:hover { background-color: var(--dark-green); }
+        .btn-add-cart:hover { background-color: #123d15; }
 
-        /* Footer Section */
-        footer {
-            background-color: var(--dark-green);
-            color: #ffffff;
-            text-align: center;
-            padding: 20px;
-            margin-top: 40px;
-            font-size: 14px;
-            border-top: 3px solid var(--accent-orange);
-        }
-        footer p { margin-bottom: 5px; }
-
-        @media (max-width: 1024px) {
-            header { flex-wrap: wrap; padding: 12px 15px; justify-content: center; }
-            .header-left { width: 100%; justify-content: space-between; }
-            .header-right { width: 100%; justify-content: center; flex-wrap: wrap; }
-        }
-
-        @media (max-width: 768px) {
-            .sub-header { padding: 12px 15px; }
-            .brand-title h1 { font-size: 18px; }
-            .categories-container { padding: 12px 15px; }
+        footer { text-align: center; padding: 25px; background: #212121; color: #aaa; font-size: 14px; margin-top: 50px; }
+        
+        @media (max-width: 768px) { 
+            .top-bar, .logo-bar, .categories-container { padding: 12px 20px; flex-direction: column; text-align: center; } 
+            .nav-links { justify-content: center; } 
             .products-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
-            .product-card { padding: 12px; }
-            .product-img-wrapper { height: 130px; }
-            .product-name { font-size: 14px; min-height: 36px; }
-            .product-price { font-size: 16px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Perfect Header matching Guide Page -->
-    <header>
-        <div class="header-left">
-            <div class="header-tagline">
-                🛒 <span data-key="tagline">Kerala's Fast Online Grocery Shopping</span>
-            </div>
-            <!-- Language Switcher -->
+    <!-- Guide-പോളെയുള്ള പെർഫെക്റ്റ് ടോപ് ബാർ -->
+    <header class="top-bar">
+        <div class="support-text" data-key="supportText">🛒 കേരളത്തിന്റെ സ്വന്തം ഓൺലൈൻ പലവ്യഞ്ജന കട</div>
+        <div class="header-right-group">
             <div class="lang-switch">
                 <button class="lang-btn" id="langMl" onclick="setLanguage('ml')">മലയാളം</button>
                 <button class="lang-btn" id="langEn" onclick="setLanguage('en')">English</button>
             </div>
-        </div>
-
-        <div class="header-right">
-            <a href="index.html" class="nav-link">🏠 <span data-key="home">Home</span></a>
-            <a class="nav-link" href="guide.html">📱 <span data-key="howToOrder">How to Order?</span></a>
-            <a href="about.html" class="nav-link">ℹ️ <span data-key="aboutUs">About Us</span></a>
-            <a href="contact.html" class="nav-link">📞 <span data-key="contactUs">Contact Us</span></a>
-            <a href="admin.html" class="nav-link admin-btn"><span data-key="admin">Admin</span></a>
-            <a href="cart.html" class="nav-link cart-btn">🛒 <span data-key="cart">Cart</span></a>
+            <nav class="nav-links">
+                <a href="index.html" style="background-color: #e8f5e9;" data-key="home">ഹോം (Home)</a>
+                <a href="guide.html" data-key="howToOrder">📱 എങ്ങനെ ഓർഡർ ചെയ്യാം?</a>
+                <a href="about.html" data-key="aboutUs">ഞങ്ങളെക്കുറിച്ച്</a>
+                <a href="contact.html" data-key="contactUs">ബന്ധപ്പെടാൻ</a>
+                <a href="admin.html" data-key="admin">അഡ്മിൻ</a>
+                <a href="cart.html" data-key="cart">🛒 കാർട്ട്</a>
+            </nav>
         </div>
     </header>
 
-    <!-- Sub Header & Branding -->
-    <div class="sub-header">
-        <div class="brand-box">
-            <div class="brand-icon">
+    <!-- Guide-പോളെയുള്ള പെർഫെക്റ്റ് ലോഗോ ബാർ -->
+    <div class="logo-bar">
+        <a href="index.html" class="logo-container">
+            <div class="logo-cart-icon">
                 <svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
             </div>
-            <div class="brand-title">
-                <h1>Quick<span class="highlight-m">M</span>art Online</h1>
-                <span data-key="subTagline">✨ ALL THAT GLITTERS</span>
+            <div class="logo-text-wrapper">
+                <div class="logo-text"><span class="logo-quick">Quick</span><span class="logo-mart">M</span><span class="logo-mart">art</span><span class="logo-online">Online</span></div>
+                <div class="logo-tagline" data-key="tagline">✨ All That Glitters</div>
             </div>
-        </div>
+        </a>
         <button class="check-cart-top" onclick="window.location.href='cart.html'">
             🛒 <span data-key="checkCart">Check Cart</span>
         </button>
@@ -345,31 +190,27 @@
 
     <!-- Categories Filter Bar -->
     <div class="categories-container">
-        <div class="cat-chip active" onclick="filterCategory('all', this)"><span data-key="catAll">All</span></div>
-        <div class="cat-chip" onclick="filterCategory('General', this)"><span data-key="catGeneral">General</span></div>
-        <div class="cat-chip" onclick="filterCategory('Groceries', this)"><span data-key="catGroceries">Groceries</span></div>
-        <div class="cat-chip" onclick="filterCategory('Vegetables', this)"><span data-key="catVegetables">Vegetables</span></div>
-        <div class="cat-chip" onclick="filterCategory('Fruits', this)"><span data-key="catFruits">Fruits</span></div>
+        <div class="cat-chip active" onclick="filterCategory('all', this)"><span data-key="catAll">എല്ലാം (All)</span></div>
+        <div class="cat-chip" onclick="filterCategory('General', this)"><span data-key="catGeneral">ജനറൽ (General)</span></div>
+        <div class="cat-chip" onclick="filterCategory('Groceries', this)"><span data-key="catGroceries">പലവ്യഞ്ജനങ്ങൾ (Groceries)</span></div>
+        <div class="cat-chip" onclick="filterCategory('Vegetables', this)"><span data-key="catVegetables">പച്ചക്കറികൾ (Vegetables)</span></div>
+        <div class="cat-chip" onclick="filterCategory('Fruits', this)"><span data-key="catFruits">പഴങ്ങൾ (Fruits)</span></div>
     </div>
 
-    <!-- Main Products Listing Section -->
-    <div class="container">
+    <!-- Products Section -->
+    <main class="container">
         <h2 class="section-heading" data-key="newProductsHeading">പുതിയ പലവ്യഞ്ജനങ്ങളും സാധനങ്ങളും</h2>
         <div class="products-grid" id="productsGridContainer">
-            <!-- Dynamic Products from Firebase Realtime DB will load here -->
+            <!-- Firebase Products will load here dynamically -->
         </div>
-    </div>
+    </main>
 
-    <!-- Footer Section -->
     <footer>
-        <p>&copy; 2026 QuickMart Online. All Rights Reserved.</p>
-        <p><span data-key="contact">Contact</span> Us: support@quickmart.com | Ph: +91 9876543210</p>
+        <p data-key="footerText">&copy; 2026 QuickMart Online. All rights reserved. | കേരളത്തിന്റെ സ്വന്തം ഓൺലൈൻ ഷോപ്പ്</p>
     </footer>
 
     <script>
-        // ==========================================
-        // FIREBASE CONFIGURATION (Realtime Database)
-        // ==========================================
+        // Firebase Configuration
         const firebaseConfig = {
             apiKey: "AIzaSyD_geMtD7UVO5lZq7AI5annvw70gWAVhDE",
             authDomain: "quickmart-ce511.firebaseapp.com",
@@ -387,17 +228,16 @@
         let currentCategory = 'all';
         let allProductsCache = [];
 
-        // Dictionary for Multilingual UI Texts
         const translations = {
             en: {
-                tagline: "Kerala's Fast Online Grocery Shopping",
+                supportText: "🛒 Kerala's Fast Online Grocery Shopping",
                 home: "Home",
-                howToOrder: "How to Order?",
+                howToOrder: "📱 How to Order?",
                 aboutUs: "About Us",
                 contactUs: "Contact Us",
                 admin: "Admin",
                 cart: "Cart",
-                subTagline: "✨ ALL THAT GLITTERS",
+                tagline: "✨ All That Glitters",
                 checkCart: "Check Cart",
                 catAll: "All",
                 catGeneral: "General",
@@ -406,26 +246,26 @@
                 catFruits: "Fruits",
                 newProductsHeading: "New Groceries & Items",
                 addToCart: "Add to Cart",
-                contact: "Contact"
+                footerText: "© 2026 QuickMart Online. All rights reserved. | Kerala's Own Online Shop"
             },
             ml: {
-                tagline: "കേരളത്തിലെ ഏറ്റവും വേഗതയേറിയ ഓൺലൈൻ പലവ്യഞ്ജന ഷോപ്പിംഗ്",
-                home: "ഹോം",
-                howToOrder: "എങ്ങനെ ഓർഡർ ചെയ്യാം?",
+                supportText: "🛒 കേരളത്തിന്റെ സ്വന്തം ഓൺലൈൻ പലവ്യഞ്ജന കട",
+                home: "ഹോം (Home)",
+                howToOrder: "📱 എങ്ങനെ ഓർഡർ ചെയ്യാം?",
                 aboutUs: "ഞങ്ങളെക്കുറിച്ച്",
-                contactUs: "ബന്ധപ്പെടുക",
+                contactUs: "ബന്ധപ്പെടാൻ",
                 admin: "അഡ്മിൻ",
                 cart: "കാർട്ട്",
-                subTagline: "✨ മിന്നുന്നതെല്ലാം",
+                tagline: "✨ All That Glitters",
                 checkCart: "കാർട്ട് പരിശോധിക്കുക",
-                catAll: "എല്ലാം",
-                catGeneral: "ജനറൽ",
-                catGroceries: "പലവ്യഞ്ജനങ്ങൾ",
-                catVegetables: "പച്ചക്കറികൾ",
-                catFruits: "പഴങ്ങൾ",
+                catAll: "എല്ലാം (All)",
+                catGeneral: "ജനറൽ (General)",
+                catGroceries: "പലവ്യഞ്ജനങ്ങൾ (Groceries)",
+                catVegetables: "പച്ചക്കറികൾ (Vegetables)",
+                catFruits: "പഴങ്ങൾ (Fruits)",
                 newProductsHeading: "പുതിയ പലവ്യഞ്ജനങ്ങളും സാധനങ്ങളും",
                 addToCart: "കാർട്ടിലേക്ക് ചേർക്കുക",
-                contact: "ബന്ധപ്പെടുക"
+                footerText: "© 2026 QuickMart Online. All rights reserved. | കേരളത്തിന്റെ സ്വന്തം ഓൺലൈൻ ഷോപ്പ്"
             }
         };
 
@@ -437,7 +277,7 @@
             document.querySelectorAll('[data-key]').forEach(el => {
                 const key = el.getAttribute('data-key');
                 if (translations[lang] && translations[lang][key]) {
-                    el.textContent = translations[lang][key];
+                    el.innerHTML = translations[lang][key];
                 }
             });
 
@@ -538,6 +378,7 @@
                 cart.push({ ...product, qty: 1 });
             }
             localStorage.setItem('quickmart_cart', JSON.stringify(cart));
+            alert('Item added to cart!');
         }
 
         window.onload = function() {
