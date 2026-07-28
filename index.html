@@ -163,31 +163,31 @@
             gap: 5px;
         }
 
-        /* -------------------------------------------------------------
-           [NEW ADDED] Custom Toast Notification Style (CSS)
-           ------------------------------------------------------------- */
+        /* Centered Toast Notification Style */
         #quickToast {
             position: fixed;
-            bottom: 20px;
-            right: 20px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.9);
             background: #1b5e20;
             color: #ffffff;
-            padding: 12px 20px;
-            border-radius: 8px;
-            font-size: 13px;
+            padding: 16px 24px;
+            border-radius: 12px;
+            font-size: 14px;
             font-weight: 700;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            text-align: center;
             z-index: 9999;
             opacity: 0;
-            transform: translateY(20px);
+            visibility: hidden;
             transition: all 0.3s ease;
+            line-height: 1.5;
+            border: 2px solid #ffffff;
         }
         #quickToast.show {
             opacity: 1;
-            transform: translateY(0);
+            visibility: visible;
+            transform: translate(-50%, -50%) scale(1);
         }
 
         footer { text-align: center; padding: 20px; background: #212121; color: #aaa; font-size: 12px; margin-top: 30px; }
@@ -255,10 +255,8 @@
         <div class="products-grid" id="productsGridContainer"></div>
     </main>
 
-    <!-- -------------------------------------------------------------
-       [NEW ADDED] Toast Notification Element (HTML)
-       ------------------------------------------------------------- -->
-    <div id="quickToast">🛒 കാർട്ടിലേക്ക് ചേർത്തു!</div>
+    <!-- Toast Notification Element -->
+    <div id="quickToast">🛒 സാധനം കാർട്ടിലേക്ക് ചേർത്തു!<br><span style="font-size: 12px; font-weight: 400;">കാർട്ട് ഓപ്പൺ ചെയ്ത് ഓർഡർ പ്ലേസ് ചെയ്യൂ.</span></div>
 
     <footer>
         <p data-key="footerText">&copy; 2026 QuickMart Online. All rights reserved. | കേരളത്തിന്റെ സ്വന്തം ഓൺലൈൻ ഷോപ്പ്</p>
@@ -417,9 +415,6 @@
             renderProducts(allProductsCache);
         }
 
-        /* -------------------------------------------------------------
-           [NEW UPDATED] addToCart & showToast Functions (JavaScript)
-           ------------------------------------------------------------- */
         function addToCart(product) {
             let cart = JSON.parse(localStorage.getItem('quickmart_cart')) || [];
             let existing = cart.find(item => item.id === product.id);
@@ -431,7 +426,6 @@
             localStorage.setItem('quickmart_cart', JSON.stringify(cart));
             updateCartCount();
 
-            // Show Custom Toast Notification instead of alert()
             showToast();
         }
 
@@ -440,15 +434,15 @@
             const currentLang = localStorage.getItem('quickmart_lang') || 'ml';
             
             if (currentLang === 'en') {
-                toast.innerHTML = "🛒 Added to cart successfully!";
+                toast.innerHTML = "🛒 Added to cart successfully!<br><span style='font-size: 12px; font-weight: 400;'>Open cart and place your order.</span>";
             } else {
-                toast.innerHTML = "🛒 സാധനം കാർട്ടിലേക്ക് ചേർത്തു!";
+                toast.innerHTML = "🛒 സാധനം കാർട്ടിലേക്ക് ചേർത്തു!<br><span style='font-size: 12px; font-weight: 400;'>കാർട്ട് ഓപ്പൺ ചെയ്ത് ഓർഡർ പ്ലേസ് ചെയ്യൂ.</span>";
             }
 
             toast.classList.add('show');
             setTimeout(() => {
                 toast.classList.remove('show');
-            }, 2500);
+            }, 3000);
         }
 
         window.onload = function() {
