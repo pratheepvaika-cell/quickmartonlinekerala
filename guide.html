@@ -11,6 +11,12 @@
         
         .top-bar { background-color: #1b5e20; color: #ffffff; display: flex; justify-content: space-between; align-items: center; padding: 12px 40px; flex-wrap: wrap; gap: 10px; }
         .top-bar .support-text { font-size: 14px; font-weight: 600; }
+        
+        .header-right-group { display: flex; align-items: center; gap: 15px; flex-shrink: 0; }
+        .lang-switch { display: flex; background: #123d15; border-radius: 6px; padding: 3px; border: 1px solid rgba(255,255,255,0.25); }
+        .lang-btn { background: transparent; border: none; color: #fff; padding: 5px 10px; font-size: 12px; font-weight: 700; cursor: pointer; border-radius: 4px; transition: 0.2s; }
+        .lang-btn.active { background: #ffffff; color: #1b5e20; }
+
         .nav-links { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
         .nav-links a { color: #1b5e20; text-decoration: none; font-weight: 700; font-size: 13px; background-color: #ffffff; border: 2px solid #ffffff; padding: 6px 12px; border-radius: 6px; transition: all 0.2s ease; white-space: nowrap; }
         .nav-links a:hover { background-color: #e8f5e9; }
@@ -29,7 +35,7 @@
         .main-title { color: #1b5e20; font-size: 28px; font-weight: 800; margin-bottom: 10px; text-align: center; }
         .sub-desc { text-align: center; color: #666; font-size: 15px; margin-bottom: 30px; }
         
-        .step-item { display: flex; gap: 20px; background: #f9fbf9; border: 1px solid #e2e8f0; padding: 20px; border-radius: 10px; margin-bottom: 20px; align-items: flex-start; }
+        .step-item { display: flex; gap: 20px; background: #f9fbf9; border: 1px solid #e2e8f0; padding: 20px; border-radius: 10px; margin-bottom: 20px; align-items: flex-start; text-align: left; }
         .step-badge { background: #e65100; color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 18px; flex-shrink: 0; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
         .step-content h3 { color: #1b5e20; font-size: 18px; margin-bottom: 6px; }
         .step-content p { color: #555; font-size: 14px; line-height: 1.6; }
@@ -44,15 +50,21 @@
 <body>
 
     <header class="top-bar">
-        <div class="support-text">🛒 കേരളത്തിന്റെ സ്വന്തം ഓൺലൈൻ പലവ്യഞ്ജന കട</div>
-        <nav class="nav-links">
-            <a href="index.html">ഹോം (Home)</a>
-            <a href="guide.html" style="background-color: #e8f5e9;">📱 എങ്ങനെ ഓർഡർ ചെയ്യാം?</a>
-            <a href="about.html">ഞങ്ങളെക്കുറിച്ച്</a>
-            <a href="contact.html">ബന്ധപ്പെടാൻ</a>
-            <a href="admin.html">അഡ്മിൻ</a>
-            <a href="cart.html">🛒 കാർട്ട്</a>
-        </nav>
+        <div class="support-text" data-key="supportText">🛒 കേരളത്തിന്റെ സ്വന്തം ഓൺലൈൻ പലവ്യഞ്ജന കട</div>
+        <div class="header-right-group">
+            <div class="lang-switch">
+                <button class="lang-btn" id="langMl" onclick="setLanguage('ml')">മലയാളം</button>
+                <button class="lang-btn" id="langEn" onclick="setLanguage('en')">English</button>
+            </div>
+            <nav class="nav-links">
+                <a href="index.html" data-key="home">ഹോം (Home)</a>
+                <a href="guide.html" style="background-color: #e8f5e9;" data-key="howToOrder">📱 എങ്ങനെ ഓർഡർ ചെയ്യാം?</a>
+                <a href="about.html" data-key="aboutUs">ഞങ്ങളെക്കുറിച്ച്</a>
+                <a href="contact.html" data-key="contactUs">ബന്ധപ്പെടാൻ</a>
+                <a href="admin.html" data-key="admin">അഡ്മിൻ</a>
+                <a href="cart.html" data-key="cart">🛒 കാർട്ട്</a>
+            </nav>
+        </div>
     </header>
 
     <div class="logo-bar">
@@ -62,55 +74,121 @@
             </div>
             <div class="logo-text-wrapper">
                 <div class="logo-text"><span class="logo-quick">Quick</span><span class="logo-mart">M</span><span class="logo-mart">art</span><span class="logo-online">Online</span></div>
-                <div class="logo-tagline">✨ All That Glitters</div>
+                <div class="logo-tagline" data-key="tagline">✨ All That Glitters</div>
             </div>
         </a>
     </div>
 
     <main class="container">
         <div class="guide-box">
-            <h1 class="main-title">📱 വളരെ എളുപ്പത്തിൽ എങ്ങനെ ഓർഡർ ചെയ്യാം?</h1>
-            <p class="sub-desc">സാധാരണക്കാർക്ക് പോലും ഒറ്റനോട്ടത്തിൽ മനസ്സിലാകുന്ന ലളിതമായ വഴികൾ</p>
+            <h1 class="main-title" data-key="mainTitle">📱 വളരെ എളുപ്പത്തിൽ എങ്ങനെ ഓർഡർ ചെയ്യാം?</h1>
+            <p class="sub-desc" data-key="subDesc">സാധാരണക്കാർക്ക് പോലും ഒറ്റനോട്ടത്തിൽ മനസ്സിലാകുന്ന ലളിതമായ വഴികൾ</p>
             
             <div class="step-item">
                 <div class="step-badge">1</div>
                 <div class="step-content">
-                    <h3>സാധനങ്ങൾ തിരഞ്ഞെടുക്കുക</h3>
-                    <p>ഹോം പേജിൽ നൽകിയിരിക്കുന്ന പലവ്യഞ്ജനങ്ങളുടെയും പച്ചക്കറികളുടെയും ലിസ്റ്റിൽ നിന്ന് നിങ്ങൾക്ക് ആവശ്യമുള്ളവ കണ്ടെത്തി <strong>'കാർട്ടിലേക്ക് ചേർക്കുക' (Add to Cart)</strong> എന്ന പച്ച ബട്ടൺ ക്ലിക്ക് ചെയ്യുക.</p>
+                    <h3 data-key="step1Title">സാധനങ്ങൾ തിരഞ്ഞെടുക്കുക</h3>
+                    <p data-key="step1Desc">ഹോം പേജിൽ നൽകിയിരിക്കുന്ന പലവ്യഞ്ജനങ്ങളുടെയും പച്ചക്കറികളുടെയും ലിസ്റ്റിൽ നിന്ന് നിങ്ങൾക്ക് ആവശ്യമുള്ളവ കണ്ടെത്തി <strong>'കാർട്ടിലേക്ക് ചേർക്കുക' (Add to Cart)</strong> എന്ന പച്ച ബട്ടൺ ക്ലിക്ക് ചെയ്യുക.</p>
                 </div>
             </div>
 
             <div class="step-item">
                 <div class="step-badge">2</div>
                 <div class="step-content">
-                    <h3>കാർട്ട് പരിശോധിക്കുക</h3>
-                    <p>മുകളിൽ കാണുന്ന <strong>'കാർട്ട്'</strong> ബട്ടൺ അമർത്തിയാൽ നിങ്ങൾ എടുത്ത സാധനങ്ങളും ഓരോന്നിന്റെയും വിലയും ആകെ തുകയും കൃത്യമായി കാണാൻ സാധിക്കും.</p>
+                    <h3 data-key="step2Title">കാർട്ട് പരിശോധിക്കുക</h3>
+                    <p data-key="step2Desc">മുകളിൽ കാണുന്ന <strong>'കാർട്ട്'</strong> ബട്ടൺ അമർത്തിയാൽ നിങ്ങൾ എടുത്ത സാധനങ്ങളും ഓരോന്നിന്റെയും വിലയും ആകെ തുകയും കൃത്യമായി കാണാൻ സാധിക്കും.</p>
                 </div>
             </div>
 
             <div class="step-item">
                 <div class="step-badge">3</div>
                 <div class="step-content">
-                    <h3>ഡെലിവറി വിവരങ്ങൾ നൽകുക</h3>
-                    <p>തുടർന്ന് വരുന്ന പേജിൽ നിങ്ങളുടെ <strong>പേര്, ഫോൺ നമ്പർ, സാധനങ്ങൾ എത്തിക്കേണ്ട കൃത്യമായ വിലാസം (Address)</strong> എന്നിവ വ്യക്തമായി ടൈപ്പ് ചെയ്ത് നൽകുക.</p>
+                    <h3 data-key="step3Title">ഡെലിവറി വിവരങ്ങൾ നൽകുക</h3>
+                    <p data-key="step3Desc">തുടർന്ന് വരുന്ന പേജിൽ നിങ്ങളുടെ <strong>പേര്, ഫോൺ നമ്പർ, സാധനങ്ങൾ എത്തിക്കേണ്ട കൃത്യമായ വിലാസം (Address)</strong> എന്നിവ വ്യക്തമായി ടൈപ്പ് ചെയ്ത് നൽകുക.</p>
                 </div>
             </div>
 
             <div class="step-item">
                 <div class="step-badge">4</div>
                 <div class="step-content">
-                    <h3>വാട്സാപ്പിലേക്ക് ഓർഡർ അയക്കുക</h3>
-                    <p>അവസാനം <strong>'Send Order via WhatsApp'</strong> ബട്ടൺ ക്ലിക്ക് ചെയ്യുക. അതോടെ നിങ്ങളുടെ ഓർഡർ ഡീറ്റെയിൽസ് നേരിട്ട് ഞങ്ങളുടെ വാട്സാപ്പിലേക്ക് എത്തുന്നതാണ്!</p>
+                    <h3 data-key="step4Title">വാട്സാപ്പിലേക്ക് ഓർഡർ അയക്കുക</h3>
+                    <p data-key="step4Desc">അവസാനം <strong>'Send Order via WhatsApp'</strong> ബട്ടൺ ക്ലിക്ക് ചെയ്യുക. അതോടെ നിങ്ങളുടെ ഓർഡർ ഡീറ്റെയിൽസ് നേരിട്ട് ഞങ്ങളുടെ വാട്സാപ്പിലേക്ക് എത്തുന്നതാണ്!</p>
                 </div>
             </div>
 
-            <a href="index.html" class="back-home-btn">🏠 ഷോപ്പിംഗ് പേജിലേക്ക് തിരികെ പോവുക</a>
+            <a href="index.html" class="back-home-btn" data-key="backBtn">🏠 ഷോപ്പിംഗ് പേജിലേക്ക് തിരികെ പോവുക</a>
         </div>
     </main>
 
     <footer>
-        <p>&copy; 2026 QuickMart Online. All rights reserved. | കേരളത്തിന്റെ സ്വന്തം ഓൺലൈൻ ഷോപ്പ്</p>
+        <p data-key="footerText">&copy; 2026 QuickMart Online. All rights reserved. | കേരളത്തിന്റെ സ്വന്തം ഓൺലൈൻ ഷോപ്പ്</p>
     </footer>
 
+    <script>
+        const translations = {
+            en: {
+                supportText: "🛒 Kerala's Fast Online Grocery Shopping",
+                home: "Home",
+                howToOrder: "📱 How to Order?",
+                aboutUs: "About Us",
+                contactUs: "Contact Us",
+                admin: "Admin",
+                cart: "🛒 Cart",
+                tagline: "✨ All That Glitters",
+                mainTitle: "📱 How to Order Easily?",
+                subDesc: "Simple steps that anyone can understand at a glance",
+                step1Title: "Select Products",
+                step1Desc: "Find what you need from the list of groceries and vegetables on the home page and click the green <strong>'Add to Cart'</strong> button.",
+                step2Title: "Check Your Cart",
+                step2Desc: "Clicking the <strong>'Cart'</strong> button at the top will show you the items you selected, the price of each, and the total amount accurately.",
+                step3Title: "Provide Delivery Details",
+                step3Desc: "On the following page, clearly type your <strong>Name, Phone Number, and complete Delivery Address</strong>.",
+                step4Title: "Send Order via WhatsApp",
+                step4Desc: "Finally, click the <strong>'Send Order via WhatsApp'</strong> button. Your order details will be sent directly to our WhatsApp!",
+                backBtn: "🏠 Back to Shopping Page",
+                footerText: "© 2026 QuickMart Online. All rights reserved. | Kerala's Own Online Shop"
+            },
+            ml: {
+                supportText: "🛒 കേരളത്തിന്റെ സ്വന്തം ഓൺലൈൻ പലവ്യഞ്ജന കട",
+                home: "ഹോം (Home)",
+                howToOrder: "📱 എങ്ങനെ ഓർഡർ ചെയ്യാം?",
+                aboutUs: "ഞങ്ങളെക്കുറിച്ച്",
+                contactUs: "ബന്ധപ്പെടാൻ",
+                admin: "അഡ്മിൻ",
+                cart: "🛒 കാർട്ട്",
+                tagline: "✨ All That Glitters",
+                mainTitle: "📱 വളരെ എളുപ്പത്തിൽ എങ്ങനെ ഓർഡർ ചെയ്യാം?",
+                subDesc: "സാധാരണക്കാർക്ക് പോലും ഒറ്റനോട്ടത്തിൽ മനസ്സിലാകുന്ന ലളിതമായ വഴികൾ",
+                step1Title: "സാധനങ്ങൾ തിരഞ്ഞെടുക്കുക",
+                step1Desc: "ഹോം പേജിൽ നൽകിയിരിക്കുന്ന പലവ്യഞ്ജനങ്ങളുടെയും പച്ചക്കറികളുടെയും ലിസ്റ്റിൽ നിന്ന് നിങ്ങൾക്ക് ആവശ്യമുള്ളവ കണ്ടെത്തി <strong>'കാർട്ടിലേക്ക് ചേർക്കുക' (Add to Cart)</strong> എന്ന പച്ച ബട്ടൺ ക്ലിക്ക് ചെയ്യുക.",
+                step2Title: "കാർട്ട് പരിശോധിക്കുക",
+                step2Desc: "മുകളിൽ കാണുന്ന <strong>'കാർട്ട്'</strong> ബട്ടൺ അമർത്തിയാൽ നിങ്ങൾ എടുത്ത സാധനങ്ങളും ഓരോന്നിന്റെയും വിലയും ആകെ തുകയും കൃത്യമായി കാണാൻ സാധിക്കും.",
+                step3Title: "ഡെലിവറി വിവരങ്ങൾ നൽകുക",
+                step3Desc: "തുടർന്ന് വരുന്ന പേജിൽ നിങ്ങളുടെ <strong>പേര്, ഫോൺ നമ്പർ, സാധനങ്ങൾ എത്തിക്കേണ്ട കൃത്യമായ വിലാസം (Address)</strong> എന്നിവ വ്യക്തമായി ടൈപ്പ് ചെയ്ത് നൽകുക.",
+                step4Title: "വാട്സാപ്പിലേക്ക് ഓർഡർ അയക്കുക",
+                step4Desc: "അവസാനം <strong>'Send Order via WhatsApp'</strong> ബട്ടൺ ക്ലിക്ക് ചെയ്യുക. അതോടെ നിങ്ങളുടെ ഓർഡർ ഡീറ്റെയിൽസ് നേരിട്ട് ഞങ്ങളുടെ വാട്സാപ്പിലേക്ക് എത്തുന്നതാണ്!",
+                backBtn: "🏠 ഷോപ്പിംഗ് പേജിലേക്ക് തിരികെ പോവുക",
+                footerText: "© 2026 QuickMart Online. All rights reserved. | കേരളത്തിന്റെ സ്വന്തം ഓൺലൈൻ ഷോപ്പ്"
+            }
+        };
+
+        function setLanguage(lang) {
+            localStorage.setItem('quickmart_lang', lang);
+            document.getElementById('langEn').classList.toggle('active', lang === 'en');
+            document.getElementById('langMl').classList.toggle('active', lang === 'ml');
+
+            document.querySelectorAll('[data-key]').forEach(el => {
+                const key = el.getAttribute('data-key');
+                if (translations[lang] && translations[lang][key]) {
+                    el.innerHTML = translations[lang][key];
+                }
+            });
+        }
+
+        window.onload = function() {
+            const savedLang = localStorage.getItem('quickmart_lang') || 'ml';
+            setLanguage(savedLang);
+        };
+    </script>
 </body>
 </html>
