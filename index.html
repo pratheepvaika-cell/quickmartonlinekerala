@@ -14,19 +14,31 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         body { background-color: #f4f7f6; color: #333; line-height: 1.6; display: flex; flex-direction: column; min-height: 100vh; }
         
-        .top-bar { background-color: #1b5e20; color: #ffffff; display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; gap: 10px; }
-        .top-bar .support-text { font-size: 13px; font-weight: 600; white-space: nowrap; }
+        .top-bar { background-color: #1b5e20; color: #ffffff; display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; gap: 10px; flex-wrap: wrap; }
+        .top-bar .support-text { font-size: 13px; font-weight: 600; }
         
         .header-right-group { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
         .lang-switch { display: flex; background: #123d15; border-radius: 6px; padding: 2px; border: 1px solid rgba(255,255,255,0.25); }
         .lang-btn { background: transparent; border: none; color: #fff; padding: 4px 8px; font-size: 11px; font-weight: 700; cursor: pointer; border-radius: 4px; transition: 0.2s; }
         .lang-btn.active { background: #ffffff; color: #1b5e20; }
 
-        .nav-links { display: flex; align-items: center; gap: 6px; }
-        .nav-links a { color: #1b5e20; text-decoration: none; font-weight: 700; font-size: 12px; background-color: #ffffff; border: 2px solid #ffffff; padding: 5px 8px; border-radius: 6px; transition: all 0.2s ease; white-space: nowrap; }
+        .nav-links { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+        .nav-links a { color: #1b5e20; text-decoration: none; font-weight: 700; font-size: 12px; background-color: #ffffff; border: 2px solid #ffffff; padding: 5px 8px; border-radius: 6px; transition: all 0.2s ease; white-space: nowrap; position: relative; }
         .nav-links a:hover { background-color: #e8f5e9; }
 
-        .logo-bar { padding: 12px 20px; background: #ffffff; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+        /* Cart Badge in Nav */
+        .cart-badge {
+            background-color: #e65100;
+            color: white;
+            border-radius: 50%;
+            padding: 1px 6px;
+            font-size: 10px;
+            font-weight: bold;
+            margin-left: 4px;
+            display: inline-block;
+        }
+
+        .logo-bar { padding: 12px 20px; background: #ffffff; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; }
         .logo-container { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; }
         .logo-cart-icon { background-color: #1b5e20; width: 42px; height: 42px; border-radius: 10px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(27, 94, 32, 0.25); flex-shrink: 0; }
         .logo-cart-icon svg { width: 22px; height: 22px; fill: #ffffff; }
@@ -134,7 +146,6 @@
 
         footer { text-align: center; padding: 20px; background: #212121; color: #aaa; font-size: 12px; margin-top: 30px; }
 
-        /* Media query for larger screens */
         @media (min-width: 768px) {
             .products-grid { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 22px; }
             .product-card { padding: 16px; }
@@ -157,9 +168,12 @@
                 <button class="lang-btn" id="langEn" onclick="setLanguage('en')">English</button>
             </div>
             <nav class="nav-links">
-                <a href="index.html" style="background-color: #e8f5e9;" data-key="home">ഹോം</a>
-                <a href="guide.html" data-key="howToOrder">📱 ഗൈഡ്</a>
-                <a href="cart.html" data-key="cart">🛒 കാർട്ട്</a>
+                <a href="index.html" style="background-color: #e8f5e9;" data-key="home">ഹോം (Home)</a>
+                <a href="guide.html" data-key="howToOrder">📱 എങ്ങനെ ഓർഡർ ചെയ്യാം?</a>
+                <a href="about.html" data-key="aboutUs">ഞങ്ങളെക്കുറിച്ച്</a>
+                <a href="contact.html" data-key="contactUs">ബന്ധപ്പെടാൻ</a>
+                <a href="admin.html" data-key="admin">അഡ്മിൻ</a>
+                <a href="cart.html" data-key="cart"><span data-key="cartText">🛒 കാർട്ട്</span><span id="cartCountBadge" class="cart-badge">0</span></a>
             </nav>
         </div>
     </header>
@@ -175,25 +189,25 @@
             </div>
         </a>
         <button class="check-cart-top" onclick="window.location.href='cart.html'">
-            🛒 <span data-key="checkCart">Cart</span>
+            🛒 <span data-key="checkCart">Check Cart</span> (<span id="cartCountBadgeTop">0</span>)
         </button>
     </div>
 
     <div class="categories-container">
-        <div class="cat-chip active" onclick="filterCategory('all', this)"><span data-key="catAll">എല്ലാം</span></div>
-        <div class="cat-chip" onclick="filterCategory('General', this)"><span data-key="catGeneral">ജനറൽ</span></div>
-        <div class="cat-chip" onclick="filterCategory('Groceries', this)"><span data-key="catGroceries">പലവ്യഞ്ജനം</span></div>
-        <div class="cat-chip" onclick="filterCategory('Vegetables', this)"><span data-key="catVegetables">പച്ചക്കറി</span></div>
-        <div class="cat-chip" onclick="filterCategory('Fruits', this)"><span data-key="catFruits">പഴങ്ങൾ</span></div>
+        <div class="cat-chip active" onclick="filterCategory('all', this)"><span data-key="catAll">എല്ലാം (All)</span></div>
+        <div class="cat-chip" onclick="filterCategory('General', this)"><span data-key="catGeneral">ജനറൽ (General)</span></div>
+        <div class="cat-chip" onclick="filterCategory('Groceries', this)"><span data-key="catGroceries">പലവ്യഞ്ജനങ്ങൾ (Groceries)</span></div>
+        <div class="cat-chip" onclick="filterCategory('Vegetables', this)"><span data-key="catVegetables">പച്ചക്കറികൾ (Vegetables)</span></div>
+        <div class="cat-chip" onclick="filterCategory('Fruits', this)"><span data-key="catFruits">പഴങ്ങൾ (Fruits)</span></div>
     </div>
 
     <main class="container">
-        <h2 class="section-heading" data-key="newProductsHeading">പുതിയ സാധനങ്ങൾ</h2>
+        <h2 class="section-heading" data-key="newProductsHeading">പുതിയ പലവ്യഞ്ജനങ്ങളും സാധനങ്ങളും</h2>
         <div class="products-grid" id="productsGridContainer"></div>
     </main>
 
     <footer>
-        <p data-key="footerText">&copy; 2026 QuickMart Online. All rights reserved.</p>
+        <p data-key="footerText">&copy; 2026 QuickMart Online. All rights reserved. | കേരളത്തിന്റെ സ്വന്തം ഓൺലൈൻ ഷോപ്പ്</p>
     </footer>
 
     <script>
@@ -218,34 +232,40 @@
             en: {
                 supportText: "🛒 Kerala's Fast Online Grocery Shopping",
                 home: "Home",
-                howToOrder: "Guide",
-                cart: "Cart",
+                howToOrder: "📱 How to Order?",
+                aboutUs: "About Us",
+                contactUs: "Contact Us",
+                admin: "Admin",
+                cartText: "🛒 Cart",
                 tagline: "✨ All That Glitters",
-                checkCart: "Cart",
+                checkCart: "Check Cart",
                 catAll: "All",
                 catGeneral: "General",
                 catGroceries: "Groceries",
                 catVegetables: "Vegetables",
                 catFruits: "Fruits",
-                newProductsHeading: "New Products",
-                addToCart: "Add",
-                footerText: "© 2026 QuickMart Online. All rights reserved."
+                newProductsHeading: "New Groceries & Items",
+                addToCart: "Add to Cart",
+                footerText: "© 2026 QuickMart Online. All rights reserved. | Kerala's Own Online Shop"
             },
             ml: {
-                supportText: "🛒 കേരളത്തിന്റെ സ്വന്തം ഓൺലൈൻ കട",
-                home: "ഹോം",
-                howToOrder: "ഗൈഡ്",
-                cart: "കാർട്ട്",
+                supportText: "🛒 കേരളത്തിന്റെ സ്വന്തം ഓൺലൈൻ പലവ്യഞ്ജന കട",
+                home: "ഹോം (Home)",
+                howToOrder: "📱 എങ്ങനെ ഓർഡർ ചെയ്യാം?",
+                aboutUs: "ഞങ്ങളെക്കുറിച്ച്",
+                contactUs: "ബന്ധപ്പെടാൻ",
+                admin: "അഡ്മിൻ",
+                cartText: "🛒 കാർട്ട്",
                 tagline: "✨ All That Glitters",
-                checkCart: "കാർട്ട്",
-                catAll: "എല്ലാം",
-                catGeneral: "ജനറൽ",
-                catGroceries: "പലവ്യഞ്ജനം",
-                catVegetables: "പച്ചക്കറി",
-                catFruits: "പഴങ്ങൾ",
-                newProductsHeading: "പുതിയ സാധനങ്ങൾ",
-                addToCart: "ചേർക്കുക",
-                footerText: "© 2026 QuickMart Online. All rights reserved."
+                checkCart: "കാർട്ട് പരിശോധിക്കുക",
+                catAll: "എല്ലാം (All)",
+                catGeneral: "ജനറൽ (General)",
+                catGroceries: "പലവ്യഞ്ജനങ്ങൾ (Groceries)",
+                catVegetables: "പച്ചക്കറികൾ (Vegetables)",
+                catFruits: "പഴങ്ങൾ (Fruits)",
+                newProductsHeading: "പുതിയ പലവ്യഞ്ജനങ്ങളും സാധനങ്ങളും",
+                addToCart: "കാർട്ടിലേക്ക് ചേർക്കുക",
+                footerText: "© 2026 QuickMart Online. All rights reserved. | കേരളത്തിന്റെ സ്വന്തം ഓൺലൈൻ ഷോപ്പ്"
             }
         };
 
@@ -260,7 +280,15 @@
                     el.innerHTML = translations[lang][key];
                 }
             });
+            updateCartCount();
             renderProducts(allProductsCache);
+        }
+
+        function updateCartCount() {
+            let cart = JSON.parse(localStorage.getItem('quickmart_cart')) || [];
+            let totalQty = cart.reduce((sum, item) => sum + (item.qty || 1), 0);
+            document.getElementById('cartCountBadge').innerText = totalQty;
+            document.getElementById('cartCountBadgeTop').innerText = totalQty;
         }
 
         function loadProductsFromCloud() {
@@ -290,7 +318,14 @@
             
             let filtered = products;
             if (currentCategory !== 'all') {
-                filtered = products.filter(p => p.category === currentCategory);
+                const categoryMap = {
+                    'General': ['General', 'ജനറൽ'],
+                    'Groceries': ['Groceries', 'പലവ്യഞ്ജനങ്ങൾ', 'grocery', 'groceries'],
+                    'Vegetables': ['Vegetables', 'പച്ചക്കറികൾ', 'vegetable', 'vegetables'],
+                    'Fruits': ['Fruits', 'പഴങ്ങൾ', 'fruit', 'fruits']
+                };
+                const allowedValues = categoryMap[currentCategory] || [currentCategory];
+                filtered = products.filter(p => allowedValues.includes(p.category) || p.category === currentCategory);
             }
 
             if (filtered.length === 0) {
@@ -300,7 +335,7 @@
 
             filtered.forEach(prod => {
                 const displayName = (currentLang === 'ml' && prod.nameMl) ? prod.nameMl : prod.name;
-                const btnText = translations[currentLang]['addToCart'] || 'Add';
+                const btnText = translations[currentLang]['addToCart'] || 'Add to Cart';
 
                 let imageHtml = '🛒';
                 if (prod.image) {
@@ -339,12 +374,14 @@
                 cart.push({ ...product, qty: 1 });
             }
             localStorage.setItem('quickmart_cart', JSON.stringify(cart));
+            updateCartCount();
             alert('Added to cart!');
         }
 
         window.onload = function() {
             setLanguage(localStorage.getItem('quickmart_lang') || 'ml');
             loadProductsFromCloud();
+            updateCartCount();
         };
     </script>
 </body>
