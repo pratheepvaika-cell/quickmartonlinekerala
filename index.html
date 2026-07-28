@@ -43,23 +43,15 @@
             color: #dcedc8;
             display: flex;
             align-items: center;
-            justify-content: space-between;
+            gap: 8px;
             border-bottom: 1px solid rgba(255,255,255,0.15);
             padding-bottom: 8px;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        .tagline-text {
-            display: flex;
-            align-items: center;
-            gap: 8px;
         }
 
         .header-nav-row {
             display: flex;
             align-items: center;
-            justify-content: flex-end;
+            justify-content: space-between;
             flex-wrap: wrap;
             gap: 12px;
         }
@@ -307,17 +299,16 @@
     <!-- Professional Rich Top Green Banner -->
     <header>
         <div class="header-top-row">
-            <div class="tagline-text">
-                🛒 <span data-key="tagline">All that glitters is not gold</span>
-            </div>
+            🛒 <span data-key="tagline">Kerala's Fast Online Grocery Shopping</span>
+        </div>
+
+        <div class="header-nav-row">
             <!-- Language Switcher -->
             <div class="lang-switch">
                 <button class="lang-btn" id="langMl" onclick="setLanguage('ml')">മലയാളം</button>
                 <button class="lang-btn" id="langEn" onclick="setLanguage('en')">English</button>
             </div>
-        </div>
 
-        <div class="header-nav-row">
             <!-- Header Nav Links -->
             <div class="nav-menu-group">
                 <a href="index.html" class="nav-link">🏠 <span data-key="home">Home</span></a>
@@ -336,7 +327,7 @@
             </div>
             <div class="brand-title">
                 <h1>QuickMart Online</h1>
-                <span data-key="subTagline">✨ ORDER EASILY ONLINE</span>
+                <span data-key="subTagline">✨ ALL THAT GLITTERS</span>
             </div>
         </div>
         <button class="check-cart-top" onclick="window.location.href='cart.html'">
@@ -391,12 +382,12 @@
         // Dictionary for Multilingual UI Texts
         const translations = {
             en: {
-                tagline: "All that glitters is not gold",
+                tagline: "Kerala's Fast Online Grocery Shopping",
                 home: "Home",
                 howToOrder: "How to Order?",
                 admin: "Admin",
                 cart: "Cart",
-                subTagline: "✨ ORDER EASILY ONLINE",
+                subTagline: "✨ ALL THAT GLITTERS",
                 checkCart: "Check Cart",
                 catAll: "All",
                 catGeneral: "General",
@@ -408,12 +399,12 @@
                 contact: "Contact"
             },
             ml: {
-                tagline: "മിന്നുന്നതെല്ലാം പൊന്നല്ല",
+                tagline: "കേരളത്തിലെ ഏറ്റവും വേഗതയേറിയ ഓൺലൈൻ പലവ്യഞ്ജന ഷോപ്പിംഗ്",
                 home: "ഹോം",
                 howToOrder: "എങ്ങനെ ഓർഡർ ചെയ്യാം?",
                 admin: "അഡ്മിൻ",
                 cart: "കാർട്ട്",
-                subTagline: "✨ എളുപ്പത്തിൽ ഓർഡർ ചെയ്യൂ",
+                subTagline: "✨ മിന്നുന്നതെല്ലാം",
                 checkCart: "കാർട്ട് പരിശോധിക്കുക",
                 catAll: "എല്ലാം",
                 catGeneral: "ജനറൽ",
